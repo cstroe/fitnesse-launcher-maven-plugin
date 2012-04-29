@@ -44,6 +44,7 @@ public class RunTestsMojo extends AbstractMojo implements
     		if(this.createSymLink) {
 	            runFitNesseServer(); // this will create the SymLink for us
                 Shutdown.main(new String[]{"-p", this.port.toString()});
+                Thread.sleep(50L); // Give our SymLink instance a chance to shutdown again
 			}
 
             final String[] pageNameAndType = calcPageNameAndType();
