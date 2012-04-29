@@ -22,7 +22,7 @@
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
 	</properties>
-	
+
 	<!--
 	    TODO: This configuration is clumsey, error-prone, and should be unnecessary.
 	    Much of it is devoted simply to fetching and unpacking FitNesse
@@ -89,7 +89,7 @@
 						<configuration>
 							<tasks>
 								<move file="${fitnesse.working}/Resources/FitNesseRoot"
-									todir="${fitnesse.working}" failonerror="false"/>
+									todir="${fitnesse.working}" failonerror="false" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -210,6 +210,22 @@
 											<followSymlinks>false</followSymlinks>
 										</fileset>
 									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run-exploded</goal>
+								</goals>
+								<configuration>
+									<daemon>true</daemon>
 								</configuration>
 							</execution>
 						</executions>
