@@ -19,6 +19,8 @@
 		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
 		<fitnesse.root>FitNesseRoot</fitnesse.root>
 		<display>:2</display>
+		<!-- This example has no unit tests, just integration tests -->
+		<skipTests>true</skipTests>
 	</properties>
 	
 	<!--
@@ -115,7 +117,7 @@
 
 	<profiles>
 		<profile>
-			<id>unix</id>
+			<id>headless</id>
 			<build>
 				<plugins>
 					<plugin>
