@@ -209,7 +209,8 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         final Set<Artifact> artifacts = new HashSet<Artifact>();
         final Set<Artifact> plugins = project.getPluginArtifacts();
         for ( Artifact plugin : plugins ) {
-            if("uk.co.javahelp".equals(plugin.getGroupId()) && "fitnesse-launcher-maven-plugin".equals(plugin.getArtifactId())) {
+        	// TODO: Surely a plugin can pickup its own name at compile time?
+            if("uk.co.javahelp.fitnesse".equals(plugin.getGroupId()) && "fitnesse-launcher-maven-plugin".equals(plugin.getArtifactId())) {
                 artifacts.addAll(resolveArtifactTransitively(plugin));
             }
         }
