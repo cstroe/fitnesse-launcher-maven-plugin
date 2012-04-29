@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>uk.co.javahelp.fitnesse</groupId>
+	<artifactId>fitnesse-launcher-webapp-example</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<fitnesse.port>8787</fitnesse.port>
+		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
+		<fitnesse.root>FitNesseRoot</fitnesse.root>
+		<display>:2</display>
+	</properties>
+	
+	<!--
+	    TODO: This configuration is clumsey, error-prone, and should be unnecessary.
+	    Much of it is devoted simply to fetching and unpacking FitNesse
+	    into a correct working directory structure, and cleaning up again afterwards.
+	    It would be much easier for end users if the fitnesse-launcher-maven-plugin did this for us.
+	 -->
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.4.1</version>
+				</plugin>
+				<plugin>
+					<groupId>uk.co.javahelp.fitnesse</groupId>
+					<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+					<version>1.0.0-SNAPSHOT</version>
+					<configuration>
+						<port>${fitnesse.port}</port>
+						<workingDir>${fitnesse.working}</workingDir>
+						<root>${fitnesse.root}</root>
+						<createSymLink>true</createSymLink>
+						<suite>WebappExample</suite>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.fitnesse</groupId>
+									<artifactId>fitnesse</artifactId>
+									<version>20111025</version>
+									<type>jar</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>${fitnesse.working}</outputDirectory>
+									<includes>Resources/FitNesseRoot/**</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<tasks>
+								<move file="${fitnesse.working}/Resources/FitNesseRoot"
+									todir="${fitnesse.working}" failonerror="false"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- See fitnesse.responders.run.formatters.PageInProgressFormatter and 
+				fitnesse.slim.test.TestsInProgress, wherein they have hard-coded the directory 
+				where they track test progress. *sigh* -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>FitNesseRoot</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>unix</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>selenium-maven-plugin</artifactId>
+						<version>2.2</version>
+						<executions>
+							<execution>
+								<id>xvfb</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>xvfb</goal>
+								</goals>
+								<configuration>
+									<display>${display}</display>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>wiki</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>uk.co.javahelp.fitnesse</groupId>
+						<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>wiki</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>wiki</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>auto</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>fitnesse-pre-clean</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+									<filesets>
+										<fileset>
+											<directory>${fitnesse.working}</directory>
+											<includes>
+												<include>plugins.properties</include>
+											</includes>
+											<followSymlinks>false</followSymlinks>
+										</fileset>
+										<fileset>
+											<directory>${project.build.directory}/dependency-maven-plugin-markers</directory>
+											<includes>
+												<include>**/*.marker</include>
+											</includes>
+											<followSymlinks>false</followSymlinks>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+							<!-- See fitnesse.responders.run.formatters.PageInProgressFormatter 
+								and fitnesse.slim.test.TestsInProgress, wherein they have hard-coded the 
+								directory where they track test progress. *sigh* -->
+							<execution>
+								<id>fitnesse-post-clean</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+									<filesets>
+										<fileset>
+											<directory>FitNesseRoot</directory>
+											<followSymlinks>false</followSymlinks>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>uk.co.javahelp.fitnesse</groupId>
+						<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>run-tests</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>run-tests</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
