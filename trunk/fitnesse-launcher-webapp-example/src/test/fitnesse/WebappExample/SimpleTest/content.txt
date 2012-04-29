@@ -1,0 +1,7 @@
+!contents
+
+!| script | selenium driver fixture | 
+| start browser | firefox | on url | http://localhost:8080/ |
+| ensure | do | open | on | fitnesse-launcher-webapp-example |
+| check | is | assertTitle | fitnesse-launcher-webapp-example |
+| stop browser |
