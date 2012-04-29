@@ -225,6 +225,13 @@
 									<goal>run-tests</goal>
 								</goals>
 							</execution>
+							<execution>
+								<id>verify</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>verify</goal>
+								</goals>
+							</execution>
 						</executions>
 					</plugin>
 				</plugins>
