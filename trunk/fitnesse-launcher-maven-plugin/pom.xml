@@ -55,28 +55,6 @@
 			<artifactId>fitnesse</artifactId>
 			<version>20111025</version>
 		</dependency>
-
-        <!--
-            TODO: Find a way of allowing the end user to embed their own FitNesse classpath requirements
-            as dependency config of the plugin, in their own project pom.xml
-        -->
-		<dependency>
-			<groupId>com.xebia.incubator</groupId>
-			<artifactId>xebium</artifactId>
-			<version>0.6</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-simple</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-        <dependency>
-    		<groupId>org.slf4j</groupId>
-    		<artifactId>slf4j-simple</artifactId>
-    		<version>1.6.4</version>
-		</dependency>
 	</dependencies>
 
 </project>
