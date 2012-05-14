@@ -56,6 +56,19 @@
 						<createSymLink>true</createSymLink>
 						<suite>WebappExample</suite>
 					</configuration>
+					<dependencies>
+		                <dependency>
+							<groupId>com.xebia.incubator</groupId>
+							<artifactId>xebium</artifactId>
+							<version>0.6</version>
+						</dependency>
+
+        				<dependency>
+    						<groupId>org.slf4j</groupId>
+    						<artifactId>slf4j-simple</artifactId>
+    						<version>1.6.4</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
