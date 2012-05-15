@@ -2,9 +2,6 @@ package uk.co.javahelp.maven.plugin.fitnesse;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -20,13 +17,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import fitnesse.Arguments;
-import fitnesse.junit.TestHelper;
-import fitnesseMain.FitNesseMain;
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo {
-
-    private static final String UTF8 = "UTF-8";
 
     /**
      * Used to look up Artifacts in the remote repository.
@@ -54,6 +47,13 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
      * @required
      */
     protected List<ArtifactRepository> remoteArtifactRepositories;
+    
+    /**
+     * Maven project, to be injected by Maven itself.
+     * @parameter expression="${project}"
+     * @required
+     */
+    protected MavenProject project;
 
     /**
      * @parameter expression="${fitnesse.port}" default-value="9123"
@@ -129,51 +129,21 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
      * @parameter expression="${fitnesse.excludeSuiteFilter}"
      */
     protected String excludeSuiteFilter;
+    
+    protected FitNesseHelper fitNesseHelper;
 
     protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
+    	this.fitNesseHelper = new FitNesseHelper(getLog());
         exportProperties();
         executeInternal();
     }
 
-    protected void runFitNesseServer() throws Exception {
-        final Arguments arguments = new Arguments();
-        arguments.setCommand(null);
-        arguments.setInstallOnly(false);
-        arguments.setOmitUpdates(true);
-        arguments.setDaysTillVersionsExpire("0");
-        arguments.setPort(this.port.toString());
-        arguments.setRootPath(this.workingDir);
-        arguments.setRootDirectory(this.root);
-        if(this.logDir != null && !this.logDir.trim().equals(""))
-            arguments.setLogDirectory(this.logDir);
-        FitNesseMain.launchFitNesse(arguments);
-		if(this.createSymLink) {
-		    createSymLink(); 
-		}
-    }
-
-    protected String[] calcPageNameAndType() throws MojoExecutionException {
-        final boolean haveSuite = !isBlank(this.suite);
-        final boolean haveTest = !isBlank(this.test);
-        if (!haveSuite && !haveTest) {
-            throw new MojoExecutionException("No suite or test page specified");
-        } else if (haveSuite && haveTest) {
-            throw new MojoExecutionException("Suite and test page parameters are mutually exclusive");
-        }
-
-        final String pageName = (haveSuite) ? this.suite : this.test;
-        final String pageType = (haveSuite) ? TestHelper.PAGE_TYPE_SUITE : TestHelper.PAGE_TYPE_TEST;
-
-        return new String[] { pageName, pageType };
-    }
-
     protected void exportProperties() {
-        final MavenProject project = (MavenProject) getPluginContext().get("project");
-        final Properties projectProperties = project.getProperties();
+        final Properties projectProperties = this.project.getProperties();
         getLog().info("------------------------------------------------------------------------");
-        final String mavenClasspath = calcWikiFormatClasspath(project);
+        final String mavenClasspath = calcWikiFormatClasspath(this.project);
         setSystemProperty("maven.classpath", mavenClasspath);
 
         // If a System property already exists, it has priority;
@@ -184,10 +154,10 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         }
         final String env = System.getProperty("env", System.getenv("username"));
         setSystemProperty("env", env);
-        setSystemProperty("artifact", project.getArtifactId());
-        setSystemProperty("version", project.getVersion());
+        setSystemProperty("artifact", this.project.getArtifactId());
+        setSystemProperty("version", this.project.getVersion());
         try {
-            final String basedir = project.getBasedir().getCanonicalPath();
+            final String basedir = this.project.getBasedir().getCanonicalPath();
             setSystemProperty("basedir", basedir);
         } catch (IOException e) {
             e.printStackTrace();
@@ -250,55 +220,5 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
             }
         }
         return Collections.emptySet();
-    }
-
-    /**
-     * Note: Through experiment I've found that we can safely send duplicate 'create SymLink' requests - FitNesse isn't bothered
-     * @see http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks
-     */
-    protected void createSymLink() throws MojoExecutionException, MojoFailureException {
-        final String linkName = calcLinkName();
-        final String linkPath = calcLinkPath(linkName);
-
-        HttpURLConnection connection = null;
-        try {
-            final String urlPath = 
-                String.format("/root?responder=symlink&linkName=%s&linkPath=%s&submit=%s",
-                URLEncoder.encode(linkName, UTF8), URLEncoder.encode(linkPath, UTF8), URLEncoder.encode("Create/Replace", UTF8));
-            final URL url = new URL("http", "localhost", this.port, urlPath);
-            getLog().info("Calling " + url);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            final int responseCode = connection.getResponseCode();
-            getLog().info("Response code: " + responseCode);
-        } catch (Exception e) {
-            throw new MojoExecutionException("Exception shutting down FitNesse", e);
-        } finally {
-            if(connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-    private String calcLinkName() throws MojoExecutionException {
-        final String[] pageNameAndType = calcPageNameAndType();
-        return pageNameAndType[0];
-    }
-
-    private String calcLinkPath(final String linkName) throws MojoExecutionException {
-            final MavenProject project = (MavenProject) getPluginContext().get("project");
-            final StringBuilder linkPath = new StringBuilder(
-                project.getBasedir().toURI().toString()
-                    .replaceFirst("/[A-Z]:", "")
-                    .replaceFirst(":", "://"));
-            linkPath.append(this.testResourceDirectory);
-            linkPath.append(File.separatorChar);
-            linkPath.append(linkName);
-            return linkPath.toString();
-    }
-
-    private boolean isBlank(final String string) {
-        return string == null || string.trim().equals("");
     }
 }

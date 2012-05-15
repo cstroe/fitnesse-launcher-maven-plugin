@@ -30,7 +30,6 @@ import fitnesse.responders.run.TestSummary;
 public class RunTestsMojo extends AbstractMojo implements
         SurefireReportParameters {
 
-
     public void executeInternal() throws MojoExecutionException, MojoFailureException {
         final ResultsListener resultsListener = new DelegatingResultsListener(
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
@@ -42,12 +41,14 @@ public class RunTestsMojo extends AbstractMojo implements
         try {
             // Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode
     		if(this.createSymLink) {
-	            runFitNesseServer(); // this will create the SymLink for us
-                Shutdown.main(new String[]{"-p", this.port.toString()});
+    			final String p = this.port.toString();
+	            this.fitNesseHelper.runFitNesseServer(p, this.workingDir, this.root, this.logDir);
+	            this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);
+                Shutdown.main(new String[]{"-p", p});
                 Thread.sleep(50L); // Give our SymLink instance a chance to shutdown again
 			}
 
-            final String[] pageNameAndType = calcPageNameAndType();
+            final String[] pageNameAndType = this.fitNesseHelper.calcPageNameAndType(this.suite, this.test);
             final TestSummary summary = helper.run(pageNameAndType[0], pageNameAndType[1], this.suiteFilter, this.excludeSuiteFilter, this.port);
             getLog().info(summary.toString());
             final RunResult result = new RunResult(summary.right, summary.exceptions, summary.wrong, summary.ignores);
