@@ -5,12 +5,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-	<packaging>maven-plugin</packaging>
 	<version>1.0.0-SNAPSHOT</version>
+	<packaging>maven-plugin</packaging>
+	
+	<name>FitNesse Launcher Plugin</name>
+	<description>
+	    Provides ability to launch FitNesse as a wiki server,
+	    or automatically run FitNesse tests as part of a
+	    standard integration-test / verify build.
+	    Allows configuration of FitNesse's classpath
+	    through plugin dependencies,
+	    and injects all Maven project properties as FitNesse variables,
+	    ( which can be overridden from the command line using '-D' ).
+    </description>
 
 	<scm>
-		<connection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</connection>
 		<url>https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</url>
+		<connection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</developerConnection>
 	</scm>
 
 	<licenses>
@@ -55,7 +67,7 @@
 			<artifactId>fitnesse</artifactId>
 			<version>20111025</version>
 		</dependency>
-		
+
 		<!-- Test dependencies -->
 
 		<dependency>
@@ -84,6 +96,22 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<goalPrefix>fitnesse</goalPrefix>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generated-helpmojo</id>
+						<goals>
+							<goal>helpmojo</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
