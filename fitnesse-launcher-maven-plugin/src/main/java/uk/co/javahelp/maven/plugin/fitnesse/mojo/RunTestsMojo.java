@@ -1,4 +1,4 @@
-package uk.co.javahelp.maven.plugin.fitnesse;
+package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import static org.codehaus.plexus.util.IOUtil.close;
 

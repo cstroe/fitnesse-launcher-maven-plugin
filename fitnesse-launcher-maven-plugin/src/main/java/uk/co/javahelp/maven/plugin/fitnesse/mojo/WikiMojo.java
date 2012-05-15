@@ -1,4 +1,4 @@
-package uk.co.javahelp.maven.plugin.fitnesse;
+package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
