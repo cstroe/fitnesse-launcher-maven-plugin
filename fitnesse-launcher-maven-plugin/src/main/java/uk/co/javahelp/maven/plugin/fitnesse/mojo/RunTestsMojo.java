@@ -24,6 +24,9 @@ import fitnesse.responders.run.ResultsListener;
 import fitnesse.responders.run.TestSummary;
 
 /**
+ * Goal that runs FitNesse tests using fitnesse.junit.TestHelper.
+ * Intended to be bound to the 'integration-test' phase.
+ *
  * @goal run-tests
  * @requiresDependencyResolution
  */

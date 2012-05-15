@@ -13,6 +13,10 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
+ * Goal that provides summary report on FitNesse tests run with 'run-tests' goal.
+ * Intended to be bound to the 'verify' phase.
+ * Will fail the build if there are test failures.
+ *
  * @goal verify
  */
 public class VerifyMojo extends RunTestsMojo {
