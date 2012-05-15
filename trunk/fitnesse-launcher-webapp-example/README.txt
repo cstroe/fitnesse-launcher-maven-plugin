@@ -20,9 +20,3 @@ Apart from this, the config consists mainly of 3 profiles:
           and then boot FitNesse to run the configured test suite. Run in this way,
           fitnesse-launcher-maven-plugin will create both JUnit style XML reports and HTML reports.
           By default they can be found in target/fitnesse/results and target/fitnesse/reports respectively. 
-
-A final note:
-The fitnesse-launcher-maven-plugin itself currently contains com.xebia.incubator:xebium as a dependency.
-This is a project specific dependency which should be contained in a nested <dependencies> section
-of the end-use configuration of the plugin. This is also a future intention.  
-          

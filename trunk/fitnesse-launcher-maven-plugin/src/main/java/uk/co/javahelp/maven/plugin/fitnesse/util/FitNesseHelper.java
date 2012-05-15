@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
 import fitnesse.Arguments;
@@ -21,6 +22,13 @@ public class FitNesseHelper {
     public FitNesseHelper(final Log log) {
 		this.log = log;
 	}
+    
+    public StringBuilder formatAndAppendClasspathArtifact(final StringBuilder wikiFormatClasspath, final Artifact artifact) {
+       	wikiFormatClasspath.append("!path ");
+       	wikiFormatClasspath.append(artifact.getFile().getPath());
+       	wikiFormatClasspath.append("\n");
+       	return wikiFormatClasspath;
+    }
 
 	public void runFitNesseServer(
     		final String port, final String workingDir, final String root, final String logDir) throws Exception {
