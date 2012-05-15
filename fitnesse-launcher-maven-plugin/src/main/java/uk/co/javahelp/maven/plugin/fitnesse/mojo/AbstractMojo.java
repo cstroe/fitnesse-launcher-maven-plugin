@@ -13,8 +13,10 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
@@ -24,7 +26,7 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
     /**
      * Used to look up Artifacts in the remote repository.
      * 
-     * @parameter expression="${component.org.apache.maven.artifact.resolver.ArtifactResolver}"
+     * @component role="org.apache.maven.artifact.resolver.ArtifactResolver"
      * @required
      * @readonly
      */
@@ -54,6 +56,12 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
      * @required
      */
     protected MavenProject project;
+    
+    /**
+     * @parameter expression="${plugin}"
+     * @required
+     */
+    protected PluginDescriptor pluginDescriptor;
 
     /**
      * @parameter expression="${fitnesse.port}" default-value="9123"
@@ -140,10 +148,12 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         executeInternal();
     }
 
+    private static final String LOG_LINE = "------------------------------------------------------------------------";
+        
     protected void exportProperties() {
         final Properties projectProperties = this.project.getProperties();
-        getLog().info("------------------------------------------------------------------------");
-        final String mavenClasspath = calcWikiFormatClasspath(this.project);
+        getLog().info(LOG_LINE);
+        final String mavenClasspath = calcWikiFormatClasspath();
         setSystemProperty("maven.classpath", mavenClasspath);
 
         // If a System property already exists, it has priority;
@@ -152,17 +162,15 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
             final String value = System.getProperty(key, projectProperties.getProperty(key));
             setSystemProperty(key, value);
         }
-        final String env = System.getProperty("env", System.getenv("username"));
-        setSystemProperty("env", env);
         setSystemProperty("artifact", this.project.getArtifactId());
         setSystemProperty("version", this.project.getVersion());
         try {
             final String basedir = this.project.getBasedir().getCanonicalPath();
             setSystemProperty("basedir", basedir);
         } catch (IOException e) {
-            e.printStackTrace();
+        	getLog().error(e);
         }
-        getLog().info("------------------------------------------------------------------------");
+        getLog().info(LOG_LINE);
     }
 
     protected void setSystemProperty(final String key, final String value) {
@@ -174,32 +182,42 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         }
     }
 
-    protected String calcWikiFormatClasspath(final MavenProject project) {
-
+    protected String calcWikiFormatClasspath() {
         final Set<Artifact> artifacts = new HashSet<Artifact>();
-        final Set<Artifact> plugins = project.getPluginArtifacts();
-        for ( Artifact plugin : plugins ) {
-        	// TODO: Surely a plugin can pickup its own name at compile time?
-            if("uk.co.javahelp.fitnesse".equals(plugin.getGroupId()) && "fitnesse-launcher-maven-plugin".equals(plugin.getArtifactId())) {
-                artifacts.addAll(resolveArtifactTransitively(plugin));
-            }
+        
+        // We should always have FitNesse itself on the FitNesse classpath!
+       	artifacts.addAll(resolveDependencyKey("org.fitnesse:fitnesse"));
+                
+        final List<Dependency> dependecies = 
+            this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey()).getDependencies();
+        
+        for(Dependency dependency : dependecies) {
+        	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
+        	artifacts.addAll(resolveDependencyKey(key));
         }
         final StringBuilder wikiFormatClasspath = new StringBuilder();
         for (Artifact artifact : artifacts) {
             artifact.getDependencyTrail();
             if(artifact.getFile() != null) {
                 getLog().debug(String.format("Adding artifact to FitNesse classpath [%s]", artifact));
-            	wikiFormatClasspath.append("!path ");
-            	wikiFormatClasspath.append(artifact.getFile().getPath());
-            	wikiFormatClasspath.append("\n");
+                this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);
             } else {
-                getLog().debug(String.format("File for artifact [%s] is not found", artifact));
+                getLog().warn(String.format("File for artifact [%s] is not found", artifact));
             }
         }
         return wikiFormatClasspath.toString();
     }
 
-    protected Set<Artifact> resolveArtifactTransitively(final Artifact artifact) {
+    private Set<Artifact> resolveDependencyKey(final String key) {
+       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);
+       	if(artifact == null) {
+            getLog().warn(String.format("Lookup for artifact [%s] failed", key));
+            return Collections.emptySet();
+       	}
+        return resolveArtifactTransitively(artifact);
+    }
+
+    private Set<Artifact> resolveArtifactTransitively(final Artifact artifact) {
         final ArtifactResolutionRequest request = new ArtifactResolutionRequest()
             .setArtifact( artifact )
 			.setResolveRoot( true )
