@@ -11,7 +11,10 @@ public class WikiMojo extends AbstractMojo {
 
     public void executeInternal() throws MojoExecutionException, MojoFailureException {
         try {
-            runFitNesseServer();
+            this.fitNesseHelper.runFitNesseServer(this.port.toString(), this.workingDir, this.root, this.logDir);
+    		if(this.createSymLink) {
+	            this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);
+    		}
             Thread.currentThread().join();
         } catch (Exception e) {
             throw new MojoExecutionException("Exception launching FitNesse", e);
