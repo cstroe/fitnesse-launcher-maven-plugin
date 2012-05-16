@@ -20,8 +20,8 @@
     </description>
 
 	<scm>
-		<url>https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</url>
-		<connection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</connection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</connection>
 		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</developerConnection>
 	</scm>
 

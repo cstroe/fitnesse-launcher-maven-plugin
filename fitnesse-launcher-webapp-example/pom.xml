@@ -9,8 +9,8 @@
 	<packaging>war</packaging>
 
 	<scm>
-		<url>https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</url>
-		<connection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</connection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</connection>
 		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</developerConnection>
 	</scm>
 
