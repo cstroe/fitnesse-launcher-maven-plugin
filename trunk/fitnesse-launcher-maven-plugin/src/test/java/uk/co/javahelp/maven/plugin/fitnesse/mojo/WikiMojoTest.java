@@ -33,7 +33,7 @@ public class WikiMojoTest {
 		mojo.workingDir = "fitnesse";
 		mojo.root = "FitNesseRoot";
 		mojo.project = new MavenProject();
-		mojo.project.setFile(new File(getClass().getResource("pom.xml").getFile()));
+		mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
 	}
 	
 	@Test
