@@ -197,7 +197,6 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         }
         final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
         for (Artifact artifact : artifacts) {
-            artifact.getDependencyTrail();
             if(artifact.getFile() != null) {
                 getLog().debug(String.format("Adding artifact to FitNesse classpath [%s]", artifact));
                 this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);
@@ -230,7 +229,7 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
 			return dependencies;
         }
         for(Artifact missing : result.getMissingArtifacts()) {
-    		getLog().info(String.format("Could not resolve artifact: [%s]", missing));
+    		getLog().warn(String.format("Could not resolve artifact: [%s]", missing));
         }
         if(result.hasExceptions() && getLog().isDebugEnabled()) {
             for(Exception exception : result.getExceptions()) {
