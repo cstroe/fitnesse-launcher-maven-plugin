@@ -195,7 +195,7 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
         	artifacts.addAll(resolveDependencyKey(key));
         }
-        final StringBuilder wikiFormatClasspath = new StringBuilder();
+        final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
         for (Artifact artifact : artifacts) {
             artifact.getDependencyTrail();
             if(artifact.getFile() != null) {
