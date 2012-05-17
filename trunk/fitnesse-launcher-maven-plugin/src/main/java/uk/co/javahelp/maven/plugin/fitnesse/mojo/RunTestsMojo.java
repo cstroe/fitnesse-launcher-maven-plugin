@@ -16,7 +16,6 @@ import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Write
 import org.apache.maven.surefire.suite.RunResult;
 
 import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingResultsListener;
-import fitnesse.Shutdown;
 import fitnesse.junit.JUnitXMLTestListener;
 import fitnesse.junit.PrintTestListener;
 import fitnesse.junit.TestHelper;
@@ -30,9 +29,9 @@ import fitnesse.responders.run.TestSummary;
  * @goal run-tests
  * @requiresDependencyResolution
  */
-public class RunTestsMojo extends AbstractMojo implements
-        SurefireReportParameters {
+public class RunTestsMojo extends AbstractMojo implements SurefireReportParameters {
 
+	@Override
     public void executeInternal() throws MojoExecutionException, MojoFailureException {
         final ResultsListener resultsListener = new DelegatingResultsListener(
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
@@ -44,10 +43,10 @@ public class RunTestsMojo extends AbstractMojo implements
         try {
             // Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode
     		if(this.createSymLink) {
-    			final String p = this.port.toString();
-	            this.fitNesseHelper.launchFitNesseServer(p, this.workingDir, this.root, this.logDir);
+    			final String portString= this.port.toString();
+	            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
 	            this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);
-                Shutdown.main(new String[]{"-p", p});
+        	    this.fitNesseHelper.shutdownFitNesseServer(portString);
                 Thread.sleep(50L); // Give our SymLink instance a chance to shutdown again
 			}
 
@@ -82,83 +81,81 @@ public class RunTestsMojo extends AbstractMojo implements
         }
     }
 
-    // --------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // See http://maven.apache.org/plugins/maven-surefire-plugin/test-mojo.html
+    // ------------------------------------------------------------------------
 
+	@Override
     public boolean isSkipTests() {
-        // TODO Auto-generated method stub
         return false;
     }
 
-    public void setSkipTests(boolean skipTests) {
-        // TODO Auto-generated method stub
+	@Override
+    public void setSkipTests(boolean skipTests) {}
 
-    }
-
+	@Override
     public boolean isSkipExec() {
-        // TODO Auto-generated method stub
         return false;
     }
 
-    public void setSkipExec(boolean skipExec) {
-        // TODO Auto-generated method stub
+	@Override
+    public void setSkipExec(boolean skipExec) {}
 
-    }
-
+	@Override
     public boolean isSkip() {
-        // TODO Auto-generated method stub
         return false;
     }
 
-    public void setSkip(boolean skip) {
-        // TODO Auto-generated method stub
+	@Override
+    public void setSkip(boolean skip) {}
 
-    }
-
+	@Override
     public boolean isTestFailureIgnore() {
         return true;
     }
 
-    public void setTestFailureIgnore(boolean testFailureIgnore) {
-        // TODO Auto-generated method stub
+	@Override
+    public void setTestFailureIgnore(boolean testFailureIgnore) {}
 
-    }
-
+	@Override
     public File getBasedir() {
         // TODO Auto-generated method stub
         return null;
     }
 
+	@Override
     public void setBasedir(File basedir) {
         // TODO Auto-generated method stub
 
     }
 
+	@Override
     public File getTestClassesDirectory() {
         // TODO Auto-generated method stub
         return null;
     }
 
+	@Override
     public void setTestClassesDirectory(File testClassesDirectory) {
         // TODO Auto-generated method stub
 
     }
 
+	@Override
     public File getReportsDirectory() {
         return this.reportsDir;
     }
 
+	@Override
     public void setReportsDirectory(File reportsDirectory) {
-        // TODO Auto-generated method stub
-
+        this.reportsDir = reportsDirectory;
     }
 
+	@Override
     public Boolean getFailIfNoTests() {
-        // TODO Auto-generated method stub
-        return null;
+        return false;
     }
 
-    public void setFailIfNoTests(Boolean failIfNoTests) {
-        // TODO Auto-generated method stub
-
-    }
+	@Override
+    public void setFailIfNoTests(Boolean failIfNoTests) {}
 }
