@@ -7,7 +7,7 @@
 	<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
-	
+
 	<name>FitNesse Launcher Plugin</name>
 	<description>
 	    Provides ability to launch FitNesse as a wiki server,
@@ -103,6 +103,17 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<!--
+				    This version needs to match that of
+				    dependency for maven-failsafe-plugin
+				    otherwise the unit-tests of the RunTestsMojo
+				    will have incompatible versions of classes loaded.
+				 -->
+				<version>2.12</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
