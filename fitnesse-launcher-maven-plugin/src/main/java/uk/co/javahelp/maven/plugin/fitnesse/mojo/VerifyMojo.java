@@ -21,6 +21,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  */
 public class VerifyMojo extends RunTestsMojo {
 
+	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         final FailsafeSummary summary = readSummary();
         final int result = summary.getResult();
