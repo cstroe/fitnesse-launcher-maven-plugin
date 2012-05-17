@@ -224,18 +224,17 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
 			.setRemoteRepositories( this.remoteArtifactRepositories )
 			.setLocalRepository( this.localRepository );
 		final ArtifactResolutionResult result = this.resolver.resolve(request);
-        if(result.isSuccess()) {
-    		final Set<Artifact> dependencies = result.getArtifacts();
-			return dependencies;
+        if(!result.isSuccess()) {
+            for(Artifact missing : result.getMissingArtifacts()) {
+    			getLog().warn(String.format("Could not resolve artifact: [%s]", missing));
+        	}
+        	if(result.hasExceptions() && getLog().isDebugEnabled()) {
+            	for(Exception exception : result.getExceptions()) {
+    		    	getLog().debug(exception);
+            	}
+        	}
         }
-        for(Artifact missing : result.getMissingArtifacts()) {
-    		getLog().warn(String.format("Could not resolve artifact: [%s]", missing));
-        }
-        if(result.hasExceptions() && getLog().isDebugEnabled()) {
-            for(Exception exception : result.getExceptions()) {
-    		    getLog().debug(exception);
-            }
-        }
-        return Collections.emptySet();
+   		final Set<Artifact> dependencies = result.getArtifacts();
+		return dependencies;
     }
 }
