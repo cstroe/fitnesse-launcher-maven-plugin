@@ -5,7 +5,7 @@ import fitnesse.Arguments;
 
 /**
  * Goal that shuts down FitNesse.
- * It does this by sending GET to http://localhost:&lt;port&gt;/?responder=shutdown.
+ * This is done by sending GET to http://localhost:&lt;port&gt;/?responder=shutdown.
  *
  * @goal shutdown
  */
@@ -16,7 +16,9 @@ public class ShutdownMojo extends org.apache.maven.plugin.AbstractMojo {
      */
     private String port = Integer.toString(Arguments.DEFAULT_COMMAND_PORT);
 
+	@Override
     public void execute() {
        	new FitNesseHelper(getLog()).shutdownFitNesseServer(port);
+       	getLog().info("FitNesse wiki server is shutdown.");
     }
 }

@@ -59,7 +59,6 @@ public class FitNesseHelper {
 		} catch (Exception e) {
            	this.log.error(e);
 		}
-       	this.log.info("FitNesse wiki server is shutdown.");
     }
 
     /**

@@ -11,7 +11,8 @@ import fitnesse.socketservice.SocketService;
  * Goal that launches FitNesse as a wiki server.
  * Useful for manually running / developing / debugging FitNesse tests.
  * Once launched, just visit http://localhost:&lt;port&gt;/&lt;suite&gt;.
- * Use Ctrl+C to shutdown, or send GET to http://localhost:&lt;port&gt;/?responder=shutdown.
+ * Use the 'shutdown' goal (from a different command line), or Ctrl+C to shutdown,
+ * or send GET to http://localhost:&lt;port&gt;/?responder=shutdown.
  *
  * @goal wiki
  * @requiresDependencyResolution
@@ -28,10 +29,10 @@ public class WikiMojo extends AbstractMojo {
 	 * to {@link fitnesseMain.FitNesseMain.launchFitNesse(Arguments)}
 	 * <p>
 	 * We need to discover the FitNesse thread running (which is not exposed either).
-	 * This is not a daemon thead, but we need to join() it all the same,
+	 * This is not a daemon thread, but we need to join() it all the same,
 	 * as Maven calls System.exit() once it's business is done.
-	 * The intended use is for the user to press Ctrl+C to quit.
 	 */
+	@Override
     public void executeInternal() throws MojoExecutionException, MojoFailureException {
     	final String portString = this.port.toString();
         try {
@@ -51,6 +52,7 @@ public class WikiMojo extends AbstractMojo {
             throw new MojoExecutionException("Exception launching FitNesse", e);
         } finally {
         	this.fitNesseHelper.shutdownFitNesseServer(portString);
+           	getLog().info("FitNesse wiki server is shutdown.");
         }
     }
     

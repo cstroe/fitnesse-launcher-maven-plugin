@@ -32,8 +32,8 @@ import fitnesse.FitNesseContext;
 
 public class WikiMojoTest {
 	
-	private static int PORT = Arguments.DEFAULT_COMMAND_PORT;
-	private static String PORT_STRING = Integer.toString(PORT);
+	static int PORT = Arguments.DEFAULT_COMMAND_PORT;
+	static String PORT_STRING = Integer.toString(PORT);
 
 	private WikiMojo mojo;
 	
@@ -85,7 +85,8 @@ public class WikiMojoTest {
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
 		assertEquals("[INFO] FitNesse wiki server launched.\n" +
-		             "[INFO] FitNesse wiki server interrupted!\n", logStream.toString());
+		             "[INFO] FitNesse wiki server interrupted!\n" +
+					 "[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
 	}
 	
 	@Test
@@ -104,7 +105,8 @@ public class WikiMojoTest {
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
 		assertEquals("[INFO] FitNesse wiki server launched.\n" +
-		             "[INFO] FitNesse wiki server interrupted!\n", logStream.toString());
+		             "[INFO] FitNesse wiki server interrupted!\n" +
+					 "[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
 	}
 	
 	@Test
@@ -121,7 +123,7 @@ public class WikiMojoTest {
 		
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
-		assertEquals("", logStream.toString());
+		assertEquals("[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
 	}
 	
 	@Test
@@ -141,6 +143,7 @@ public class WikiMojoTest {
 		
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
-		assertEquals("[INFO] FitNesse wiki server launched.\n", logStream.toString());
+		assertEquals("[INFO] FitNesse wiki server launched.\n" +
+					 "[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
 	}
 }
