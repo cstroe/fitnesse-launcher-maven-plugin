@@ -142,6 +142,7 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
 
     protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
 
+	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	this.fitNesseHelper = new FitNesseHelper(getLog());
         exportProperties();
