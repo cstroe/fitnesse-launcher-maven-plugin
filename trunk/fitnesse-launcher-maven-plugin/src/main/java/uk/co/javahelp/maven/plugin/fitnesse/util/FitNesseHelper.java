@@ -2,6 +2,7 @@ package uk.co.javahelp.maven.plugin.fitnesse.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -10,6 +11,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
 import fitnesse.Arguments;
+import fitnesse.Shutdown;
 import fitnesse.junit.TestHelper;
 import fitnesseMain.FitNesseMain;
 
@@ -30,7 +32,7 @@ public class FitNesseHelper {
        	return wikiFormatClasspath;
     }
 
-	public void runFitNesseServer(
+	public void launchFitNesseServer(
     		final String port, final String workingDir, final String root, final String logDir) throws Exception {
         final Arguments arguments = new Arguments();
         arguments.setCommand(null);
@@ -43,6 +45,21 @@ public class FitNesseHelper {
         if(logDir != null && !logDir.trim().equals(""))
             arguments.setLogDirectory(logDir);
         FitNesseMain.launchFitNesse(arguments);
+    }
+
+	public void shutdownFitNesseServer(final String port) {
+        try {
+			Shutdown.main(new String[]{"-p", port});
+		} catch (ConnectException e) {
+			// If we get this specific exception,
+			// we assume FitNesse is already not running
+			if(!"Connection refused".equals(e.getMessage())) {
+               	this.log.error(e);
+			}
+		} catch (Exception e) {
+           	this.log.error(e);
+		}
+       	this.log.info("FitNesse wiki server is shutdown.");
     }
 
     /**

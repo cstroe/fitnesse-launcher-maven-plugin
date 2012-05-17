@@ -45,7 +45,7 @@ public class RunTestsMojo extends AbstractMojo implements
             // Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode
     		if(this.createSymLink) {
     			final String p = this.port.toString();
-	            this.fitNesseHelper.runFitNesseServer(p, this.workingDir, this.root, this.logDir);
+	            this.fitNesseHelper.launchFitNesseServer(p, this.workingDir, this.root, this.logDir);
 	            this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);
                 Shutdown.main(new String[]{"-p", p});
                 Thread.sleep(50L); // Give our SymLink instance a chance to shutdown again
