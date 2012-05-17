@@ -339,21 +339,21 @@ public class CalcWikiFormatClasspathTest {
 
 		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
 		verify(mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a3));
 		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a1));
 		verify(mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a2));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a3));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a4));
 		verify(mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a5));
@@ -398,21 +398,21 @@ public class CalcWikiFormatClasspathTest {
 		
 		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
 		verify(mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a3));
 		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a1));
 		verify(mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a2));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a3));
-		verify(mojo.fitNesseHelper, never())
+		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a4));
 		verify(mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a5));
