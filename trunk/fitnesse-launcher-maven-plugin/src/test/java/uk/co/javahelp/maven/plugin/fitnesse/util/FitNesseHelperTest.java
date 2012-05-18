@@ -7,7 +7,12 @@ import static org.mockito.Mockito.mock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
@@ -15,10 +20,14 @@ import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.Logger;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
+import fitnesse.Arguments;
 import fitnesse.junit.TestHelper;
 
 public class FitNesseHelperTest {
@@ -89,5 +98,43 @@ public class FitNesseHelperTest {
 		assertSame(sb, fitNesseHelper.formatAndAppendClasspathArtifact(sb, artifact));
 		
 		assertEquals("!path " + jarPath + "\n", sb.toString());
+	}
+		
+	@Test
+	public void testCreateSymLink() throws Exception {
+		int port = Arguments.DEFAULT_COMMAND_PORT;
+		Server server = new Server(port);
+	    server.setHandler(new Handler());
+	    server.start();
+	    
+	    try {
+			int response = fitNesseHelper.createSymLink(
+				"SUITE_NAME", null, new File(System.getProperty("java.io.tmpdir"), "BASEDIR"),
+				"/TEST_RESOURCE_DIR", port);
+			
+			assertEquals(200, response);
+			assertEquals(
+			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SUITE_NAME&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSUITE_NAME&submit=Create%2FReplace\n" +
+				"[INFO] Response code: 200\n", logStream.toString());
+
+		} finally {
+    		server.stop();
+		}
+	}
+	
+	private static class Handler extends AbstractHandler {
+
+		@Override
+		public void handle(String target, Request baseRequest,
+				HttpServletRequest request, HttpServletResponse response)
+				throws IOException, ServletException {
+			
+			assertEquals("/root", request.getRequestURI());
+			assertEquals("responder=symlink&linkName=SUITE_NAME&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSUITE_NAME&submit=Create%2FReplace", request.getQueryString());
+			
+			response.addHeader("Server", "FitNesse");
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.flushBuffer();
+		}
 	}
 }
