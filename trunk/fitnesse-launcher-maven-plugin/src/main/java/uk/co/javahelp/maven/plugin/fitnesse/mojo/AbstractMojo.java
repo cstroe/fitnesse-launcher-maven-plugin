@@ -89,7 +89,15 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
     protected String logDir;
 
     /**
-     * @see http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks
+     * fitnesse-launcher-maven-plugin unpacks a fresh copy of FitNesse under /target;
+     * Only your project specific FitNesse tests need go under src/test/fitnesse.
+     * By setting 'createSymLink' to 'true', fitnesse-launcher-maven-plugin will
+     * create a FitNesse SymLink directly to your test suite under src/test/fitnesse.
+     * This is most useful when developing tests in 'wiki' mode,
+     * as then you can directly scm commit your changes.
+     * If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse,
+     * let 'createSymLink' be 'false'.
+     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
      * @parameter expression="${fitnesse.createSymLink}"
      */
     protected boolean createSymLink;
