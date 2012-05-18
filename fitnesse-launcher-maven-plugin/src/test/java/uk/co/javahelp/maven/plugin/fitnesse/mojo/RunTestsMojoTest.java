@@ -96,9 +96,9 @@ public class RunTestsMojoTest {
 		assertTrue(
 			FileUtils.readFileToString(
 				new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml")).matches(
-			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]{4}\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
+			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]+\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
 				"<properties></properties>" +
-				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]{4}\" name=\"ExampleFitNesseTestSuite\">" +
+				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]+\" name=\"ExampleFitNesseTestSuite\">" +
 					"<failure type=\"java.lang.AssertionError\" message=\" exceptions: 0 wrong: 1\">" +
 					"</failure>" +
 				"</testcase>" +
@@ -129,9 +129,9 @@ public class RunTestsMojoTest {
 		assertTrue(
 			FileUtils.readFileToString(
 				new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml")).matches(
-			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]{4}\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
+			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]+\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
 				"<properties></properties>" +
-				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]{4}\" name=\"ExampleFitNesseTestSuite\">" +
+				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]+\" name=\"ExampleFitNesseTestSuite\">" +
 					"<failure type=\"java.lang.AssertionError\" message=\" exceptions: 0 wrong: 1\">" +
 					"</failure>" +
 				"</testcase>" +
