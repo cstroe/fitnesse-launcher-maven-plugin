@@ -64,7 +64,7 @@ public class FitNesseHelper {
     /**
      * Note: Through experiment I've found that we can safely send duplicate 'create SymLink' requests - FitNesse isn't bothered
      * @throws IOException 
-     * @see http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks
+     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
      */
     public int createSymLink(final String suite, final String test,
     		final File basedir, final String testResourceDirectory, final int port) throws IOException {
