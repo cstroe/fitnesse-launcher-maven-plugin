@@ -32,12 +32,11 @@
 		<skipTests>true</skipTests>
 	</properties>
 
-	<!--
-	    TODO: This configuration is clumsey, error-prone, and should be unnecessary.
-	    Much of it is devoted simply to fetching and unpacking FitNesse
-	    into a correct working directory structure, and cleaning up again afterwards.
-	    It would be much easier for end users if the fitnesse-launcher-maven-plugin did this for us.
-	 -->
+	<!-- TODO: This configuration is clumsey, error-prone, and should be unnecessary. 
+		Much of it is devoted simply to fetching and unpacking FitNesse into a correct 
+		working directory structure, and cleaning up again afterwards. It would be 
+		much easier for end users if the fitnesse-launcher-maven-plugin did this 
+		for us. -->
 
 	<build>
 		<pluginManagement>
@@ -58,16 +57,16 @@
 						<suite>WebappExample</suite>
 					</configuration>
 					<dependencies>
-		                <dependency>
+						<dependency>
 							<groupId>com.xebia.incubator</groupId>
 							<artifactId>xebium</artifactId>
 							<version>0.6</version>
 						</dependency>
 
-        				<dependency>
-    						<groupId>org.slf4j</groupId>
-    						<artifactId>slf4j-simple</artifactId>
-    						<version>1.6.4</version>
+						<dependency>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-simple</artifactId>
+							<version>1.6.4</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -133,6 +132,24 @@
 						</fileset>
 					</filesets>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>src</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
