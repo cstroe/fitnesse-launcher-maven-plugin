@@ -57,7 +57,7 @@ public class ExportPropertiesTest {
         
         this.fitnesseArtifact = new DefaultArtifact(
             "org.fitnesse", "fitnesse", "20111025", "compile", "jar", null, artifactHandler);
-        this.fitnesseArtifact.setFile(new File(getClass().getResource("dummy.jar").getPath()));
+        this.fitnesseArtifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         
 		ArtifactResolutionResult result = new ArtifactResolutionResult();
 		result.setArtifacts(Collections.singleton(this.fitnesseArtifact));

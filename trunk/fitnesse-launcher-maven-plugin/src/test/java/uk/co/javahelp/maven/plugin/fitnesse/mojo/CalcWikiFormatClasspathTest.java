@@ -65,7 +65,7 @@ public class CalcWikiFormatClasspathTest {
         
         this.fitnesseArtifact = new DefaultArtifact(
             "org.fitnesse", "fitnesse", "20111025", "compile", "jar", null, artifactHandler);
-        this.fitnesseArtifact.setFile(new File(getClass().getResource("dummy.jar").getPath()));
+        this.fitnesseArtifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         
         this.plugin = new Plugin();
 		plugin.setGroupId(pluginArtifact.getGroupId());
@@ -428,7 +428,7 @@ public class CalcWikiFormatClasspathTest {
 	private Artifact createArtifact(String groupId, String artifactId) {
         Artifact artifact = new DefaultArtifact(
             groupId, artifactId, "1.0.0", "compile", "jar", null, artifactHandler);
-        artifact.setFile(new File(getClass().getResource("dummy.jar").getPath()));
+        artifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         return artifact;
 	}
 	

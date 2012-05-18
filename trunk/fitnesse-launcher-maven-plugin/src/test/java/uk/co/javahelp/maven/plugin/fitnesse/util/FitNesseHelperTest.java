@@ -1,11 +1,17 @@
 package uk.co.javahelp.maven.plugin.fitnesse.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.Logger;
@@ -19,10 +25,13 @@ public class FitNesseHelperTest {
 
 	private FitNesseHelper fitNesseHelper;
 	
+	private ArtifactHandler artifactHandler;
+	
     private ByteArrayOutputStream logStream;
     
 	@Before
 	public void setUp() {
+		artifactHandler = mock(ArtifactHandler.class);
 		
 		logStream = new ByteArrayOutputStream();
 		Log log = new DefaultLog(new PrintStreamLogger(
@@ -67,5 +76,18 @@ public class FitNesseHelperTest {
 		} catch (IllegalArgumentException e) {
 			assertEquals("No suite or test page specified", e.getMessage());
 		}
+	}
+		
+	@Test
+	public void testFormatAndAppendClasspathArtifact() {
+        String jarPath = getClass().getResource("/dummy.jar").getPath();
+        Artifact artifact = new DefaultArtifact(
+            "org.fitnesse", "fitnesse", "20111025", "compile", "jar", null, artifactHandler);
+        artifact.setFile(new File(jarPath));
+        
+		StringBuilder sb = new StringBuilder();
+		assertSame(sb, fitNesseHelper.formatAndAppendClasspathArtifact(sb, artifact));
+		
+		assertEquals("!path " + jarPath + "\n", sb.toString());
 	}
 }
