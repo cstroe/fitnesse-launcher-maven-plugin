@@ -89,7 +89,7 @@ public class FitNesseHelperTest {
 		
 	@Test
 	public void testFormatAndAppendClasspathArtifact() {
-        String jarPath = getClass().getResource("/dummy.jar").getPath();
+        String jarPath = new File(getClass().getResource("/dummy.jar").getPath()).getPath();
         Artifact artifact = new DefaultArtifact(
             "org.fitnesse", "fitnesse", "20111025", "compile", "jar", null, artifactHandler);
         artifact.setFile(new File(jarPath));
@@ -109,13 +109,13 @@ public class FitNesseHelperTest {
 	    
 	    try {
 			int response = fitNesseHelper.createSymLink(
-				"SUITE_NAME", null, new File(System.getProperty("java.io.tmpdir"), "BASEDIR"),
+				"SUITE_NAME", null, new File("/tmp", "BASEDIR"),
 				"/TEST_RESOURCE_DIR", port);
 			
 			assertEquals(200, response);
 			assertEquals(
-			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SUITE_NAME&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSUITE_NAME&submit=Create%2FReplace\n" +
-				"[INFO] Response code: 200\n", logStream.toString());
+			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SUITE_NAME&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSUITE_NAME&submit=Create%2FReplace" +
+				String.format("%n[INFO] Response code: 200%n"), logStream.toString());
 
 		} finally {
     		server.stop();

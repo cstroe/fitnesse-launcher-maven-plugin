@@ -53,7 +53,7 @@ public class FitNesseHelper {
 		} catch (ConnectException e) {
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
-			if(!"Connection refused".equals(e.getMessage())) {
+			if(!e.getMessage().startsWith("Connection refused")) {
                	this.log.error(e);
 			}
 		} catch (Exception e) {
@@ -117,7 +117,7 @@ public class FitNesseHelper {
                 .replaceFirst("/[A-Z]:", "")
 				.replaceFirst(":", "://"));
 		linkPath.append(testResourceDirectory);
-		linkPath.append(File.separatorChar);
+		linkPath.append("/");
 		linkPath.append(linkName);
 		return linkPath.toString();
     }

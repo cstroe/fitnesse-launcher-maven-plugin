@@ -154,7 +154,7 @@ public class ExportPropertiesTest {
 		assertEquals("VERSION", System.getProperty("version"));
 		assertEquals(expectedBasedir, System.getProperty("basedir"));
 		assertTrue(logStream.toString().startsWith("[INFO] ------------------------------------------------------------------------"));
-		assertTrue(logStream.toString().endsWith("[INFO] ------------------------------------------------------------------------\n"));
+		assertTrue(logStream.toString().endsWith(String.format("[INFO] ------------------------------------------------------------------------%n")));
 		assertTrue(logStream.toString().contains("[INFO] Setting FitNesse variable [maven.classpath] to [\nTEST.CLASSPATH\n]"));
 		assertTrue(logStream.toString().contains("[INFO] Setting FitNesse variable [artifact] to [ARTIFACT_ID]"));
 		assertTrue(logStream.toString().contains("[INFO] Setting FitNesse variable [version] to [VERSION]"));

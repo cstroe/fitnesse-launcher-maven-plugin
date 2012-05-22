@@ -97,7 +97,7 @@ public class CalcWikiFormatClasspathTest {
 	public void testNoDependenciesNoFitNesseArtifact() {
 		
 		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("[WARNING] Lookup for artifact [org.fitnesse:fitnesse] failed\n", logStream.toString());
+		assertEquals(String.format("[WARNING] Lookup for artifact [org.fitnesse:fitnesse] failed%n"), logStream.toString());
 	}
 	
 	@Test
@@ -112,7 +112,7 @@ public class CalcWikiFormatClasspathTest {
 		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class))).thenReturn(result);
 		
 		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("[WARNING] File for artifact [org.fitnesse:fitnesse:jar:20111025:compile] is not found\n", logStream.toString());
+		assertEquals(String.format("[WARNING] File for artifact [org.fitnesse:fitnesse:jar:20111025:compile] is not found%n"), logStream.toString());
 	}
 	
 	@Test
@@ -332,10 +332,10 @@ public class CalcWikiFormatClasspathTest {
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g3a1, g3a3, g3a4), Arrays.asList(g3a2, g3a5)));
 		
 		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals(
-		    "[WARNING] Could not resolve artifact: [g1:a2:jar:1.0.0:compile]\n" +
-        	"[WARNING] Could not resolve artifact: [g3:a2:jar:1.0.0:compile]\n" +
-			"[WARNING] Could not resolve artifact: [g3:a5:jar:1.0.0:compile]\n", logStream.toString());
+		assertEquals(String.format(
+		    "[WARNING] Could not resolve artifact: [g1:a2:jar:1.0.0:compile]%n" +
+        	"[WARNING] Could not resolve artifact: [g3:a2:jar:1.0.0:compile]%n" +
+			"[WARNING] Could not resolve artifact: [g3:a5:jar:1.0.0:compile]%n"), logStream.toString());
 
 		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
@@ -390,11 +390,11 @@ public class CalcWikiFormatClasspathTest {
 		
 		assertEquals("\n", mojo.calcWikiFormatClasspath());
 		//System.out.print(logStream.toString());
-		assertTrue(logStream.toString().contains("org.apache.maven.artifact.resolver.ArtifactResolutionException: TEST\n  g1:a2:jar:1.0.0"));
-		assertTrue(logStream.toString().contains("org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException: Missing:\n----------\n1) g3:a2:jar:1.0.0\n\n"));
-		assertTrue(logStream.toString().contains("1) g3:a2:jar:1.0.0\n\n  Try downloading the file manually from the project website."));
-		assertTrue(logStream.toString().contains("2) g3:a5:jar:1.0.0\n\n  Try downloading the file manually from the project website."));
-		assertTrue(logStream.toString().contains("\n----------\n2 required artifacts are missing.\n\nfor artifact: \n  g3:a3:jar:1.0.0"));
+		assertTrue(logStream.toString().contains(String.format("org.apache.maven.artifact.resolver.ArtifactResolutionException: TEST%n  g1:a2:jar:1.0.0")));
+		assertTrue(logStream.toString().contains(String.format("org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException: Missing:\n----------\n1) g3:a2:jar:1.0.0%n%n")));
+		assertTrue(logStream.toString().contains(String.format("1) g3:a2:jar:1.0.0%n%n  Try downloading the file manually from the project website.")));
+		assertTrue(logStream.toString().contains(String.format("2) g3:a5:jar:1.0.0%n%n  Try downloading the file manually from the project website.")));
+		assertTrue(logStream.toString().contains(String.format("\n----------\n2 required artifacts are missing.\n\nfor artifact: %n  g3:a3:jar:1.0.0")));
 		
 		verify(mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
