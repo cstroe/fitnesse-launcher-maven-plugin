@@ -84,9 +84,10 @@ public class WikiMojoTest {
 		verify(fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
-		assertEquals("[INFO] FitNesse wiki server launched.\n" +
-		             "[INFO] FitNesse wiki server interrupted!\n" +
-					 "[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
+		assertEquals(String.format(
+				"[INFO] FitNesse wiki server launched.%n" +
+		        "[INFO] FitNesse wiki server interrupted!%n" +
+				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 	
 	@Test
@@ -104,9 +105,10 @@ public class WikiMojoTest {
 		verify(fitNesseHelper, times(1)).createSymLink(mojo.suite, mojo.test, mojo.project.getBasedir(), mojo.testResourceDirectory, PORT);
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
-		assertEquals("[INFO] FitNesse wiki server launched.\n" +
-		             "[INFO] FitNesse wiki server interrupted!\n" +
-					 "[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
+		assertEquals(String.format(
+				"[INFO] FitNesse wiki server launched.%n" +
+		        "[INFO] FitNesse wiki server interrupted!%n" +
+				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 	
 	@Test
@@ -123,7 +125,8 @@ public class WikiMojoTest {
 		
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
-		assertEquals("[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
+		assertEquals(String.format(
+				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 	
 	@Test
@@ -143,7 +146,8 @@ public class WikiMojoTest {
 		
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
-		assertEquals("[INFO] FitNesse wiki server launched.\n" +
-					 "[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
+		assertEquals(String.format(
+				"[INFO] FitNesse wiki server launched.%n" +
+				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 }

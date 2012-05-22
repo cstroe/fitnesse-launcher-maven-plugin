@@ -55,7 +55,7 @@ public class ShutdownMojoTest {
 	    
 		mojo.execute();
 		
-		assertEquals("[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
+		assertEquals(String.format("[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 	
 	
@@ -64,7 +64,7 @@ public class ShutdownMojoTest {
 		
 		mojo.execute();
 		
-		assertEquals("[INFO] FitNesse wiki server is shutdown.\n", logStream.toString());
+		assertEquals(String.format("[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 	
 	private static class Handler extends AbstractHandler {

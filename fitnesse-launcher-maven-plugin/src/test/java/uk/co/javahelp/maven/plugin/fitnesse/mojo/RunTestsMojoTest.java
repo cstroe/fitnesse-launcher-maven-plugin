@@ -106,7 +106,7 @@ public class RunTestsMojoTest {
 		
 		assertEquals(
 		    IOUtils.toString(getClass().getResourceAsStream("ExampleFitNesseTestSuite.html")),
-			FileUtils.readFileToString(new File(mojo.reportsDir, "ExampleFitNesseTestSuite.html")));
+			FileUtils.readFileToString(new File(mojo.reportsDir, "ExampleFitNesseTestSuite.html")).replaceAll("\r\n", "\n"));
 	}
 	
 	@Test
@@ -139,6 +139,6 @@ public class RunTestsMojoTest {
 		
 		assertEquals(
 		    IOUtils.toString(getClass().getResourceAsStream("ExampleFitNesseTestSuite.html")),
-			FileUtils.readFileToString(new File(mojo.reportsDir, "ExampleFitNesseTestSuite.html")));
+			FileUtils.readFileToString(new File(mojo.reportsDir, "ExampleFitNesseTestSuite.html")).replaceAll("\r\n", "\n"));
 	}
 }
