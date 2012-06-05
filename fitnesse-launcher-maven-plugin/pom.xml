@@ -240,10 +240,17 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>com.google.code.maven-svn-wagon</groupId>
+				<artifactId>maven-svn-wagon</artifactId>
+				<version>1.4</version>
+			</extension>
+		</extensions>
 	</build>
 
-	<!-- See http://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom -->
 	<distributionManagement>
+		<!-- See http://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom -->
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
@@ -254,6 +261,11 @@
 			<name>Nexus Release Repository</name>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
+		<site>
+			<id>google-code</id>
+			<name>Google Code Reports</name>
+			<url>svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site</url>
+		</site>
 	</distributionManagement>
 
 	<profiles>
