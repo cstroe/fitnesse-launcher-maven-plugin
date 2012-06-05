@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 import fitnesse.junit.TestHelper;
+import fitnesse.responders.run.formatters.PageInProgressFormatter;
 import fitnesse.slim.test.TestsInProgress;
 
 public class RunTestsMojoTest {
