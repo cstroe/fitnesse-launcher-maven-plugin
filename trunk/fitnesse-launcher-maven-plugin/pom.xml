@@ -18,7 +18,7 @@
 	    and injects all Maven project properties as FitNesse variables,
 	    ( which can be overridden from the command line using '-D' ).
     </description>
-    <url>http://code.google.com/p/fitnesse-launcher-maven-plugin</url>
+	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin</url>
 
 	<licenses>
 		<license>
@@ -27,7 +27,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<scm>
 		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</url>
 		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</connection>
@@ -35,18 +35,18 @@
 	</scm>
 
 	<developers>
-	    <developer>
-	        <id>stewart</id>
-	        <name>Stewart Cambridge</name>
-	        <email>stewart.cambridge@gmail.com</email>
-	        <url>http://www.linkedin.com/in/stewartcambridge</url>
-	        <timezone>0</timezone>
-	    </developer>
+		<developer>
+			<id>stewart</id>
+			<name>Stewart Cambridge</name>
+			<email>stewart.cambridge@gmail.com</email>
+			<url>http://www.linkedin.com/in/stewartcambridge</url>
+			<timezone>0</timezone>
+		</developer>
 	</developers>
-	
+
 	<contributors>
 	</contributors>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -189,4 +189,35 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
