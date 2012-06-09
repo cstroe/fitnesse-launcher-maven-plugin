@@ -152,47 +152,22 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.googlecode.maven-gcu-plugin</groupId>
-				<artifactId>maven-gcu-plugin</artifactId>
-				<version>1.1</version>
+				<groupId>org.riedelcastro</groupId>
+				<artifactId>gcupload-maven-plugin</artifactId>
+				<version>0.9</version>
 				<configuration>
-					<serverId>google-code</serverId>
-					<failsOnError>true</failsOnError>
+				    <allowSnapshots>true</allowSnapshots>
 					<uploads>
 						<upload>
-							<file>${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}</file>
+							<extensions>war</extensions>
+							<labels>Type-Source,Featured</labels>
 							<summary>${project.name} ${project.version} .war deployable</summary>
-							<labels>
-								<label>Featured</label>
-								<label>Type-Archive</label>
-							</labels>
 						</upload>
 						<upload>
-							<file>${project.build.directory}/${project.artifactId}-${project.version}-src.zip</file>
+							<postfix>src</postfix>
+							<extensions>zip,tar.gz,tar.bz2</extensions>
+							<labels>Type-Source,Featured</labels>
 							<summary>${project.name} ${project.version} project source</summary>
-							<labels>
-								<label>Featured</label>
-								<label>Type-Source</label>
-								<label>Type-Docs</label>
-							</labels>
-						</upload>
-						<upload>
-							<file>${project.build.directory}/${project.artifactId}-${project.version}-src.tar.gz</file>
-							<summary>${project.name} ${project.version} project source</summary>
-							<labels>
-								<label>Featured</label>
-								<label>Type-Source</label>
-								<label>Type-Docs</label>
-							</labels>
-						</upload>
-						<upload>
-							<file>${project.build.directory}/${project.artifactId}-${project.version}-src.tar.bz2</file>
-							<summary>${project.name} ${project.version} project source</summary>
-							<labels>
-								<label>Featured</label>
-								<label>Type-Source</label>
-								<label>Type-Docs</label>
-							</labels>
 						</upload>
 					</uploads>
 				</configuration>
@@ -341,4 +316,10 @@
 		</profile>
 	</profiles>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repository.riedelcastro.org</id>
+			<url>http://repository.riedelcastro.org</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
