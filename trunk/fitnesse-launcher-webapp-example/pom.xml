@@ -152,24 +152,19 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.riedelcastro</groupId>
-				<artifactId>gcupload-maven-plugin</artifactId>
-				<version>0.9</version>
+				<groupId>googlecode.maven.plugin</groupId>
+				<artifactId>maven-googlecode-plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 				<configuration>
-				    <allowSnapshots>true</allowSnapshots>
-					<uploads>
-						<upload>
-							<extensions>war</extensions>
-							<labels>Type-Source,Featured</labels>
-							<summary>${project.name} ${project.version} .war deployable</summary>
-						</upload>
-						<upload>
-							<postfix>src</postfix>
-							<extensions>zip,tar.gz,tar.bz2</extensions>
-							<labels>Type-Source,Featured</labels>
-							<summary>${project.name} ${project.version} project source</summary>
-						</upload>
-					</uploads>
+					<site>
+						<id>google-code</id>
+						<url>http://uploads.code.google.com/upload/fitnesse-launcher-maven-plugin</url>
+					</site>
+					<summary>${project.name} ${project.version} .war deployable</summary>
+					<labels>
+						<label>Featured</label>
+						<label>Type-Source</label>
+					</labels>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -318,8 +313,8 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>repository.riedelcastro.org</id>
-			<url>http://repository.riedelcastro.org</url>
+			<id>maven-googlecode-plugin</id>
+			<url>http://maven-googlecode-plugin.googlecode.com/svn/maven2</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>
