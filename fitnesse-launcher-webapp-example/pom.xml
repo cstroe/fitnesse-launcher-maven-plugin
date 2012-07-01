@@ -152,19 +152,59 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>googlecode.maven.plugin</groupId>
-				<artifactId>maven-googlecode-plugin</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+				    <execution>
+				        <phase>deploy</phase>
+				        <goals>
+				            <goal>run</goal>
+				        </goals>
+				        <configuration>
+				            <target>
+				                <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpath="maven.plugin.classpath" name="gcupload"/>
+				                <!-- ${gc.username} and ${gc.password} should be set in settings.xml thus:
+                                	<profiles>
+                                    	<profile>
+									    	<id>gcupload</id>
+											<properties>
+												<gc.username>username</gc.username>
+												<gc.password>password</gc.password>
+											</properties>
+										</profile>
+                                    </profiles>
+                                    <activeProfiles>
+									    <activeProfile>gcupload</activeProfile>
+									</activeProfiles>
+				                 -->
+				                    
+                                <gcupload 
+                                        username="${gc.username}" 
+										password="${gc.password}" 
+										projectname="${project.name}" 
+										filename="${project.build.finalName}" 
+										targetfilename="${project.build.finalName}"
+										summary="${project.name} ${project.version} .war deployable"
+										labels="Featured, Type-Source" />
+				            </target>
+				        </configuration>
+				    </execution>
+				</executions>
+				<dependencies>
+				    <dependency>
+	                    <groupId>net.bluecow.googlecode</groupId>
+						<artifactId>ant-googlecode</artifactId>
+						<version>0.0.3-SNAPSHOT</version>
+				    </dependency>
+				</dependencies>
+			</plugin>
+            <plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
 				<configuration>
-					<site>
-						<id>google-code</id>
-						<url>http://uploads.code.google.com/upload/fitnesse-launcher-maven-plugin</url>
-					</site>
-					<summary>${project.name} ${project.version} .war deployable</summary>
-					<labels>
-						<label>Featured</label>
-						<label>Type-Source</label>
-					</labels>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>
