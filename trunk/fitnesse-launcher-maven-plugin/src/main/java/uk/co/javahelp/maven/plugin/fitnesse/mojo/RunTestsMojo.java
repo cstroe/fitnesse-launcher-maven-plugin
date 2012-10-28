@@ -27,6 +27,7 @@ import fitnesse.responders.run.TestSummary;
  * Intended to be bound to the 'integration-test' phase.
  *
  * @goal run-tests
+ * @phase integration-test
  * @requiresDependencyResolution runtime
  * @see fitnesse.junit.TestHelper
  */

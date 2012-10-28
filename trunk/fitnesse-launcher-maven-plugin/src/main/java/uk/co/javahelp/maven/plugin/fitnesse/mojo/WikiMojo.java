@@ -15,6 +15,7 @@ import fitnesse.socketservice.SocketService;
  * or send GET to http://localhost:&lt;port&gt;/?responder=shutdown.
  *
  * @goal wiki
+ * @phase integration-test
  * @requiresDependencyResolution runtime
  */
 public class WikiMojo extends AbstractFitNesseMojo {
