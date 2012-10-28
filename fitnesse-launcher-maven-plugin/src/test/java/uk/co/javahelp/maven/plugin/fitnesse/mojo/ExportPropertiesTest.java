@@ -33,7 +33,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 public class ExportPropertiesTest {
 
-	private AbstractMojo mojo;
+	private AbstractFitNesseMojo mojo;
 	
 	private ArtifactHandler artifactHandler;
 	
@@ -71,7 +71,7 @@ public class ExportPropertiesTest {
         Build build = new Build();
         build.addPlugin(plugin);
         
-		mojo = new AbstractMojo() {
+		mojo = new AbstractFitNesseMojo() {
 			@Override
 			protected void executeInternal() { }
 		};

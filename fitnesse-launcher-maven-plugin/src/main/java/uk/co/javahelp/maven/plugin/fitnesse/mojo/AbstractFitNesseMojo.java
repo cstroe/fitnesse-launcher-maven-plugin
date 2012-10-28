@@ -21,7 +21,7 @@ import org.apache.maven.project.MavenProject;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
-public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo {
+public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.AbstractMojo {
 
     /**
      * Used to look up Artifacts in the remote repository.

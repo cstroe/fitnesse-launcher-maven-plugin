@@ -17,7 +17,7 @@ import fitnesse.socketservice.SocketService;
  * @goal wiki
  * @requiresDependencyResolution runtime
  */
-public class WikiMojo extends AbstractMojo {
+public class WikiMojo extends AbstractFitNesseMojo {
 	
 	private static final String FITNESSE_SOCKET_SERVICE = SocketService.class.getName();
 
