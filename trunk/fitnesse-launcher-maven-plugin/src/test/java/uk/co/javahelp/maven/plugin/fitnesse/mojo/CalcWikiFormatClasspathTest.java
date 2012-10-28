@@ -41,7 +41,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 public class CalcWikiFormatClasspathTest {
 
-	private AbstractMojo mojo;
+	private AbstractFitNesseMojo mojo;
 	
 	private ArtifactHandler artifactHandler;
 	
@@ -74,7 +74,7 @@ public class CalcWikiFormatClasspathTest {
         Build build = new Build();
         build.addPlugin(plugin);
         
-		mojo = new AbstractMojo() {
+		mojo = new AbstractFitNesseMojo() {
 			@Override
 			protected void executeInternal() { }
 		};

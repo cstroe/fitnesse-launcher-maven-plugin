@@ -30,7 +30,7 @@ import fitnesse.responders.run.TestSummary;
  * @requiresDependencyResolution runtime
  * @see fitnesse.junit.TestHelper
  */
-public class RunTestsMojo extends AbstractMojo implements SurefireReportParameters {
+public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReportParameters {
 
 	@Override
     public void executeInternal() throws MojoExecutionException, MojoFailureException {
