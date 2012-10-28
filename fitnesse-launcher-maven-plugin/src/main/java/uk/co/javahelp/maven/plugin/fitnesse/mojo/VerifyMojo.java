@@ -18,6 +18,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * Will fail the build if there are test failures.
  *
  * @goal verify
+ * @phase verify
  */
 public class VerifyMojo extends RunTestsMojo {
 
