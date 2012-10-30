@@ -13,7 +13,9 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -23,6 +25,23 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.AbstractMojo {
 
+    /**
+     * The Maven Session Object
+     *
+     * @parameter expression="${session}"
+     * @required
+     * @readonly
+     */
+    protected MavenSession session;
+
+    /**
+     * The Maven BuildPluginManager Object
+     *
+     * @component
+     * @required
+     */
+    protected BuildPluginManager pluginManager;
+    
     /**
      * Used to look up Artifacts in the remote repository.
      * 
@@ -195,7 +214,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         final Set<Artifact> artifacts = new HashSet<Artifact>();
         
         // We should always have FitNesse itself on the FitNesse classpath!
-       	artifacts.addAll(resolveDependencyKey("org.fitnesse:fitnesse"));
+       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey));
                 
         final List<Dependency> dependecies = 
             this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey()).getDependencies();
