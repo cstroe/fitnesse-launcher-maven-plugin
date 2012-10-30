@@ -32,96 +32,8 @@
 		<skipTests>true</skipTests>
 	</properties>
 
-	<!-- TODO: This configuration is clumsey, error-prone, and should be unnecessary. 
-		Much of it is devoted simply to fetching and unpacking FitNesse into a correct 
-		working directory structure, and cleaning up again afterwards. It would be 
-		much easier for end users if the fitnesse-launcher-maven-plugin did this 
-		for us. -->
-
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>uk.co.javahelp.fitnesse</groupId>
-					<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-                	<version>1.1.0-SNAPSHOT</version>
-					<configuration>
-						<port>${fitnesse.port}</port>
-						<workingDir>${fitnesse.working}</workingDir>
-						<root>${fitnesse.root}</root>
-						<createSymLink>true</createSymLink>
-						<suite>WebappExample</suite>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>com.xebia.incubator</groupId>
-							<artifactId>xebium</artifactId>
-							<version>0.6</version>
-						</dependency>
-						<dependency>
-							<groupId>org.slf4j</groupId>
-							<artifactId>slf4j-simple</artifactId>
-							<version>1.6.4</version>
-						</dependency>
-					</dependencies>
-					<executions>
-						<execution>
-							<goals>
-								<goal>pre-clean</goal>
-								<goal>post-clean</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.fitnesse</groupId>
-									<artifactId>fitnesse</artifactId>
-									<version>20111025</version>
-									<type>jar</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>${fitnesse.working}</outputDirectory>
-									<includes>Resources/FitNesseRoot/**</includes>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<tasks>
-								<move file="${fitnesse.working}/Resources/FitNesseRoot"
-									todir="${fitnesse.working}" failonerror="false" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.3</version>
@@ -139,6 +51,30 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>uk.co.javahelp.fitnesse</groupId>
+				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+               	<version>1.1.0-SNAPSHOT</version>
+				<configuration>
+					<port>${fitnesse.port}</port>
+					<workingDir>${fitnesse.working}</workingDir>
+					<root>${fitnesse.root}</root>
+					<createSymLink>true</createSymLink>
+					<suite>WebappExample</suite>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.xebia.incubator</groupId>
+						<artifactId>xebium</artifactId>
+						<version>0.6</version>
+					</dependency>
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-simple</artifactId>
+						<version>1.6.4</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
@@ -178,6 +114,7 @@
 						<executions>
 							<execution>
 								<goals>
+							        <goal>set-up</goal>
 									<goal>wiki</goal>
 								</goals>
 							</execution>
@@ -213,7 +150,9 @@
 						<executions>
 							<execution>
 								<goals>
+							        <goal>set-up</goal>
 									<goal>run-tests</goal>
+							        <goal>tear-down</goal>
 									<goal>verify</goal>
 								</goals>
 							</execution>
