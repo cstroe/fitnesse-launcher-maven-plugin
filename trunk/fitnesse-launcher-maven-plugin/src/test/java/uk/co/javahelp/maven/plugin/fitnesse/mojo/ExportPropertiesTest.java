@@ -49,6 +49,9 @@ public class ExportPropertiesTest {
 	
 	@Before
 	public void setUp() {
+		System.clearProperty("username");
+		System.clearProperty("password");
+		
 		artifactHandler = mock(ArtifactHandler.class);
 		artifactResolver = mock(ArtifactResolver.class);
 		
