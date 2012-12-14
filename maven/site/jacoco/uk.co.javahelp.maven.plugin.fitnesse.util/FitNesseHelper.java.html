@@ -34,18 +34,18 @@ public class FitNesseHelper {
 
 	public void launchFitNesseServer(
     		final String port, final String workingDir, final String root, final String logDir) throws Exception {
-<span class="nc" id="L37">        final Arguments arguments = new Arguments();</span>
-<span class="nc" id="L38">        arguments.setCommand(null);</span>
-<span class="nc" id="L39">        arguments.setInstallOnly(false);</span>
-<span class="nc" id="L40">        arguments.setOmitUpdates(true);</span>
-<span class="nc" id="L41">        arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
-<span class="nc" id="L42">        arguments.setPort(port);</span>
-<span class="nc" id="L43">        arguments.setRootPath(workingDir);</span>
-<span class="nc" id="L44">        arguments.setRootDirectory(root);</span>
-<span class="nc bnc" id="L45" title="All 4 branches missed.">        if(logDir != null &amp;&amp; !logDir.trim().equals(&quot;&quot;))</span>
-<span class="nc" id="L46">            arguments.setLogDirectory(logDir);</span>
-<span class="nc" id="L47">        FitNesseMain.launchFitNesse(arguments);</span>
-<span class="nc" id="L48">    }</span>
+<span class="fc" id="L37">        final Arguments arguments = new Arguments();</span>
+<span class="fc" id="L38">        arguments.setCommand(null);</span>
+<span class="fc" id="L39">        arguments.setInstallOnly(false);</span>
+<span class="fc" id="L40">        arguments.setOmitUpdates(true);</span>
+<span class="fc" id="L41">        arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
+<span class="fc" id="L42">        arguments.setPort(port);</span>
+<span class="fc" id="L43">        arguments.setRootPath(workingDir);</span>
+<span class="fc" id="L44">        arguments.setRootDirectory(root);</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">        if(logDir != null &amp;&amp; !logDir.trim().equals(&quot;&quot;))</span>
+<span class="fc" id="L46">            arguments.setLogDirectory(logDir);</span>
+<span class="fc" id="L47">        FitNesseMain.launchFitNesse(arguments);</span>
+<span class="fc" id="L48">    }</span>
 
 	public void shutdownFitNesseServer(final String port) {
         try {
@@ -56,8 +56,8 @@ public class FitNesseHelper {
 <span class="pc bpc" id="L56" title="1 of 2 branches missed.">			if(!e.getMessage().startsWith(&quot;Connection refused&quot;)) {</span>
 <span class="nc" id="L57">               	this.log.error(e);</span>
 			}
-<span class="nc" id="L59">		} catch (Exception e) {</span>
-<span class="nc" id="L60">           	this.log.error(e);</span>
+<span class="fc" id="L59">		} catch (Exception e) {</span>
+<span class="fc" id="L60">           	this.log.error(e);</span>
 <span class="fc" id="L61">		}</span>
 <span class="fc" id="L62">    }</span>
 
@@ -85,8 +85,8 @@ public class FitNesseHelper {
 <span class="fc" id="L85">            this.log.info(&quot;Response code: &quot; + responseCode);</span>
 <span class="fc" id="L86">            return responseCode;</span>
         } finally {
-<span class="pc bpc" id="L88" title="3 of 4 branches missed.">            if(connection != null) {</span>
-<span class="pc" id="L89">                connection.disconnect();</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">            if(connection != null) {</span>
+<span class="fc" id="L89">                connection.disconnect();</span>
             }
         }
     }
@@ -123,7 +123,7 @@ public class FitNesseHelper {
     }
 
     private static boolean isBlank(final String string) {
-<span class="pc bpc" id="L126" title="1 of 4 branches missed.">        return string == null || string.trim().equals(&quot;&quot;);</span>
+<span class="fc bfc" id="L126" title="All 4 branches covered.">        return string == null || string.trim().equals(&quot;&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>
