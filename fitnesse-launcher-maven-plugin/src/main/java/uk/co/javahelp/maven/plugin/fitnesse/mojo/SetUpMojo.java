@@ -63,7 +63,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * }
 	 * </pre>
 	 */
-    private void clean() throws MojoExecutionException {
+    void clean() throws MojoExecutionException {
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-clean-plugin"),
 		    goal("clean"),
@@ -115,7 +115,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * }
 	 * </pre>
      */
-    private void unpack() throws MojoExecutionException {
+    void unpack() throws MojoExecutionException {
        	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-dependency-plugin"),
@@ -159,7 +159,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * }
 	 * </pre>
 	 */
-    private void move() throws MojoExecutionException {
+    void move() throws MojoExecutionException {
         final Xpp3Dom config = configuration(
         	element("target",
             	element("move")));
