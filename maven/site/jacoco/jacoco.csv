@@ -1,0 +1,14 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,FitNesse,3,0,0,0,1,0,1,0,1,0
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,TearDownMojo,52,0,0,0,3,0,2,0,2,0
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,WikiMojo,6,167,2,10,2,32,2,9,0,5
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,ShutdownMojo,0,20,0,0,0,5,0,2,0,2
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,AbstractFitNesseMojo,17,301,5,23,6,52,6,15,1,6
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,AbstractSetupsMojo,28,0,0,0,7,0,2,0,2,0
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,VerifyMojo,8,50,0,0,2,13,0,4,0,4
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,SetUpMojo,240,0,0,0,17,0,5,0,5,0
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,HelpMojo,1763,0,94,0,346,0,54,0,7,0
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,RunTestsMojo,46,168,1,3,19,31,14,7,13,6
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.responders.run,DelegatingResultsListener,107,72,10,6,15,12,10,7,5,4
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.util,FitNesseHelper,54,231,9,21,15,43,7,17,1,8
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.util,Interrupter,1,22,0,2,1,9,0,3,0,2

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HelpMojo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.mojo</a> &gt; <span class="el_source">HelpMojo.java</span></div><h1>HelpMojo.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.mojo;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+
+/**
+ * Display help information on fitnesse-launcher-maven-plugin.&lt;br/&gt; Call &lt;pre&gt;  mvn fitnesse:help -Ddetail=true -Dgoal=&amp;lt;goal-name&amp;gt;&lt;/pre&gt; to display parameter details.
+ *
+ * @version generated on Fri Dec 14 02:52:04 GMT 2012
+ * @author org.apache.maven.tools.plugin.generator.PluginHelpGenerator (version 2.9)
+ * @goal help
+ * @requiresProject false
+ * @threadSafe
+ */
+<span class="nc" id="L19">public class HelpMojo</span>
+    extends AbstractMojo
+{
+    /**
+     * If &lt;code&gt;true&lt;/code&gt;, display all settable properties for each goal.
+     * 
+     * @parameter expression=&quot;${detail}&quot; default-value=&quot;false&quot;
+     */
+    private boolean detail;
+
+    /**
+     * The name of the goal for which to show help. If unspecified, all goals will be displayed.
+     * 
+     * @parameter expression=&quot;${goal}&quot;
+     */
+    private java.lang.String goal;
+
+    /**
+     * The maximum length of a display line, should be positive.
+     * 
+     * @parameter expression=&quot;${lineLength}&quot; default-value=&quot;80&quot;
+     */
+    private int lineLength;
+
+    /**
+     * The number of spaces per indentation level, should be positive.
+     * 
+     * @parameter expression=&quot;${indentSize}&quot; default-value=&quot;2&quot;
+     */
+    private int indentSize;
+
+
+    /** {@inheritDoc} */
+    public void execute()
+        throws MojoExecutionException
+    {
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if ( lineLength &lt;= 0 )</span>
+        {
+<span class="nc" id="L57">            getLog().warn( &quot;The parameter 'lineLength' should be positive, using '80' as default.&quot; );</span>
+<span class="nc" id="L58">            lineLength = 80;</span>
+        }
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if ( indentSize &lt;= 0 )</span>
+        {
+<span class="nc" id="L62">            getLog().warn( &quot;The parameter 'indentSize' should be positive, using '2' as default.&quot; );</span>
+<span class="nc" id="L63">            indentSize = 2;</span>
+        }
+
+<span class="nc" id="L66">        StringBuffer sb = new StringBuffer();</span>
+
+<span class="nc" id="L68">        append( sb, &quot;uk.co.javahelp.fitnesse:fitnesse-launcher-maven-plugin:1.1.0-SNAPSHOT&quot;, 0 );</span>
+<span class="nc" id="L69">        append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L71">        append( sb, &quot;FitNesse Launcher Plugin&quot;, 0 );</span>
+<span class="nc" id="L72">        append( sb, &quot;Provides ability to launch FitNesse as a wiki server, or automatically run FitNesse tests as part of a standard integration-test / verify build. Allows configuration of FitNesse\'s classpath through plugin dependencies, and injects all Maven project properties as FitNesse variables, ( which can be overridden from the command line using \'-D\' ).&quot;, 1 );</span>
+<span class="nc" id="L73">        append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc bnc" id="L75" title="All 4 branches missed.">        if ( goal == null || goal.length() &lt;= 0 )</span>
+        {
+<span class="nc" id="L77">            append( sb, &quot;This plugin has 7 goals:&quot;, 0 );</span>
+<span class="nc" id="L78">            append( sb, &quot;&quot;, 0 );</span>
+        }
+
+<span class="nc bnc" id="L81" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;help&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L83">            append( sb, &quot;fitnesse:help&quot;, 0 );</span>
+<span class="nc" id="L84">            append( sb, &quot;Display help information on fitnesse-launcher-maven-plugin.\nCall\n\u00a0\u00a0mvn\u00a0fitnesse:help\u00a0-Ddetail=true\u00a0-Dgoal=&lt;goal-name&gt;\nto display parameter details.&quot;, 1 );</span>
+<span class="nc" id="L85">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L88">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L89">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L91">                append( sb, &quot;detail (Default: false)&quot;, 2 );</span>
+<span class="nc" id="L92">                append( sb, &quot;If true, display all settable properties for each goal.&quot;, 3 );</span>
+<span class="nc" id="L93">                append( sb, &quot;Expression: ${detail}&quot;, 3 );</span>
+<span class="nc" id="L94">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L96">                append( sb, &quot;goal&quot;, 2 );</span>
+<span class="nc" id="L97">                append( sb, &quot;The name of the goal for which to show help. If unspecified, all goals will be displayed.&quot;, 3 );</span>
+<span class="nc" id="L98">                append( sb, &quot;Expression: ${goal}&quot;, 3 );</span>
+<span class="nc" id="L99">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L101">                append( sb, &quot;indentSize (Default: 2)&quot;, 2 );</span>
+<span class="nc" id="L102">                append( sb, &quot;The number of spaces per indentation level, should be positive.&quot;, 3 );</span>
+<span class="nc" id="L103">                append( sb, &quot;Expression: ${indentSize}&quot;, 3 );</span>
+<span class="nc" id="L104">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L106">                append( sb, &quot;lineLength (Default: 80)&quot;, 2 );</span>
+<span class="nc" id="L107">                append( sb, &quot;The maximum length of a display line, should be positive.&quot;, 3 );</span>
+<span class="nc" id="L108">                append( sb, &quot;Expression: ${lineLength}&quot;, 3 );</span>
+<span class="nc" id="L109">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L113" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;run-tests&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L115">            append( sb, &quot;fitnesse:run-tests&quot;, 0 );</span>
+<span class="nc" id="L116">            append( sb, &quot;Goal that runs FitNesse tests using fitnesse.junit.TestHelper. Intended to be bound to the \'integration-test\' phase.&quot;, 1 );</span>
+<span class="nc" id="L117">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L120">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L121">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L123">                append( sb, &quot;createSymLink&quot;, 2 );</span>
+<span class="nc" id="L124">                append( sb, &quot;fitnesse-launcher-maven-plugin unpacks a fresh copy of FitNesse under /target; Only your project specific FitNesse tests need go under src/test/fitnesse. By setting \'createSymLink\' to \'true\', fitnesse-launcher-maven-plugin will create a FitNesse SymLink directly to your test suite under src/test/fitnesse. This is most useful when developing tests in \'wiki\' mode, as then you can directly scm commit your changes. If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse, let \'createSymLink\' be \'false\'.&quot;, 3 );</span>
+<span class="nc" id="L125">                append( sb, &quot;Expression: ${fitnesse.createSymLink}&quot;, 3 );</span>
+<span class="nc" id="L126">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L128">                append( sb, &quot;excludeSuiteFilter&quot;, 2 );</span>
+<span class="nc" id="L129">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L130">                append( sb, &quot;Expression: ${fitnesse.excludeSuiteFilter}&quot;, 3 );</span>
+<span class="nc" id="L131">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L133">                append( sb, &quot;logDir&quot;, 2 );</span>
+<span class="nc" id="L134">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L135">                append( sb, &quot;Expression: ${fitnesse.logDir}&quot;, 3 );</span>
+<span class="nc" id="L136">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L138">                append( sb, &quot;pluginDescriptor&quot;, 2 );</span>
+<span class="nc" id="L139">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L140">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L141">                append( sb, &quot;Expression: ${plugin}&quot;, 3 );</span>
+<span class="nc" id="L142">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L144">                append( sb, &quot;port (Default: 9123)&quot;, 2 );</span>
+<span class="nc" id="L145">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L146">                append( sb, &quot;Expression: ${fitnesse.port}&quot;, 3 );</span>
+<span class="nc" id="L147">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L149">                append( sb, &quot;project&quot;, 2 );</span>
+<span class="nc" id="L150">                append( sb, &quot;Maven project, to be injected by Maven itself.&quot;, 3 );</span>
+<span class="nc" id="L151">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L152">                append( sb, &quot;Expression: ${project}&quot;, 3 );</span>
+<span class="nc" id="L153">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L155">                append( sb, &quot;reportsDir (Default: ${fitnesse.working}/reports)&quot;, 2 );</span>
+<span class="nc" id="L156">                append( sb, &quot;This is where build results go.&quot;, 3 );</span>
+<span class="nc" id="L157">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L158">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L160">                append( sb, &quot;resultsDir (Default: ${fitnesse.working}/results)&quot;, 2 );</span>
+<span class="nc" id="L161">                append( sb, &quot;This is where build results go.&quot;, 3 );</span>
+<span class="nc" id="L162">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L163">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L165">                append( sb, &quot;root (Default: FitNesseRoot)&quot;, 2 );</span>
+<span class="nc" id="L166">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L167">                append( sb, &quot;Expression: ${fitnesse.root}&quot;, 3 );</span>
+<span class="nc" id="L168">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L170">                append( sb, &quot;suite&quot;, 2 );</span>
+<span class="nc" id="L171">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L172">                append( sb, &quot;Expression: ${fitnesse.suite}&quot;, 3 );</span>
+<span class="nc" id="L173">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L175">                append( sb, &quot;suiteFilter&quot;, 2 );</span>
+<span class="nc" id="L176">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L177">                append( sb, &quot;Expression: ${fitnesse.suiteFilter}&quot;, 3 );</span>
+<span class="nc" id="L178">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L180">                append( sb, &quot;summaryFile&quot;, 2 );</span>
+<span class="nc" id="L181">                append( sb, &quot;The summary file to write integration test results to.&quot;, 3 );</span>
+<span class="nc" id="L182">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L183">                append( sb, &quot;Expression: ${fitnesse.working}/results/failsafe-summary.xml&quot;, 3 );</span>
+<span class="nc" id="L184">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L186">                append( sb, &quot;test&quot;, 2 );</span>
+<span class="nc" id="L187">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L188">                append( sb, &quot;Expression: ${fitnesse.test}&quot;, 3 );</span>
+<span class="nc" id="L189">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L191">                append( sb, &quot;testResourceDirectory (Default: src/test/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L192">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L193">                append( sb, &quot;Expression: ${fitnesse.test.resource.directory}&quot;, 3 );</span>
+<span class="nc" id="L194">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L196">                append( sb, &quot;workingDir (Default: ${project.build.directory}/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L197">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L198">                append( sb, &quot;Expression: ${fitnesse.working}&quot;, 3 );</span>
+<span class="nc" id="L199">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L203" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;set-up&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L205">            append( sb, &quot;fitnesse:set-up&quot;, 0 );</span>
+<span class="nc" id="L206">            append( sb, &quot;This Mojo is devoted simply to fetching and unpacking FitNesse into a correct working directory structure, and making sure everything is cleanly setup for running FitNesse.&quot;, 1 );</span>
+<span class="nc" id="L207">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L210">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L211">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L213">                append( sb, &quot;pluginDescriptor&quot;, 2 );</span>
+<span class="nc" id="L214">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L215">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L216">                append( sb, &quot;Expression: ${plugin}&quot;, 3 );</span>
+<span class="nc" id="L217">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L219">                append( sb, &quot;project&quot;, 2 );</span>
+<span class="nc" id="L220">                append( sb, &quot;Maven project, to be injected by Maven itself.&quot;, 3 );</span>
+<span class="nc" id="L221">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L222">                append( sb, &quot;Expression: ${project}&quot;, 3 );</span>
+<span class="nc" id="L223">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L225">                append( sb, &quot;workingDir (Default: ${project.build.directory}/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L226">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L227">                append( sb, &quot;Expression: ${fitnesse.working}&quot;, 3 );</span>
+<span class="nc" id="L228">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L232" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;shutdown&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L234">            append( sb, &quot;fitnesse:shutdown&quot;, 0 );</span>
+<span class="nc" id="L235">            append( sb, &quot;Goal that shuts down FitNesse. This is done by sending GET to http://localhost:&lt;port&gt;/?responder=shutdown.&quot;, 1 );</span>
+<span class="nc" id="L236">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L239">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L240">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L242">                append( sb, &quot;port (Default: 9123)&quot;, 2 );</span>
+<span class="nc" id="L243">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L244">                append( sb, &quot;Expression: ${fitnesse.port}&quot;, 3 );</span>
+<span class="nc" id="L245">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L249" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;tear-down&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L251">            append( sb, &quot;fitnesse:tear-down&quot;, 0 );</span>
+<span class="nc" id="L252">            append( sb, &quot;Cleanup debris after FitNesse runs. See PageInProgressFormatter and TestsInProgress, wherein they have hard-coded the directory where they track test progress.&quot;, 1 );</span>
+<span class="nc" id="L253">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L256">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L257">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L259">                append( sb, &quot;pluginDescriptor&quot;, 2 );</span>
+<span class="nc" id="L260">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L261">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L262">                append( sb, &quot;Expression: ${plugin}&quot;, 3 );</span>
+<span class="nc" id="L263">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L265">                append( sb, &quot;project&quot;, 2 );</span>
+<span class="nc" id="L266">                append( sb, &quot;Maven project, to be injected by Maven itself.&quot;, 3 );</span>
+<span class="nc" id="L267">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L268">                append( sb, &quot;Expression: ${project}&quot;, 3 );</span>
+<span class="nc" id="L269">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L271">                append( sb, &quot;workingDir (Default: ${project.build.directory}/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L272">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L273">                append( sb, &quot;Expression: ${fitnesse.working}&quot;, 3 );</span>
+<span class="nc" id="L274">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L278" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;verify&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L280">            append( sb, &quot;fitnesse:verify&quot;, 0 );</span>
+<span class="nc" id="L281">            append( sb, &quot;Goal that provides summary report on FitNesse tests run with \'run-tests\' goal. Intended to be bound to the \'verify\' phase. Will fail the build if there are test failures.&quot;, 1 );</span>
+<span class="nc" id="L282">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L285">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L286">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L288">                append( sb, &quot;createSymLink&quot;, 2 );</span>
+<span class="nc" id="L289">                append( sb, &quot;fitnesse-launcher-maven-plugin unpacks a fresh copy of FitNesse under /target; Only your project specific FitNesse tests need go under src/test/fitnesse. By setting \'createSymLink\' to \'true\', fitnesse-launcher-maven-plugin will create a FitNesse SymLink directly to your test suite under src/test/fitnesse. This is most useful when developing tests in \'wiki\' mode, as then you can directly scm commit your changes. If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse, let \'createSymLink\' be \'false\'.&quot;, 3 );</span>
+<span class="nc" id="L290">                append( sb, &quot;Expression: ${fitnesse.createSymLink}&quot;, 3 );</span>
+<span class="nc" id="L291">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L293">                append( sb, &quot;excludeSuiteFilter&quot;, 2 );</span>
+<span class="nc" id="L294">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L295">                append( sb, &quot;Expression: ${fitnesse.excludeSuiteFilter}&quot;, 3 );</span>
+<span class="nc" id="L296">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L298">                append( sb, &quot;logDir&quot;, 2 );</span>
+<span class="nc" id="L299">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L300">                append( sb, &quot;Expression: ${fitnesse.logDir}&quot;, 3 );</span>
+<span class="nc" id="L301">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L303">                append( sb, &quot;pluginDescriptor&quot;, 2 );</span>
+<span class="nc" id="L304">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L305">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L306">                append( sb, &quot;Expression: ${plugin}&quot;, 3 );</span>
+<span class="nc" id="L307">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L309">                append( sb, &quot;port (Default: 9123)&quot;, 2 );</span>
+<span class="nc" id="L310">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L311">                append( sb, &quot;Expression: ${fitnesse.port}&quot;, 3 );</span>
+<span class="nc" id="L312">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L314">                append( sb, &quot;project&quot;, 2 );</span>
+<span class="nc" id="L315">                append( sb, &quot;Maven project, to be injected by Maven itself.&quot;, 3 );</span>
+<span class="nc" id="L316">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L317">                append( sb, &quot;Expression: ${project}&quot;, 3 );</span>
+<span class="nc" id="L318">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L320">                append( sb, &quot;reportsDir (Default: ${fitnesse.working}/reports)&quot;, 2 );</span>
+<span class="nc" id="L321">                append( sb, &quot;This is where build results go.&quot;, 3 );</span>
+<span class="nc" id="L322">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L323">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L325">                append( sb, &quot;resultsDir (Default: ${fitnesse.working}/results)&quot;, 2 );</span>
+<span class="nc" id="L326">                append( sb, &quot;This is where build results go.&quot;, 3 );</span>
+<span class="nc" id="L327">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L328">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L330">                append( sb, &quot;root (Default: FitNesseRoot)&quot;, 2 );</span>
+<span class="nc" id="L331">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L332">                append( sb, &quot;Expression: ${fitnesse.root}&quot;, 3 );</span>
+<span class="nc" id="L333">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L335">                append( sb, &quot;suite&quot;, 2 );</span>
+<span class="nc" id="L336">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L337">                append( sb, &quot;Expression: ${fitnesse.suite}&quot;, 3 );</span>
+<span class="nc" id="L338">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L340">                append( sb, &quot;suiteFilter&quot;, 2 );</span>
+<span class="nc" id="L341">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L342">                append( sb, &quot;Expression: ${fitnesse.suiteFilter}&quot;, 3 );</span>
+<span class="nc" id="L343">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L345">                append( sb, &quot;summaryFile&quot;, 2 );</span>
+<span class="nc" id="L346">                append( sb, &quot;The summary file to write integration test results to.&quot;, 3 );</span>
+<span class="nc" id="L347">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L348">                append( sb, &quot;Expression: ${fitnesse.working}/results/failsafe-summary.xml&quot;, 3 );</span>
+<span class="nc" id="L349">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L351">                append( sb, &quot;test&quot;, 2 );</span>
+<span class="nc" id="L352">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L353">                append( sb, &quot;Expression: ${fitnesse.test}&quot;, 3 );</span>
+<span class="nc" id="L354">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L356">                append( sb, &quot;testResourceDirectory (Default: src/test/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L357">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L358">                append( sb, &quot;Expression: ${fitnesse.test.resource.directory}&quot;, 3 );</span>
+<span class="nc" id="L359">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L361">                append( sb, &quot;workingDir (Default: ${project.build.directory}/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L362">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L363">                append( sb, &quot;Expression: ${fitnesse.working}&quot;, 3 );</span>
+<span class="nc" id="L364">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L368" title="All 6 branches missed.">        if ( goal == null || goal.length() &lt;= 0 || &quot;wiki&quot;.equals( goal ) )</span>
+        {
+<span class="nc" id="L370">            append( sb, &quot;fitnesse:wiki&quot;, 0 );</span>
+<span class="nc" id="L371">            append( sb, &quot;Goal that launches FitNesse as a wiki server. Useful for manually running / developing / debugging FitNesse tests. Once launched, just visit http://localhost:&lt;port&gt;/&lt;suite&gt;. Use the \'shutdown\' goal (from a different command line), or Ctrl+C to shutdown, or send GET to http://localhost:&lt;port&gt;/?responder=shutdown.&quot;, 1 );</span>
+<span class="nc" id="L372">            append( sb, &quot;&quot;, 0 );</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">            if ( detail )</span>
+            {
+<span class="nc" id="L375">                append( sb, &quot;Available parameters:&quot;, 1 );</span>
+<span class="nc" id="L376">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L378">                append( sb, &quot;createSymLink&quot;, 2 );</span>
+<span class="nc" id="L379">                append( sb, &quot;fitnesse-launcher-maven-plugin unpacks a fresh copy of FitNesse under /target; Only your project specific FitNesse tests need go under src/test/fitnesse. By setting \'createSymLink\' to \'true\', fitnesse-launcher-maven-plugin will create a FitNesse SymLink directly to your test suite under src/test/fitnesse. This is most useful when developing tests in \'wiki\' mode, as then you can directly scm commit your changes. If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse, let \'createSymLink\' be \'false\'.&quot;, 3 );</span>
+<span class="nc" id="L380">                append( sb, &quot;Expression: ${fitnesse.createSymLink}&quot;, 3 );</span>
+<span class="nc" id="L381">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L383">                append( sb, &quot;excludeSuiteFilter&quot;, 2 );</span>
+<span class="nc" id="L384">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L385">                append( sb, &quot;Expression: ${fitnesse.excludeSuiteFilter}&quot;, 3 );</span>
+<span class="nc" id="L386">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L388">                append( sb, &quot;logDir&quot;, 2 );</span>
+<span class="nc" id="L389">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L390">                append( sb, &quot;Expression: ${fitnesse.logDir}&quot;, 3 );</span>
+<span class="nc" id="L391">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L393">                append( sb, &quot;pluginDescriptor&quot;, 2 );</span>
+<span class="nc" id="L394">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L395">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L396">                append( sb, &quot;Expression: ${plugin}&quot;, 3 );</span>
+<span class="nc" id="L397">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L399">                append( sb, &quot;port (Default: 9123)&quot;, 2 );</span>
+<span class="nc" id="L400">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L401">                append( sb, &quot;Expression: ${fitnesse.port}&quot;, 3 );</span>
+<span class="nc" id="L402">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L404">                append( sb, &quot;project&quot;, 2 );</span>
+<span class="nc" id="L405">                append( sb, &quot;Maven project, to be injected by Maven itself.&quot;, 3 );</span>
+<span class="nc" id="L406">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L407">                append( sb, &quot;Expression: ${project}&quot;, 3 );</span>
+<span class="nc" id="L408">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L410">                append( sb, &quot;reportsDir (Default: ${fitnesse.working}/reports)&quot;, 2 );</span>
+<span class="nc" id="L411">                append( sb, &quot;This is where build results go.&quot;, 3 );</span>
+<span class="nc" id="L412">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L413">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L415">                append( sb, &quot;resultsDir (Default: ${fitnesse.working}/results)&quot;, 2 );</span>
+<span class="nc" id="L416">                append( sb, &quot;This is where build results go.&quot;, 3 );</span>
+<span class="nc" id="L417">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L418">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L420">                append( sb, &quot;root (Default: FitNesseRoot)&quot;, 2 );</span>
+<span class="nc" id="L421">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L422">                append( sb, &quot;Expression: ${fitnesse.root}&quot;, 3 );</span>
+<span class="nc" id="L423">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L425">                append( sb, &quot;suite&quot;, 2 );</span>
+<span class="nc" id="L426">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L427">                append( sb, &quot;Expression: ${fitnesse.suite}&quot;, 3 );</span>
+<span class="nc" id="L428">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L430">                append( sb, &quot;suiteFilter&quot;, 2 );</span>
+<span class="nc" id="L431">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L432">                append( sb, &quot;Expression: ${fitnesse.suiteFilter}&quot;, 3 );</span>
+<span class="nc" id="L433">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L435">                append( sb, &quot;summaryFile&quot;, 2 );</span>
+<span class="nc" id="L436">                append( sb, &quot;The summary file to write integration test results to.&quot;, 3 );</span>
+<span class="nc" id="L437">                append( sb, &quot;Required: Yes&quot;, 3 );</span>
+<span class="nc" id="L438">                append( sb, &quot;Expression: ${fitnesse.working}/results/failsafe-summary.xml&quot;, 3 );</span>
+<span class="nc" id="L439">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L441">                append( sb, &quot;test&quot;, 2 );</span>
+<span class="nc" id="L442">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L443">                append( sb, &quot;Expression: ${fitnesse.test}&quot;, 3 );</span>
+<span class="nc" id="L444">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L446">                append( sb, &quot;testResourceDirectory (Default: src/test/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L447">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L448">                append( sb, &quot;Expression: ${fitnesse.test.resource.directory}&quot;, 3 );</span>
+<span class="nc" id="L449">                append( sb, &quot;&quot;, 0 );</span>
+
+<span class="nc" id="L451">                append( sb, &quot;workingDir (Default: ${project.build.directory}/fitnesse)&quot;, 2 );</span>
+<span class="nc" id="L452">                append( sb, &quot;(no description available)&quot;, 3 );</span>
+<span class="nc" id="L453">                append( sb, &quot;Expression: ${fitnesse.working}&quot;, 3 );</span>
+<span class="nc" id="L454">                append( sb, &quot;&quot;, 0 );</span>
+            }
+        }
+
+<span class="nc bnc" id="L458" title="All 2 branches missed.">        if ( getLog().isInfoEnabled() )</span>
+        {
+<span class="nc" id="L460">            getLog().info( sb.toString() );</span>
+        }
+<span class="nc" id="L462">    }</span>
+
+    /**
+     * &lt;p&gt;Repeat a String &lt;code&gt;n&lt;/code&gt; times to form a new string.&lt;/p&gt;
+     *
+     * @param str String to repeat
+     * @param repeat number of times to repeat str
+     * @return String with repeated String
+     * @throws NegativeArraySizeException if &lt;code&gt;repeat &lt; 0&lt;/code&gt;
+     * @throws NullPointerException if str is &lt;code&gt;null&lt;/code&gt;
+     */
+    private static String repeat( String str, int repeat )
+    {
+<span class="nc" id="L475">        StringBuffer buffer = new StringBuffer( repeat * str.length() );</span>
+
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        for ( int i = 0; i &lt; repeat; i++ )</span>
+        {
+<span class="nc" id="L479">            buffer.append( str );</span>
+        }
+
+<span class="nc" id="L482">        return buffer.toString();</span>
+    }
+
+    /** 
+     * Append a description to the buffer by respecting the indentSize and lineLength parameters.
+     * &lt;b&gt;Note&lt;/b&gt;: The last character is always a new line.
+     * 
+     * @param sb The buffer to append the description, not &lt;code&gt;null&lt;/code&gt;.
+     * @param description The description, not &lt;code&gt;null&lt;/code&gt;.
+     * @param indent The base indentation level of each line, must not be negative.
+     */
+    private void append( StringBuffer sb, String description, int indent )
+    {
+<span class="nc bnc" id="L495" title="All 2 branches missed.">        for ( Iterator it = toLines( description, indent, indentSize, lineLength ).iterator(); it.hasNext(); )</span>
+        {
+<span class="nc" id="L497">            sb.append( it.next().toString() ).append( '\n' );</span>
+        }
+<span class="nc" id="L499">    }</span>
+
+    /** 
+     * Splits the specified text into lines of convenient display length.
+     * 
+     * @param text The text to split into lines, must not be &lt;code&gt;null&lt;/code&gt;.
+     * @param indent The base indentation level of each line, must not be negative.
+     * @param indentSize The size of each indentation, must not be negative.
+     * @param lineLength The length of the line, must not be negative.
+     * @return The sequence of display lines, never &lt;code&gt;null&lt;/code&gt;.
+     * @throws NegativeArraySizeException if &lt;code&gt;indent &lt; 0&lt;/code&gt;
+     */
+    private static List toLines( String text, int indent, int indentSize, int lineLength )
+    {
+<span class="nc" id="L513">        List lines = new ArrayList();</span>
+
+<span class="nc" id="L515">        String ind = repeat( &quot;\t&quot;, indent );</span>
+<span class="nc" id="L516">        String[] plainLines = text.split( &quot;(\r\n)|(\r)|(\n)&quot; );</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">        for ( int i = 0; i &lt; plainLines.length; i++ )</span>
+        {
+<span class="nc" id="L519">            toLines( lines, ind + plainLines[i], indentSize, lineLength );</span>
+        }
+
+<span class="nc" id="L522">        return lines;</span>
+    }
+
+    /** 
+     * Adds the specified line to the output sequence, performing line wrapping if necessary.
+     * 
+     * @param lines The sequence of display lines, must not be &lt;code&gt;null&lt;/code&gt;.
+     * @param line The line to add, must not be &lt;code&gt;null&lt;/code&gt;.
+     * @param indentSize The size of each indentation, must not be negative.
+     * @param lineLength The length of the line, must not be negative.
+     */
+    private static void toLines( List lines, String line, int indentSize, int lineLength )
+    {
+<span class="nc" id="L535">        int lineIndent = getIndentLevel( line );</span>
+<span class="nc" id="L536">        StringBuffer buf = new StringBuffer( 256 );</span>
+<span class="nc" id="L537">        String[] tokens = line.split( &quot; +&quot; );</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">        for ( int i = 0; i &lt; tokens.length; i++ )</span>
+        {
+<span class="nc" id="L540">            String token = tokens[i];</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">            if ( i &gt; 0 )</span>
+            {
+<span class="nc bnc" id="L543" title="All 2 branches missed.">                if ( buf.length() + token.length() &gt;= lineLength )</span>
+                {
+<span class="nc" id="L545">                    lines.add( buf.toString() );</span>
+<span class="nc" id="L546">                    buf.setLength( 0 );</span>
+<span class="nc" id="L547">                    buf.append( repeat( &quot; &quot;, lineIndent * indentSize ) );</span>
+                }
+                else
+                {
+<span class="nc" id="L551">                    buf.append( ' ' );</span>
+                }
+            }
+<span class="nc bnc" id="L554" title="All 2 branches missed.">            for ( int j = 0; j &lt; token.length(); j++ )</span>
+            {
+<span class="nc" id="L556">                char c = token.charAt( j );</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">                if ( c == '\t' )</span>
+                {
+<span class="nc" id="L559">                    buf.append( repeat( &quot; &quot;, indentSize - buf.length() % indentSize ) );</span>
+                }
+<span class="nc bnc" id="L561" title="All 2 branches missed.">                else if ( c == '\u00A0' )</span>
+                {
+<span class="nc" id="L563">                    buf.append( ' ' );</span>
+                }
+                else
+                {
+<span class="nc" id="L567">                    buf.append( c );</span>
+                }
+            }
+        }
+<span class="nc" id="L571">        lines.add( buf.toString() );</span>
+<span class="nc" id="L572">    }</span>
+
+    /** 
+     * Gets the indentation level of the specified line.
+     * 
+     * @param line The line whose indentation level should be retrieved, must not be &lt;code&gt;null&lt;/code&gt;.
+     * @return The indentation level of the line.
+     */
+    private static int getIndentLevel( String line )
+    {
+<span class="nc" id="L582">        int level = 0;</span>
+<span class="nc bnc" id="L583" title="All 4 branches missed.">        for ( int i = 0; i &lt; line.length() &amp;&amp; line.charAt( i ) == '\t'; i++ )</span>
+        {
+<span class="nc" id="L585">            level++;</span>
+        }
+<span class="nc bnc" id="L587" title="All 4 branches missed.">        for ( int i = level + 1; i &lt;= level + 4 &amp;&amp; i &lt; line.length(); i++ )</span>
+        {
+<span class="nc bnc" id="L589" title="All 2 branches missed.">            if ( line.charAt( i ) == '\t' )</span>
+            {
+<span class="nc" id="L591">                level++;</span>
+<span class="nc" id="L592">                break;</span>
+            }
+        }
+<span class="nc" id="L595">        return level;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SetUpMojo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.mojo</a> &gt; <span class="el_source">SetUpMojo.java</span></div><h1>SetUpMojo.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.mojo;
+
+import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+
+/**
+ * This Mojo is devoted simply to fetching and unpacking
+ * FitNesse into a correct working directory structure, and
+ * making sure everything is cleanly setup for running FitNesse.
+ *
+ * @goal set-up
+ * @phase pre-integration-test
+ */
+<span class="nc" id="L21">public class SetUpMojo extends AbstractSetupsMojo {</span>
+    
+	@Override
+    public void execute() throws MojoExecutionException {
+<span class="nc" id="L25">		clean();</span>
+<span class="nc" id="L26">		unpack();</span>
+<span class="nc" id="L27">		move();</span>
+<span class="nc" id="L28">    }</span>
+    
+	/**
+	 * &lt;pre&gt;
+	 * {@code
+	 * &lt;plugin&gt;
+	 * 		&lt;artifactId&gt;maven-clean-plugin&lt;/artifactId&gt;
+	 * 		&lt;executions&gt;
+	 * 			&lt;execution&gt;
+	 * 				&lt;phase&gt;pre-integration-test&lt;/phase&gt;
+	 * 				&lt;goals&gt;
+	 * 					&lt;goal&gt;clean&lt;/goal&gt;
+	 * 				&lt;/goals&gt;
+	 * 				&lt;configuration&gt;
+	 * 					&lt;excludeDefaultDirectories&gt;true&lt;/excludeDefaultDirectories&gt;
+	 * 					&lt;filesets&gt;
+	 * 						&lt;fileset&gt;
+	 * 							&lt;directory&gt;${fitnesse.working}&lt;/directory&gt;
+	 * 							&lt;includes&gt;
+	 * 								&lt;include&gt;plugins.properties&lt;/include&gt;
+	 * 							&lt;/includes&gt;
+	 * 							&lt;followSymlinks&gt;false&lt;/followSymlinks&gt;
+	 * 						&lt;/fileset&gt;
+	 * 						&lt;fileset&gt;
+	 * 							&lt;directory&gt;${project.build.directory}/dependency-maven-plugin-markers&lt;/directory&gt;
+	 * 							&lt;includes&gt;
+	 * 								&lt;include&gt;*&lt;/include&gt;
+	 * 							&lt;/includes&gt;
+	 * 							&lt;followSymlinks&gt;false&lt;/followSymlinks&gt;
+	 * 						&lt;/fileset&gt;
+	 * 					&lt;/filesets&gt;
+	 * 				&lt;/configuration&gt;
+	 * 			&lt;/execution&gt;
+	 * 		&lt;/executions&gt;
+	 * &lt;/plugin&gt;
+	 * }
+	 * &lt;/pre&gt;
+	 */
+    private void clean() throws MojoExecutionException {
+<span class="nc" id="L67">		executeMojo(</span>
+			plugin(&quot;org.apache.maven.plugins:maven-clean-plugin&quot;),
+		    goal(&quot;clean&quot;),
+            configuration(
+	        	element(&quot;excludeDefaultDirectories&quot;, &quot;true&quot;),
+	        	element(&quot;filesets&quot;,
+	            	element(&quot;fileset&quot;,
+		            	element(&quot;directory&quot;, this.workingDir),
+		            	element(&quot;includes&quot;,
+   			            	element(&quot;include&quot;, &quot;plugins.properties&quot;)),
+		            	element(&quot;followSymlinks&quot;, &quot;false&quot;)),
+	            	element(&quot;fileset&quot;,
+		            	element(&quot;directory&quot;, &quot;${project.build.directory}/dependency-maven-plugin-markers&quot;),
+		            	element(&quot;includes&quot;,
+   			            	element(&quot;include&quot;, &quot;*&quot;)),
+		            	element(&quot;followSymlinks&quot;, &quot;false&quot;)))),
+		    executionEnvironment(project, session, pluginManager)
+		);
+<span class="nc" id="L85">    }</span>
+    
+    /**
+	 * &lt;pre&gt;
+	 * {@code
+	 * &lt;plugin&gt;
+	 * 		&lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+	 * 		&lt;version&gt;2.4&lt;/version&gt;
+	 * 		&lt;executions&gt;
+	 * 			&lt;execution&gt;
+	 * 				&lt;phase&gt;pre-integration-test&lt;/phase&gt;
+	 * 				&lt;goals&gt;
+	 * 					&lt;goal&gt;unpack&lt;/goal&gt;
+	 * 				&lt;/goals&gt;
+	 * 				&lt;configuration&gt;
+	 * 					&lt;artifactItems&gt;
+	 * 						&lt;artifactItem&gt;
+	 * 							&lt;groupId&gt;org.fitnesse&lt;/groupId&gt;
+	 * 							&lt;artifactId&gt;fitnesse&lt;/artifactId&gt;
+	 * 							&lt;version&gt;20111025&lt;/version&gt;
+	 * 							&lt;type&gt;jar&lt;/type&gt;
+	 * 							&lt;overWrite&gt;false&lt;/overWrite&gt;
+	 * 							&lt;outputDirectory&gt;${fitnesse.working}&lt;/outputDirectory&gt;
+	 * 							&lt;includes&gt;Resources/FitNesseRoot/**&lt;/includes&gt;
+	 * 						&lt;/artifactItem&gt;
+	 * 					&lt;/artifactItems&gt;
+	 * 				&lt;/configuration&gt;
+	 * 			&lt;/execution&gt;
+	 * 		&lt;/executions&gt;
+	 * &lt;/plugin&gt;
+	 * }
+	 * &lt;/pre&gt;
+     */
+    private void unpack() throws MojoExecutionException {
+<span class="nc" id="L119">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);</span>
+<span class="nc" id="L120">		executeMojo(</span>
+			plugin(&quot;org.apache.maven.plugins:maven-dependency-plugin&quot;),
+		    goal(&quot;unpack&quot;),
+            configuration(
+	        	element(&quot;artifactItems&quot;,
+	            	element(&quot;artifactItem&quot;,
+		            	element(&quot;groupId&quot;, artifact.getGroupId()),
+		            	element(&quot;artifactId&quot;, artifact.getArtifactId()),
+		            	element(&quot;version&quot;, artifact.getVersion()),
+		            	element(&quot;type&quot;, &quot;jar&quot;),
+		            	element(&quot;overWrite&quot;, &quot;false&quot;),
+		            	element(&quot;outputDirectory&quot;, this.workingDir),
+		            	element(&quot;includes&quot;, &quot;Resources/FitNesseRoot/**&quot;)))),
+		    executionEnvironment(project, session, pluginManager)
+		);
+<span class="nc" id="L135">    }</span>
+    
+    /**
+	 * &lt;pre&gt;
+	 * {@code
+	 * &lt;plugin&gt;
+	 *     &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+	 *     &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+	 *     &lt;version&gt;1.7&lt;/version&gt;
+	 *     &lt;executions&gt;
+	 *         &lt;execution&gt;
+	 *             &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+	 *             &lt;goals&gt;
+	 *                 &lt;goal&gt;run&lt;/goal&gt;
+	 *             &lt;/goals&gt;
+	 *             &lt;configuration&gt;
+	 *                 &lt;target&gt;
+	 *                     &lt;move file=&quot;${fitnesse.working}/Resources/FitNesseRoot&quot;
+	 *                          todir=&quot;${fitnesse.working}&quot; failonerror=&quot;false&quot; /&gt;
+	 *                 &lt;/target&gt;
+	 *             &lt;/configuration&gt;
+	 *         &lt;/execution&gt;
+	 *     &lt;/executions&gt;
+	 * &lt;/plugin&gt;
+	 * }
+	 * &lt;/pre&gt;
+	 */
+    private void move() throws MojoExecutionException {
+<span class="nc" id="L163">        final Xpp3Dom config = configuration(</span>
+        	element(&quot;target&quot;,
+            	element(&quot;move&quot;)));
+<span class="nc" id="L166">        final Xpp3Dom move = config.getChild(&quot;target&quot;).getChild(&quot;move&quot;);</span>
+<span class="nc" id="L167">        move.setAttribute(&quot;file&quot;, &quot;${fitnesse.working}/Resources/FitNesseRoot&quot;);</span>
+<span class="nc" id="L168">		move.setAttribute(&quot;todir&quot;, &quot;${fitnesse.working}&quot;);</span>
+<span class="nc" id="L169">		move.setAttribute(&quot;failonerror&quot;, &quot;false&quot;);</span>
+<span class="nc" id="L170">		executeMojo(</span>
+			plugin(&quot;org.apache.maven.plugins:maven-antrun-plugin&quot;),
+		    goal(&quot;run&quot;),
+		    config,
+		    executionEnvironment(project, session, pluginManager)
+		);
+<span class="nc" id="L176">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

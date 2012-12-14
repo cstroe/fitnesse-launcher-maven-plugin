@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractSetupsMojo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.mojo</a> &gt; <span class="el_source">AbstractSetupsMojo.java</span></div><h1>AbstractSetupsMojo.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.mojo;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.BuildPluginManager;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.apache.maven.project.MavenProject;
+
+<span class="nc" id="L10">public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.AbstractMojo {</span>
+    
+    /**
+     * @parameter expression=&quot;${plugin}&quot;
+     * @required
+     */
+    protected PluginDescriptor pluginDescriptor;
+    
+    /**
+     * Maven project, to be injected by Maven itself.
+     * @parameter expression=&quot;${project}&quot;
+     * @required
+     */
+    protected MavenProject project;
+	
+    /**
+     * The Maven Session Object
+     *
+     * @parameter expression=&quot;${session}&quot;
+     * @required
+     * @readonly
+     */
+    protected MavenSession session;
+
+    /**
+     * The Maven BuildPluginManager Object
+     *
+     * @component
+     * @required
+     */
+    protected BuildPluginManager pluginManager;
+    
+    /**
+     * @parameter expression=&quot;${fitnesse.working}&quot; default-value=&quot;${project.build.directory}/fitnesse&quot;
+     */
+    protected String workingDir;
+    
+    protected Plugin plugin(final String key) {
+<span class="nc" id="L48">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
+<span class="nc" id="L49">        final Plugin plugin = new Plugin();</span>
+<span class="nc" id="L50">        plugin.setGroupId(artifact.getGroupId());</span>
+<span class="nc" id="L51">        plugin.setArtifactId(artifact.getArtifactId());</span>
+<span class="nc" id="L52">        plugin.setVersion(artifact.getVersion());</span>
+<span class="nc" id="L53">        return plugin;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>
