@@ -150,6 +150,19 @@ public class ExportPropertiesTest {
 		assertTrue(logStream.toString().contains("[INFO] Setting FitNesse variable [password] to [Holy Mashed Potato!]"));
 	}
 	
+	
+	@Test
+	public void testExportPropertiesBlankPropertyIgnored() {
+		
+		mojo.project.getModel().addProperty("   ", "   ");
+		mojo.project.getModel().addProperty(" ", "notempty");
+		mojo.project.getModel().addProperty("notempty", "   ");
+		
+		mojo.exportProperties();
+		
+	    commonAssertions();
+	}
+	
 	private void commonAssertions() {
 		String expectedBasedir = mojo.project.getFile().getParent();
 		assertEquals("\nTEST.CLASSPATH\n", System.getProperty("maven.classpath"));

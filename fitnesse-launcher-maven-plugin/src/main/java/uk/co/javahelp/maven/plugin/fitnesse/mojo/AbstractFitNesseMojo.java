@@ -1,5 +1,7 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
+import static uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper.isBlank;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -202,9 +204,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
     protected void setSystemProperty(final String key, final String value) {
-        if(key != null && value != null &&
-                !key.trim().equals("") &&
-                !value.trim().equals("")) {
+        if(!isBlank(key) && !isBlank(value)) {
             getLog().info(String.format("Setting FitNesse variable [%s] to [%s]", key, value));
             System.setProperty(key, value);
         }
