@@ -4,7 +4,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.Interrupter;
-import fitnesse.Shutdown;
 import fitnesse.socketservice.SocketService;
 
 /**
@@ -24,10 +23,10 @@ public class WikiMojo extends AbstractFitNesseMojo {
 
     /**
 	 * Unfortunately, the FitNesse API does not expose a way to stop the wiki server programmatically,
-	 * except via a sending "/?responder=shutdown" via HTTP, which is what the {@link Shutdown} object does.
+	 * except via a sending "/?responder=shutdown" via HTTP, which is what the {@link fitnesse.Shutdown} object does.
 	 * The object / method we need access to is {@link fitnesse.FitNesse#stop()}.
 	 * This could easily have been returned from our public call
-	 * to {@link fitnesseMain.FitNesseMain#launchFitNesse(Arguments)}
+	 * to {@link fitnesseMain.FitNesseMain#launchFitNesse(fitnesse.Arguments)}
 	 * <p>
 	 * We need to discover the FitNesse thread running (which is not exposed either).
 	 * This is not a daemon thread, but we need to join() it all the same,

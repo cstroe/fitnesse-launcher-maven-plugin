@@ -1,6 +1,6 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
-public interface FitNesse {
+final class FitNesse {
 	
 	static final String groupId = "org.fitnesse";
 
