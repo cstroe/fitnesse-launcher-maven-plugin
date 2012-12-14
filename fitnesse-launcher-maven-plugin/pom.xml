@@ -244,6 +244,26 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>com.googlecode</groupId>
+				<artifactId>maven-googlecode-changes-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<issueTypes>
+						<Defect>fix</Defect>
+						<Enhancement>update</Enhancement>
+					</issueTypes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<enableRulesSummary>true</enableRulesSummary>
+					<configLocation>src/site/checkstyle.xml</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.1</version>
@@ -276,6 +296,14 @@
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-surefire-report-plugin</artifactId>
 							<version>2.12.4</version>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>report-only</report>
+										<!-- <report>failsafe-report-only</report> -->
+									</reports>
+								</reportSet>
+							</reportSets>
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -299,6 +327,101 @@
 										<version>2.9</version>
 									</tagletArtifact>
 								</tagletArtifacts>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-checkstyle-plugin</artifactId>
+							<version>2.9.1</version>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>checkstyle</report>
+									</reports>
+								</reportSet>
+							</reportSets>
+							<configuration>
+								<enableRulesSummary>true</enableRulesSummary>
+								<configLocation>src/site/checkstyle.xml</configLocation>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+							<version>2.5.2</version>
+							<configuration>
+								<threshold>Low</threshold>
+								<effort>Max</effort>
+								<xmlOutput>true</xmlOutput>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-pmd-plugin</artifactId>
+							<version>2.7.1</version>
+							<configuration>
+								<sourceEncoding>UTF-8</sourceEncoding>
+								<targetJdk>1.6</targetJdk>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>javancss-maven-plugin</artifactId>
+							<version>2.0</version>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>jdepend-maven-plugin</artifactId>
+							<version>2.0-beta-2</version>
+						</plugin>
+
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-changes-plugin</artifactId>
+							<version>2.8</version>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>changes-report</report>
+									</reports>
+								</reportSet>
+							</reportSets>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>taglist-maven-plugin</artifactId>
+							<version>2.4</version>
+							<configuration>
+								<tags>
+									<tag>TODO</tag>
+									<tag>FIXME</tag>
+									<tag>@todo</tag>
+									<tag>@deprecated</tag>
+								</tags>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>versions-maven-plugin</artifactId>
+							<version>2.0</version>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>dependency-updates-report</report>
+										<report>plugin-updates-report</report>
+										<report>property-updates-report</report>
+									</reports>
+								</reportSet>
+							</reportSets>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-changelog-plugin</artifactId>
+							<version>2.2</version>
+							<configuration>
+								<type>range</type>
+								<range>30</range>
+								<headingDateFormat>dd MMM yyyy</headingDateFormat>
 							</configuration>
 						</plugin>
 					</reportPlugins>
