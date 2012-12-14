@@ -122,7 +122,7 @@ public class FitNesseHelper {
 		return linkPath.toString();
     }
 
-    private static boolean isBlank(final String string) {
+    public static boolean isBlank(final String string) {
         return string == null || string.trim().equals("");
     }
 }
