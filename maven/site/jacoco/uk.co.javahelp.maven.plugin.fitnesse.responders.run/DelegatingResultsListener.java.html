@@ -23,23 +23,23 @@ public class DelegatingResultsListener implements ResultsListener {
 <span class="fc" id="L23">    }</span>
 
     public void setExecutionLogAndTrackingId(String stopResponderId, CompositeExecutionLog log) throws Exception {
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        for(ResultsListener delegate : this.delegates) {</span>
-<span class="nc" id="L27">            delegate.setExecutionLogAndTrackingId(stopResponderId, log);</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for(ResultsListener delegate : this.delegates) {</span>
+<span class="fc" id="L27">            delegate.setExecutionLogAndTrackingId(stopResponderId, log);</span>
         }
-<span class="nc" id="L29">    }</span>
+<span class="fc" id="L29">    }</span>
 
     public void announceNumberTestsToRun(int testsToRun) {
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        for(ResultsListener delegate : this.delegates) {</span>
-<span class="nc" id="L33">            delegate.announceNumberTestsToRun(testsToRun);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        for(ResultsListener delegate : this.delegates) {</span>
+<span class="fc" id="L33">            delegate.announceNumberTestsToRun(testsToRun);</span>
         }
-<span class="nc" id="L35">    }</span>
+<span class="fc" id="L35">    }</span>
 
     public void testSystemStarted(TestSystem testSystem, String testSystemName, String testRunner)
             throws Exception {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        for(ResultsListener delegate : this.delegates) {</span>
-<span class="nc" id="L40">            delegate.testSystemStarted(testSystem, testSystemName, testRunner);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for(ResultsListener delegate : this.delegates) {</span>
+<span class="fc" id="L40">            delegate.testSystemStarted(testSystem, testSystemName, testRunner);</span>
         }
-<span class="nc" id="L42">    }</span>
+<span class="fc" id="L42">    }</span>
 
     public void newTestStarted(WikiPage test, TimeMeasurement timeMeasurement)
             throws Exception {
@@ -49,10 +49,10 @@ public class DelegatingResultsListener implements ResultsListener {
 <span class="fc" id="L49">    }</span>
 
     public void testOutputChunk(String output) throws Exception {
-<span class="nc bnc" id="L52" title="All 2 branches missed.">        for(ResultsListener delegate : this.delegates) {</span>
-<span class="nc" id="L53">            delegate.testOutputChunk(output);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for(ResultsListener delegate : this.delegates) {</span>
+<span class="fc" id="L53">            delegate.testOutputChunk(output);</span>
         }
-<span class="nc" id="L55">    }</span>
+<span class="fc" id="L55">    }</span>
 
     public void testComplete(WikiPage test, TestSummary testSummary, TimeMeasurement timeMeasurement) throws Exception {
 <span class="fc bfc" id="L58" title="All 2 branches covered.">        for(ResultsListener delegate : this.delegates) {</span>
@@ -61,9 +61,9 @@ public class DelegatingResultsListener implements ResultsListener {
 <span class="fc" id="L61">    }</span>
 
     public void errorOccured() {
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        for(ResultsListener delegate : this.delegates) {</span>
-<span class="nc" id="L65">            delegate.errorOccured();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for(ResultsListener delegate : this.delegates) {</span>
+<span class="fc" id="L65">            delegate.errorOccured();</span>
         }
-<span class="nc" id="L67">    }</span>
+<span class="fc" id="L67">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

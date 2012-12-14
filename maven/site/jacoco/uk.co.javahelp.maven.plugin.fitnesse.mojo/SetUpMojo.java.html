@@ -18,14 +18,14 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * @goal set-up
  * @phase pre-integration-test
  */
-<span class="nc" id="L21">public class SetUpMojo extends AbstractSetupsMojo {</span>
+<span class="fc" id="L21">public class SetUpMojo extends AbstractSetupsMojo {</span>
     
 	@Override
     public void execute() throws MojoExecutionException {
-<span class="nc" id="L25">		clean();</span>
-<span class="nc" id="L26">		unpack();</span>
-<span class="nc" id="L27">		move();</span>
-<span class="nc" id="L28">    }</span>
+<span class="fc" id="L25">		clean();</span>
+<span class="fc" id="L26">		unpack();</span>
+<span class="fc" id="L27">		move();</span>
+<span class="fc" id="L28">    }</span>
     
 	/**
 	 * &lt;pre&gt;
@@ -63,8 +63,8 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * }
 	 * &lt;/pre&gt;
 	 */
-    private void clean() throws MojoExecutionException {
-<span class="nc" id="L67">		executeMojo(</span>
+    void clean() throws MojoExecutionException {
+<span class="fc" id="L67">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-clean-plugin&quot;),
 		    goal(&quot;clean&quot;),
             configuration(
@@ -82,7 +82,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 		            	element(&quot;followSymlinks&quot;, &quot;false&quot;)))),
 		    executionEnvironment(project, session, pluginManager)
 		);
-<span class="nc" id="L85">    }</span>
+<span class="fc" id="L85">    }</span>
     
     /**
 	 * &lt;pre&gt;
@@ -115,9 +115,9 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * }
 	 * &lt;/pre&gt;
      */
-    private void unpack() throws MojoExecutionException {
-<span class="nc" id="L119">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);</span>
-<span class="nc" id="L120">		executeMojo(</span>
+    void unpack() throws MojoExecutionException {
+<span class="fc" id="L119">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);</span>
+<span class="fc" id="L120">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-dependency-plugin&quot;),
 		    goal(&quot;unpack&quot;),
             configuration(
@@ -132,7 +132,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 		            	element(&quot;includes&quot;, &quot;Resources/FitNesseRoot/**&quot;)))),
 		    executionEnvironment(project, session, pluginManager)
 		);
-<span class="nc" id="L135">    }</span>
+<span class="fc" id="L135">    }</span>
     
     /**
 	 * &lt;pre&gt;
@@ -159,20 +159,20 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * }
 	 * &lt;/pre&gt;
 	 */
-    private void move() throws MojoExecutionException {
-<span class="nc" id="L163">        final Xpp3Dom config = configuration(</span>
+    void move() throws MojoExecutionException {
+<span class="fc" id="L163">        final Xpp3Dom config = configuration(</span>
         	element(&quot;target&quot;,
             	element(&quot;move&quot;)));
-<span class="nc" id="L166">        final Xpp3Dom move = config.getChild(&quot;target&quot;).getChild(&quot;move&quot;);</span>
-<span class="nc" id="L167">        move.setAttribute(&quot;file&quot;, &quot;${fitnesse.working}/Resources/FitNesseRoot&quot;);</span>
-<span class="nc" id="L168">		move.setAttribute(&quot;todir&quot;, &quot;${fitnesse.working}&quot;);</span>
-<span class="nc" id="L169">		move.setAttribute(&quot;failonerror&quot;, &quot;false&quot;);</span>
-<span class="nc" id="L170">		executeMojo(</span>
+<span class="fc" id="L166">        final Xpp3Dom move = config.getChild(&quot;target&quot;).getChild(&quot;move&quot;);</span>
+<span class="fc" id="L167">        move.setAttribute(&quot;file&quot;, &quot;${fitnesse.working}/Resources/FitNesseRoot&quot;);</span>
+<span class="fc" id="L168">		move.setAttribute(&quot;todir&quot;, &quot;${fitnesse.working}&quot;);</span>
+<span class="fc" id="L169">		move.setAttribute(&quot;failonerror&quot;, &quot;false&quot;);</span>
+<span class="fc" id="L170">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-antrun-plugin&quot;),
 		    goal(&quot;run&quot;),
 		    config,
 		    executionEnvironment(project, session, pluginManager)
 		);
-<span class="nc" id="L176">    }</span>
+<span class="fc" id="L176">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

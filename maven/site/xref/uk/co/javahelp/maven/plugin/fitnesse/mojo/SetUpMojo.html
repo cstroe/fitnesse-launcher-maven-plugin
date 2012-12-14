@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="63" href="#63">63</a>  <em class="jxr_javadoccomment">	 * }</em>
 <a class="jxr_linenumber" name="64" href="#64">64</a>  <em class="jxr_javadoccomment">	 * &lt;/pre&gt;</em>
 <a class="jxr_linenumber" name="65" href="#65">65</a>  <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="66" href="#66">66</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> clean() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
+<a class="jxr_linenumber" name="66" href="#66">66</a>      <strong class="jxr_keyword">void</strong> clean() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
 <a class="jxr_linenumber" name="67" href="#67">67</a>  		executeMojo(
 <a class="jxr_linenumber" name="68" href="#68">68</a>  			plugin(<span class="jxr_string">"org.apache.maven.plugins:maven-clean-plugin"</span>),
 <a class="jxr_linenumber" name="69" href="#69">69</a>  		    goal(<span class="jxr_string">"clean"</span>),
@@ -125,7 +125,7 @@
 <a class="jxr_linenumber" name="115" href="#115">115</a> <em class="jxr_javadoccomment">	 * }</em>
 <a class="jxr_linenumber" name="116" href="#116">116</a> <em class="jxr_javadoccomment">	 * &lt;/pre&gt;</em>
 <a class="jxr_linenumber" name="117" href="#117">117</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="118" href="#118">118</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> unpack() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
+<a class="jxr_linenumber" name="118" href="#118">118</a>     <strong class="jxr_keyword">void</strong> unpack() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
 <a class="jxr_linenumber" name="119" href="#119">119</a>        	<strong class="jxr_keyword">final</strong> Artifact artifact = <strong class="jxr_keyword">this</strong>.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);
 <a class="jxr_linenumber" name="120" href="#120">120</a> 		executeMojo(
 <a class="jxr_linenumber" name="121" href="#121">121</a> 			plugin(<span class="jxr_string">"org.apache.maven.plugins:maven-dependency-plugin"</span>),
@@ -169,7 +169,7 @@
 <a class="jxr_linenumber" name="159" href="#159">159</a> <em class="jxr_javadoccomment">	 * }</em>
 <a class="jxr_linenumber" name="160" href="#160">160</a> <em class="jxr_javadoccomment">	 * &lt;/pre&gt;</em>
 <a class="jxr_linenumber" name="161" href="#161">161</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="162" href="#162">162</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> move() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
+<a class="jxr_linenumber" name="162" href="#162">162</a>     <strong class="jxr_keyword">void</strong> move() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
 <a class="jxr_linenumber" name="163" href="#163">163</a>         <strong class="jxr_keyword">final</strong> Xpp3Dom config = configuration(
 <a class="jxr_linenumber" name="164" href="#164">164</a>         	element(<span class="jxr_string">"target"</span>,
 <a class="jxr_linenumber" name="165" href="#165">165</a>             	element(<span class="jxr_string">"move"</span>)));

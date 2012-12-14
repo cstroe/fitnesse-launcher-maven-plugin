@@ -7,7 +7,7 @@ import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 
-<span class="nc" id="L10">public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.AbstractMojo {</span>
+<span class="fc" id="L10">public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.AbstractMojo {</span>
     
     /**
      * @parameter expression=&quot;${plugin}&quot;
@@ -45,12 +45,12 @@ import org.apache.maven.project.MavenProject;
     protected String workingDir;
     
     protected Plugin plugin(final String key) {
-<span class="nc" id="L48">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
-<span class="nc" id="L49">        final Plugin plugin = new Plugin();</span>
-<span class="nc" id="L50">        plugin.setGroupId(artifact.getGroupId());</span>
-<span class="nc" id="L51">        plugin.setArtifactId(artifact.getArtifactId());</span>
-<span class="nc" id="L52">        plugin.setVersion(artifact.getVersion());</span>
-<span class="nc" id="L53">        return plugin;</span>
+<span class="fc" id="L48">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
+<span class="fc" id="L49">        final Plugin plugin = new Plugin();</span>
+<span class="fc" id="L50">        plugin.setGroupId(artifact.getGroupId());</span>
+<span class="fc" id="L51">        plugin.setArtifactId(artifact.getArtifactId());</span>
+<span class="fc" id="L52">        plugin.setVersion(artifact.getVersion());</span>
+<span class="fc" id="L53">        return plugin;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

@@ -160,20 +160,33 @@
 <a class="jxr_linenumber" name="150" href="#150">150</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [password] to [Holy Mashed Potato!]"</span>));
 <a class="jxr_linenumber" name="151" href="#151">151</a> 	}
 <a class="jxr_linenumber" name="152" href="#152">152</a> 	
-<a class="jxr_linenumber" name="153" href="#153">153</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> commonAssertions() {
-<a class="jxr_linenumber" name="154" href="#154">154</a> 		String expectedBasedir = mojo.project.getFile().getParent();
-<a class="jxr_linenumber" name="155" href="#155">155</a> 		assertEquals(<span class="jxr_string">"\nTEST.CLASSPATH\n"</span>, System.getProperty(<span class="jxr_string">"maven.classpath"</span>));
-<a class="jxr_linenumber" name="156" href="#156">156</a> 		assertEquals(<span class="jxr_string">"ARTIFACT_ID"</span>, System.getProperty(<span class="jxr_string">"artifact"</span>));
-<a class="jxr_linenumber" name="157" href="#157">157</a> 		assertEquals(<span class="jxr_string">"VERSION"</span>, System.getProperty(<span class="jxr_string">"version"</span>));
-<a class="jxr_linenumber" name="158" href="#158">158</a> 		assertEquals(expectedBasedir, System.getProperty(<span class="jxr_string">"basedir"</span>));
-<a class="jxr_linenumber" name="159" href="#159">159</a> 		assertTrue(logStream.toString().startsWith(<span class="jxr_string">"[INFO] ------------------------------------------------------------------------"</span>));
-<a class="jxr_linenumber" name="160" href="#160">160</a> 		assertTrue(logStream.toString().endsWith(String.format(<span class="jxr_string">"[INFO] ------------------------------------------------------------------------%n"</span>)));
-<a class="jxr_linenumber" name="161" href="#161">161</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [maven.classpath] to [\nTEST.CLASSPATH\n]"</span>));
-<a class="jxr_linenumber" name="162" href="#162">162</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [artifact] to [ARTIFACT_ID]"</span>));
-<a class="jxr_linenumber" name="163" href="#163">163</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [version] to [VERSION]"</span>));
-<a class="jxr_linenumber" name="164" href="#164">164</a> 		assertTrue(logStream.toString().contains(String.format(<span class="jxr_string">"[INFO] Setting FitNesse variable [basedir] to [%s]"</span>, expectedBasedir)));
-<a class="jxr_linenumber" name="165" href="#165">165</a> 	}
-<a class="jxr_linenumber" name="166" href="#166">166</a> }
+<a class="jxr_linenumber" name="153" href="#153">153</a> 	
+<a class="jxr_linenumber" name="154" href="#154">154</a> 	@Test
+<a class="jxr_linenumber" name="155" href="#155">155</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testExportPropertiesBlankPropertyIgnored() {
+<a class="jxr_linenumber" name="156" href="#156">156</a> 		
+<a class="jxr_linenumber" name="157" href="#157">157</a> 		mojo.project.getModel().addProperty(<span class="jxr_string">"   "</span>, <span class="jxr_string">"   "</span>);
+<a class="jxr_linenumber" name="158" href="#158">158</a> 		mojo.project.getModel().addProperty(<span class="jxr_string">" "</span>, <span class="jxr_string">"notempty"</span>);
+<a class="jxr_linenumber" name="159" href="#159">159</a> 		mojo.project.getModel().addProperty(<span class="jxr_string">"notempty"</span>, <span class="jxr_string">"   "</span>);
+<a class="jxr_linenumber" name="160" href="#160">160</a> 		
+<a class="jxr_linenumber" name="161" href="#161">161</a> 		mojo.exportProperties();
+<a class="jxr_linenumber" name="162" href="#162">162</a> 		
+<a class="jxr_linenumber" name="163" href="#163">163</a> 	    commonAssertions();
+<a class="jxr_linenumber" name="164" href="#164">164</a> 	}
+<a class="jxr_linenumber" name="165" href="#165">165</a> 	
+<a class="jxr_linenumber" name="166" href="#166">166</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> commonAssertions() {
+<a class="jxr_linenumber" name="167" href="#167">167</a> 		String expectedBasedir = mojo.project.getFile().getParent();
+<a class="jxr_linenumber" name="168" href="#168">168</a> 		assertEquals(<span class="jxr_string">"\nTEST.CLASSPATH\n"</span>, System.getProperty(<span class="jxr_string">"maven.classpath"</span>));
+<a class="jxr_linenumber" name="169" href="#169">169</a> 		assertEquals(<span class="jxr_string">"ARTIFACT_ID"</span>, System.getProperty(<span class="jxr_string">"artifact"</span>));
+<a class="jxr_linenumber" name="170" href="#170">170</a> 		assertEquals(<span class="jxr_string">"VERSION"</span>, System.getProperty(<span class="jxr_string">"version"</span>));
+<a class="jxr_linenumber" name="171" href="#171">171</a> 		assertEquals(expectedBasedir, System.getProperty(<span class="jxr_string">"basedir"</span>));
+<a class="jxr_linenumber" name="172" href="#172">172</a> 		assertTrue(logStream.toString().startsWith(<span class="jxr_string">"[INFO] ------------------------------------------------------------------------"</span>));
+<a class="jxr_linenumber" name="173" href="#173">173</a> 		assertTrue(logStream.toString().endsWith(String.format(<span class="jxr_string">"[INFO] ------------------------------------------------------------------------%n"</span>)));
+<a class="jxr_linenumber" name="174" href="#174">174</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [maven.classpath] to [\nTEST.CLASSPATH\n]"</span>));
+<a class="jxr_linenumber" name="175" href="#175">175</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [artifact] to [ARTIFACT_ID]"</span>));
+<a class="jxr_linenumber" name="176" href="#176">176</a> 		assertTrue(logStream.toString().contains(<span class="jxr_string">"[INFO] Setting FitNesse variable [version] to [VERSION]"</span>));
+<a class="jxr_linenumber" name="177" href="#177">177</a> 		assertTrue(logStream.toString().contains(String.format(<span class="jxr_string">"[INFO] Setting FitNesse variable [basedir] to [%s]"</span>, expectedBasedir)));
+<a class="jxr_linenumber" name="178" href="#178">178</a> 	}
+<a class="jxr_linenumber" name="179" href="#179">179</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

@@ -17,7 +17,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal tear-down
  * @phase post-integration-test
  */
-<span class="nc" id="L20">public class TearDownMojo extends AbstractSetupsMojo {</span>
+<span class="fc" id="L20">public class TearDownMojo extends AbstractSetupsMojo {</span>
 
 	/**
 	 * &lt;pre&gt;
@@ -47,7 +47,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-<span class="nc" id="L50">		executeMojo(</span>
+<span class="fc" id="L50">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-clean-plugin&quot;),
 			goal(&quot;clean&quot;),
 			configuration(
@@ -58,6 +58,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 						element(&quot;followSymlinks&quot;, &quot;false&quot;)))),
 			executionEnvironment(project, session, pluginManager)
 		);
-<span class="nc" id="L61">	}</span>
+<span class="fc" id="L61">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>
