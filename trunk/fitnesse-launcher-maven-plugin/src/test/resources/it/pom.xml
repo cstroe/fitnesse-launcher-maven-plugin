@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>uk.co.javahelp.fitnesse</groupId>
+	<artifactId>fitnesse-launcher-it</artifactId>
+	<version>1.1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<fitnesse.port>8989</fitnesse.port>
+		<fitnesse.working>${project.build.directory}/it</fitnesse.working>
+		<fitnesse.root>FitNesseRoot</fitnesse.root>
+		<skipTests>true</skipTests>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.fitnesse</groupId>
+			<artifactId>fitnesse</artifactId>
+			<version>20111025</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.beanshell</groupId>
+			<artifactId>bsh</artifactId>
+			<version>2.0b5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>uk.co.javahelp.fitnesse</groupId>
+				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+				<version>1.1.0-SNAPSHOT</version>
+				<configuration>
+					<port>${fitnesse.port}</port>
+					<workingDir>${fitnesse.working}</workingDir>
+					<root>${fitnesse.root}</root>
+					<createSymLink>true</createSymLink>
+					<suite>JavaExample</suite>
+				</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>set-up</goal>
+									<goal>run-tests</goal>
+									<goal>tear-down</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-simple</artifactId>
+						<version>1.6.4</version>
+					</dependency>
+					<dependency>
+						<groupId>org.beanshell</groupId>
+						<artifactId>bsh</artifactId>
+						<version>2.0b5</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>

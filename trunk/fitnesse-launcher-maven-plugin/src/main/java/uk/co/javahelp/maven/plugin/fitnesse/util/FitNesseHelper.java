@@ -26,8 +26,12 @@ public class FitNesseHelper {
 	}
     
     public StringBuilder formatAndAppendClasspathArtifact(final StringBuilder wikiFormatClasspath, final Artifact artifact) {
+    	return formatAndAppendClasspath(wikiFormatClasspath, artifact.getFile().getPath());
+	}
+    
+    public StringBuilder formatAndAppendClasspath(final StringBuilder wikiFormatClasspath, final String path) {
        	wikiFormatClasspath.append("!path ");
-       	wikiFormatClasspath.append(artifact.getFile().getPath());
+       	wikiFormatClasspath.append(path);
        	wikiFormatClasspath.append("\n");
        	return wikiFormatClasspath;
     }
