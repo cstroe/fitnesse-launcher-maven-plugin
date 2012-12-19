@@ -16,6 +16,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -224,6 +225,11 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         	artifacts.addAll(resolveDependencyKey(key));
         }
         final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
+        final Build build = this.project.getBuild();
+        // Put the test classes earlier on the classpath, in case
+        // a project wants to overwrite a class or two when testing
+        this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, build.getTestOutputDirectory());
+        this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, build.getOutputDirectory());
         for (Artifact artifact : artifacts) {
             if(artifact.getFile() != null) {
                 getLog().debug(String.format("Adding artifact to FitNesse classpath [%s]", artifact));

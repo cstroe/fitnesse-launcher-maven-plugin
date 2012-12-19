@@ -15,11 +15,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.monitor.logging.DefaultLog;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -34,18 +37,19 @@ public class RunTestsMojoTest {
 
 	private RunTestsMojo mojo;
 	
-    private FitNesseHelper fitNesseHelper;
-    
+    private ClassRealm realm;
+	
     private ByteArrayOutputStream logStream;
     
 	@Before
 	public void setUp() throws IOException {
-		fitNesseHelper = mock(FitNesseHelper.class);
+		realm = mock(ClassRealm.class);
 		
 		File workingDir = new File(System.getProperty("java.io.tmpdir"), "unit_test_working");
 		
 		mojo = new RunTestsMojo();
-		mojo.fitNesseHelper = this.fitNesseHelper;
+		mojo.pluginDescriptor = mock(PluginDescriptor.class);;
+		mojo.fitNesseHelper = mock(FitNesseHelper.class);
 		mojo.port = WikiMojoTest.PORT;
 		mojo.workingDir = workingDir.getCanonicalPath();
 		mojo.root = "FitNesseRoot";
@@ -54,10 +58,14 @@ public class RunTestsMojoTest {
 		mojo.summaryFile = new File(mojo.resultsDir, "failsafe-summary.xml");
 		mojo.project = new MavenProject();
 		mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
+		mojo.project.getBuild().setTestOutputDirectory("target/test-classes");
+		mojo.project.getBuild().setOutputDirectory("target/classes");
 		
 		logStream = new ByteArrayOutputStream();
 		mojo.setLog(new DefaultLog(new PrintStreamLogger(
 			Logger.LEVEL_INFO, "test", new PrintStream(logStream))));
+		
+		when(mojo.pluginDescriptor.getClassRealm()).thenReturn(realm);
 		
 		FileUtils.deleteQuietly(workingDir);
 		FileUtils.deleteQuietly(mojo.resultsDir);
@@ -81,14 +89,15 @@ public class RunTestsMojoTest {
 	public void testRunTestsMojoBasic() throws Exception {
 		
 		mojo.createSymLink = false;
-		when(fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
+		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
 		    .thenReturn(new String[]{"ExampleFitNesseTestSuite", TestHelper.PAGE_TYPE_SUITE});
 		
 		mojo.executeInternal();
 		
-		verify(fitNesseHelper, never()).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
-		verify(fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
-		verify(fitNesseHelper, never()).shutdownFitNesseServer(anyString());
+		verify(mojo.fitNesseHelper, never()).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
+		verify(mojo.fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
+		verify(mojo.fitNesseHelper, never()).shutdownFitNesseServer(anyString());
+		verify(realm, times(2)).addURL(any(URL.class));
 		
 		assertEquals(
 		    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -114,14 +123,15 @@ public class RunTestsMojoTest {
 	public void testRunTestsMojoCreateSymLink() throws Exception {
 		
 		mojo.createSymLink = true;
-		when(fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
+		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
 		    .thenReturn(new String[]{"ExampleFitNesseTestSuite", TestHelper.PAGE_TYPE_SUITE});
 		
 		mojo.executeInternal();
 		
-		verify(fitNesseHelper, times(1)).launchFitNesseServer(WikiMojoTest.PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(fitNesseHelper, times(1)).createSymLink(mojo.suite, mojo.test, mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT);
-		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(WikiMojoTest.PORT_STRING);
+		verify(mojo.fitNesseHelper, times(1)).launchFitNesseServer(WikiMojoTest.PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
+		verify(mojo.fitNesseHelper, times(1)).createSymLink(mojo.suite, mojo.test, mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT);
+		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(WikiMojoTest.PORT_STRING);
+		verify(realm, times(2)).addURL(any(URL.class));
 		
 		assertEquals(
 		    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
