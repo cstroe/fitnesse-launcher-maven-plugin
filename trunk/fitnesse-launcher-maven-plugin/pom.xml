@@ -55,6 +55,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<it.artifactId>fitnesse-launcher-java-example</it.artifactId>
 	</properties>
 
 	<dependencies>
@@ -220,14 +221,14 @@
 				<version>2.12</version>
 			</plugin>
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-install-plugin</artifactId>
-    <version>2.4</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
-				    <file>${project.build.directory}/${project.build.finalName}.jar</file>
-				    <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
-				    <generatePom>false</generatePom>
-				   <pomFile>pom.xml</pomFile>
+					<file>${project.build.directory}/${project.build.finalName}.jar</file>
+					<localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
+					<generatePom>false</generatePom>
+					<pomFile>pom.xml</pomFile>
 				</configuration>
 				<executions>
 					<execution>
@@ -240,13 +241,42 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${it.artifactId}</artifactId>
+									<version>${project.version}</version>
+									<classifier>src</classifier>
+									<type>zip</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/it</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.12</version>
 				<configuration>
-				    <systemPropertyVariables>
-				        <maven.test.tmpdir>${project.build.directory}</maven.test.tmpdir>
-				        <maven.repo.local>${project.build.directory}/it-repo</maven.repo.local>
-				    </systemPropertyVariables>
+					<systemPropertyVariables>
+						<maven.test.tmpdir>${project.build.directory}/it</maven.test.tmpdir>
+						<maven.repo.local>${project.build.directory}/it-repo</maven.repo.local>
+						<it.groupId>${project.groupId}</it.groupId>
+						<it.artifactId>${it.artifactId}</it.artifactId>
+						<it.version>${project.version}</it.version>
+					</systemPropertyVariables>
 				</configuration>
 				<executions>
 					<execution>
