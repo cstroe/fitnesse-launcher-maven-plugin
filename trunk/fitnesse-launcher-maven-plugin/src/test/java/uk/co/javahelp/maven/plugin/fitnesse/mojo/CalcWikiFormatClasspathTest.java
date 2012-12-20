@@ -4,13 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -21,193 +19,129 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException;
-import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Plugin;
 import org.apache.maven.monitor.logging.DefaultLog;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
-
 public class CalcWikiFormatClasspathTest {
 
-	private AbstractFitNesseMojo mojo;
-	
-	private ArtifactHandler artifactHandler;
-	
-    private ArtifactResolver artifactResolver;
-    
-    private Artifact pluginArtifact;
-    
-    private Artifact fitnesseArtifact;
-    
-    private Plugin plugin;
-    
-    private ByteArrayOutputStream logStream;
+	private AbstractFitNesseMojoTestHelper helper;
 	
 	@Before
 	public void setUp() {
-		artifactHandler = mock(ArtifactHandler.class);
-		artifactResolver = mock(ArtifactResolver.class);
-		
-        this.pluginArtifact = new DefaultArtifact(
-        	getClass().getPackage().getName(), getClass().getSimpleName(), "version", "scope", "type", "classifier", artifactHandler);
-        
-        this.fitnesseArtifact = new DefaultArtifact(
-            "org.fitnesse", "fitnesse", "20111025", "compile", "jar", null, artifactHandler);
-        this.fitnesseArtifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
-        
-        this.plugin = new Plugin();
-		plugin.setGroupId(pluginArtifact.getGroupId());
-		plugin.setArtifactId(pluginArtifact.getArtifactId());
-		
-        Build build = new Build();
-        build.addPlugin(plugin);
-        
-		mojo = new AbstractFitNesseMojo() {
-			@Override
-			protected void executeInternal() { }
-		};
-		mojo.project = new MavenProject();
-		mojo.resolver = this.artifactResolver;
-		mojo.fitNesseHelper = mock(FitNesseHelper.class);
-		
-		mojo.pluginDescriptor = new PluginDescriptor();
-		mojo.pluginDescriptor.setGroupId(pluginArtifact.getGroupId());
-		mojo.pluginDescriptor.setArtifactId(pluginArtifact.getArtifactId());
-		mojo.project.setPluginArtifacts(Collections.singleton(this.pluginArtifact));
-		mojo.project.setBuild(build);
-		
-		logStream = new ByteArrayOutputStream();
-		mojo.setLog(new DefaultLog(new PrintStreamLogger(
-			Logger.LEVEL_INFO, "test", new PrintStream(logStream))));
+		helper = new AbstractFitNesseMojoTestHelper();
 	}
 	
 	@Test
-	public void testNoDependenciesNoFitNesseArtifact() {
+	public void testNoDependenciesNoFitNesseArtifact() throws MojoExecutionException {
+		helper.mojo.pluginDescriptor.setArtifacts(null);
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals(String.format("[WARNING] Lookup for artifact [org.fitnesse:fitnesse] failed%n"), logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals(String.format("[WARNING] Lookup for artifact [org.fitnesse:fitnesse] failed%n"), helper.logStream.toString());
 	}
 	
 	@Test
-	public void testNoDependenciesNoFitNesseJarFile() {
+	public void testNoDependenciesNoFitNesseJarFile() throws MojoExecutionException {
 		
-		mojo.pluginDescriptor.setArtifacts(Collections.singletonList(this.fitnesseArtifact));
-        this.fitnesseArtifact.setFile(null);
+        helper.fitnesseArtifact.setFile(null);
 		
-		ArtifactResolutionResult result = new ArtifactResolutionResult();
-		result.setArtifacts(Collections.singleton(this.fitnesseArtifact));
-		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class))).thenReturn(result);
-		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals(String.format("[WARNING] File for artifact [org.fitnesse:fitnesse:jar:20111025:compile] is not found%n"), logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals(String.format("[WARNING] File for artifact [org.fitnesse:fitnesse:jar:20111025:compile] is not found%n"), helper.logStream.toString());
 	}
 	
 	@Test
-	public void testNoDependenciesFitNesseOk() {
+	public void testNoDependenciesFitNesseOk() throws MojoExecutionException {
 		
-		mojo.pluginDescriptor.setArtifacts(Collections.singletonList(this.fitnesseArtifact));
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals("", helper.logStream.toString());
 		
-		ArtifactResolutionResult result = new ArtifactResolutionResult();
-		result.setArtifacts(Collections.singleton(this.fitnesseArtifact));
-		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class))).thenReturn(result);
-		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("", logStream.toString());
-		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
 	}
 	
 	@Test
-	public void testOneDependencyOneArtifact() {
+	public void testOneDependencyOneArtifact() throws MojoExecutionException {
 		
         Artifact g1a1 = createArtifact("g1", "a1");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Collections.singleton(g1a1)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("", logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals("", helper.logStream.toString());
 		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
 	}
 	
 	@Test
-	public void testOneDependencyTwoArtifacts() {
+	public void testOneDependencyTwoArtifacts() throws MojoExecutionException {
 		
         Artifact g1a1 = createArtifact("g1", "a1");
         Artifact g1a2 = createArtifact("g1", "a2");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g1a1, g1a2)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("", logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals("", helper.logStream.toString());
 		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
 	}
 	
 	@Test
-	public void testTwoDependenciesTwoArtifacts() {
+	public void testTwoDependenciesTwoArtifacts() throws MojoExecutionException {
 		
         Artifact g1a1 = createArtifact("g1", "a1");
         Artifact g2a1 = createArtifact("g2", "a1");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1, g2a1);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1, g2a1);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		this.plugin.addDependency(createDependecy("g2","a1"));
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.plugin.addDependency(createDependecy("g2","a1"));
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Collections.singleton(g1a1)))
 		    .thenReturn(createArtifactResolutionResult(Collections.singleton(g2a1)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("", logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals("", helper.logStream.toString());
 		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
 	}
 	
 	@Test
-	public void testMultiDependenciesManyArtifactsEach() {
+	public void testMultiDependenciesManyArtifactsEach() throws MojoExecutionException {
 		
         Artifact g1a1 = createArtifact("g1", "a1");
         Artifact g1a2 = createArtifact("g1", "a2");
@@ -218,46 +152,46 @@ public class CalcWikiFormatClasspathTest {
         Artifact g3a3 = createArtifact("g3", "a3");
         Artifact g3a4 = createArtifact("g3", "a4");
         Artifact g3a5 = createArtifact("g3", "a5");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1, g2a1, g3a3);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1, g2a1, g3a3);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		this.plugin.addDependency(createDependecy("g2","a1"));
-		this.plugin.addDependency(createDependecy("g3","a3"));
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.plugin.addDependency(createDependecy("g2","a1"));
+		helper.plugin.addDependency(createDependecy("g3","a3"));
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g1a1, g1a2, g1a3)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g2a1)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g3a1, g3a2, g3a3, g3a4, g3a5)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("", logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals("", helper.logStream.toString());
 		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a4));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a5));
 	}
 	
 	@Test
-	public void testWithoutDependecyAddedToPluginArtifactsAreNotResolved() {
+	public void testWithoutDependecyAddedToPluginArtifactsAreNotResolved() throws MojoExecutionException {
 		
         Artifact g1a1 = createArtifact("g1", "a1");
         Artifact g1a2 = createArtifact("g1", "a2");
@@ -268,46 +202,46 @@ public class CalcWikiFormatClasspathTest {
         Artifact g3a3 = createArtifact("g3", "a3");
         Artifact g3a4 = createArtifact("g3", "a4");
         Artifact g3a5 = createArtifact("g3", "a5");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1, g2a1, g3a3);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1, g2a1, g3a3);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		this.plugin.addDependency(createDependecy("g2","a1"));
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.plugin.addDependency(createDependecy("g2","a1"));
         // g3 is not added as a dependency
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g1a1, g1a2, g1a3)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g2a1)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g3a1, g3a2, g3a3, g3a4, g3a5)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
-		assertEquals("", logStream.toString());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals("", helper.logStream.toString());
 		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a2));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a3));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a4));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a5));
 	}
 	
 	@Test
-	public void testMissingArtifacts() {
+	public void testMissingArtifacts() throws MojoExecutionException {
 		
         Artifact g1a1 = createArtifact("g1", "a1");
         Artifact g1a2 = createArtifact("g1", "a2");
@@ -318,52 +252,52 @@ public class CalcWikiFormatClasspathTest {
         Artifact g3a3 = createArtifact("g3", "a3");
         Artifact g3a4 = createArtifact("g3", "a4");
         Artifact g3a5 = createArtifact("g3", "a5");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1, g2a1, g3a3);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1, g2a1, g3a3);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		this.plugin.addDependency(createDependecy("g2","a1"));
-		this.plugin.addDependency(createDependecy("g3","a3"));
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.plugin.addDependency(createDependecy("g2","a1"));
+		helper.plugin.addDependency(createDependecy("g3","a3"));
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g1a1, g1a3), Arrays.asList(g1a2)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g2a1)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g3a1, g3a3, g3a4), Arrays.asList(g3a2, g3a5)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
 		assertEquals(String.format(
 		    "[WARNING] Could not resolve artifact: [g1:a2:jar:1.0.0:compile]%n" +
         	"[WARNING] Could not resolve artifact: [g3:a2:jar:1.0.0:compile]%n" +
-			"[WARNING] Could not resolve artifact: [g3:a5:jar:1.0.0:compile]%n"), logStream.toString());
+			"[WARNING] Could not resolve artifact: [g3:a5:jar:1.0.0:compile]%n"), helper.logStream.toString());
 
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a4));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a5));
 	}
 	
 	@Test
-	public void testArtifactResolutionExceptions() {
+	public void testArtifactResolutionExceptions() throws MojoExecutionException {
 		
-		mojo.setLog(new DefaultLog(new PrintStreamLogger(
-			Logger.LEVEL_DEBUG, "test", new PrintStream(logStream))));
+		helper.mojo.setLog(new DefaultLog(new PrintStreamLogger(
+			Logger.LEVEL_DEBUG, "test", new PrintStream(helper.logStream))));
 		
         Artifact g1a1 = createArtifact("g1", "a1");
         Artifact g1a2 = createArtifact("g1", "a2");
@@ -374,47 +308,47 @@ public class CalcWikiFormatClasspathTest {
         Artifact g3a3 = createArtifact("g3", "a3");
         Artifact g3a4 = createArtifact("g3", "a4");
         Artifact g3a5 = createArtifact("g3", "a5");
-		List<Artifact> artifacts = Arrays.asList(this.fitnesseArtifact, g1a1, g2a1, g3a3);
+		List<Artifact> artifacts = Arrays.asList(helper.fitnesseArtifact, g1a1, g2a1, g3a3);
 			
-		this.plugin.addDependency(createDependecy("g1","a1"));
-		this.plugin.addDependency(createDependecy("g2","a1"));
-		this.plugin.addDependency(createDependecy("g3","a3"));
-		mojo.pluginDescriptor.setArtifacts(artifacts);
+		helper.plugin.addDependency(createDependecy("g1","a1"));
+		helper.plugin.addDependency(createDependecy("g2","a1"));
+		helper.plugin.addDependency(createDependecy("g3","a3"));
+		helper.mojo.pluginDescriptor.setArtifacts(artifacts);
 		
-		when(artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
-		    .thenReturn(createArtifactResolutionResult(Collections.singleton(this.fitnesseArtifact)))
+		when(helper.artifactResolver.resolve(any(ArtifactResolutionRequest.class)))
+		    .thenReturn(createArtifactResolutionResult(Collections.singleton(helper.fitnesseArtifact)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g1a1, g1a3), new ArtifactResolutionException("TEST", g1a2)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g2a1)))
 		    .thenReturn(createArtifactResolutionResult(Arrays.asList(g3a1, g3a3, g3a4),
 	    		new MultipleArtifactsNotFoundException(g3a3, Arrays.asList(g3a1, g3a4), Arrays.asList(g3a2, g3a5), null)));
 		
-		assertEquals("\n", mojo.calcWikiFormatClasspath());
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
 		//System.out.print(logStream.toString());
-		assertTrue(logStream.toString().contains(String.format("org.apache.maven.artifact.resolver.ArtifactResolutionException: TEST%n  g1:a2:jar:1.0.0")));
-		assertTrue(logStream.toString().contains(String.format("org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException: Missing:\n----------\n1) g3:a2:jar:1.0.0%n%n")));
-		assertTrue(logStream.toString().contains(String.format("1) g3:a2:jar:1.0.0%n%n  Try downloading the file manually from the project website.")));
-		assertTrue(logStream.toString().contains(String.format("2) g3:a5:jar:1.0.0%n%n  Try downloading the file manually from the project website.")));
-		assertTrue(logStream.toString().contains(String.format("\n----------\n2 required artifacts are missing.\n\nfor artifact: %n  g3:a3:jar:1.0.0")));
+		assertTrue(helper.logStream.toString().contains(String.format("org.apache.maven.artifact.resolver.ArtifactResolutionException: TEST%n  g1:a2:jar:1.0.0")));
+		assertTrue(helper.logStream.toString().contains(String.format("org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException: Missing:\n----------\n1) g3:a2:jar:1.0.0%n%n")));
+		assertTrue(helper.logStream.toString().contains(String.format("1) g3:a2:jar:1.0.0%n%n  Try downloading the file manually from the project website.")));
+		assertTrue(helper.logStream.toString().contains(String.format("2) g3:a5:jar:1.0.0%n%n  Try downloading the file manually from the project website.")));
+		assertTrue(helper.logStream.toString().contains(String.format("\n----------\n2 required artifacts are missing.\n\nfor artifact: %n  g3:a3:jar:1.0.0")));
 		
-		verify(mojo.fitNesseHelper, times(1))
-		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(fitnesseArtifact));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
+		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g1a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g2a1));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a1));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a2));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a3));
-		verify(mojo.fitNesseHelper, times(1))
+		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a4));
-		verify(mojo.fitNesseHelper, never())
+		verify(helper.mojo.fitNesseHelper, never())
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(g3a5));
 	}
 	
@@ -427,7 +361,7 @@ public class CalcWikiFormatClasspathTest {
 	
 	private Artifact createArtifact(String groupId, String artifactId) {
         Artifact artifact = new DefaultArtifact(
-            groupId, artifactId, "1.0.0", "compile", "jar", null, artifactHandler);
+            groupId, artifactId, "1.0.0", "compile", "jar", null, helper.artifactHandler);
         artifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         return artifact;
 	}

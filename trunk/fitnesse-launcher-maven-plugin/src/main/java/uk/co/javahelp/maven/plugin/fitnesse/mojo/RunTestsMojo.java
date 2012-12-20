@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -15,7 +14,6 @@ import org.apache.maven.plugin.surefire.SurefireReportParameters;
 import org.apache.maven.surefire.failsafe.model.FailsafeSummary;
 import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Writer;
 import org.apache.maven.surefire.suite.RunResult;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingResultsListener;
 import fitnesse.junit.JUnitXMLTestListener;
@@ -37,8 +35,6 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 
 	@Override
     public void executeInternal() throws MojoExecutionException, MojoFailureException {
-		setupLocalTestClasspath();
-		
         final ResultsListener resultsListener = new DelegatingResultsListener(
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
         final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);
@@ -69,20 +65,6 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
         }
     }
 	
-	private void setupLocalTestClasspath() throws MojoExecutionException {
-		try {
-			final List<String> runtimeClasspathElements = this.project.getTestClasspathElements();
-			final ClassRealm realm = this.pluginDescriptor.getClassRealm();
-
-			for(final String element : runtimeClasspathElements) {
-			    final File elementFile = new File(element);
-			    realm.addURL(elementFile.toURI().toURL());
-			}
-		} catch (Exception e) {
-            throw new MojoExecutionException("Exception setting up local project test classpath", e);
-		}
-	}
-
     private void writeSummary(FailsafeSummary summary)
             throws MojoExecutionException {
         if (!summaryFile.getParentFile().isDirectory()) {
