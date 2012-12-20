@@ -18,6 +18,8 @@ mvn clean install -P auto
   # The JUnit XML results can be found at target/fitnesse/results
   # The `FitNesse` HTML reports can be found at target/fitnesse/reports
 
+----
+
   * If the automated tests are being run on a server without a display (for example, for continuous integration) then:
   # Make sure Firefox is installed
   # Run the tests using the "headless" profile:
