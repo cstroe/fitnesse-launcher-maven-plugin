@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>FitNesse Launcher Plugin - PMD Results</title>
+    <title>FitNesse Launcher Plugin - Surefire Report</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -63,8 +63,8 @@
                           <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
             </li>
                       <li class="none">
-                          <a href="failsafe-report.html" title="Failsafe Report">Failsafe Report</a>
-            </li>
+            <strong>Failsafe Report</strong>
+          </li>
                       <li class="none">
                           <a href="testapidocs/index.html" title="Test JavaDocs">Test JavaDocs</a>
             </li>
@@ -78,8 +78,8 @@
                           <a href="findbugs.html" title="FindBugs Report">FindBugs Report</a>
             </li>
                       <li class="none">
-            <strong>PMD Report</strong>
-          </li>
+                          <a href="pmd.html" title="PMD Report">PMD Report</a>
+            </li>
                       <li class="none">
                           <a href="cpd.html" title="CPD Report">CPD Report</a>
             </li>
@@ -122,7 +122,23 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>PMD Results<a name="PMD_Results"></a></h2><p>The following document contains the results of <a class="externalLink" href="http://pmd.sourceforge.net/">PMD</a> 4.3.</p></div><div class="section"><h2>Files<a name="Files"></a></h2><div class="section"><h3>uk/co/javahelp/maven/plugin/fitnesse/mojo/SetUpMojo.java<a name="ukcojavahelpmavenpluginfitnessemojoSetUpMojo.java"></a></h3><table border="0" class="bodyTable"><tr class="a"><th>Violation</th><th>Line</th></tr><tr class="b"><td>Too many static imports may lead to messy code</td><td><a href="./xref/uk/co/javahelp/maven/plugin/fitnesse/mojo/SetUpMojo.html#1">1</a> - <a href="./xref/uk/co/javahelp/maven/plugin/fitnesse/mojo/SetUpMojo.html#177">177</a></td></tr></table></div><div class="section"><h3>uk/co/javahelp/maven/plugin/fitnesse/mojo/TearDownMojo.java<a name="ukcojavahelpmavenpluginfitnessemojoTearDownMojo.java"></a></h3><table border="0" class="bodyTable"><tr class="a"><th>Violation</th><th>Line</th></tr><tr class="b"><td>Too many static imports may lead to messy code</td><td><a href="./xref/uk/co/javahelp/maven/plugin/fitnesse/mojo/TearDownMojo.html#1">1</a> - <a href="./xref/uk/co/javahelp/maven/plugin/fitnesse/mojo/TearDownMojo.html#62">62</a></td></tr></table></div><div class="section"><h3>uk/co/javahelp/maven/plugin/fitnesse/mojo/WikiMojo.java<a name="ukcojavahelpmavenpluginfitnessemojoWikiMojo.java"></a></h3><table border="0" class="bodyTable"><tr class="a"><th>Violation</th><th>Line</th></tr><tr class="b"><td>Avoid using java.lang.ThreadGroup; it is not thread safe</td><td><a href="./xref/uk/co/javahelp/maven/plugin/fitnesse/mojo/WikiMojo.html#75">75</a></td></tr></table></div></div>
+        <script type="text/javascript">
+//<![CDATA[
+function toggleDisplay(elementId) {
+ var elm = document.getElementById(elementId + 'error');
+ if (elm && typeof elm.style != "undefined") {
+ if (elm.style.display == "none") {
+ elm.style.display = "";
+ document.getElementById(elementId + 'off').style.display = "none";
+ document.getElementById(elementId + 'on').style.display = "inline";
+ } else if (elm.style.display == "") { elm.style.display = "none";
+ document.getElementById(elementId + 'off').style.display = "inline";
+ document.getElementById(elementId + 'on').style.display = "none";
+ } 
+ } 
+ }
+//]]>
+</script><div class="section"><h2>Surefire Report<a name="Surefire_Report"></a></h2></div><div class="section"><h2>Summary<a name="Summary"></a></h2><a name="Summary"></a><p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br /><table border="1" class="bodyTable"><tr class="a"><th>Tests</th><th>Errors </th><th>Failures</th><th>Skipped</th><th>Success Rate</th><th>Time</th></tr><tr class="b"><td>1</td><td>0</td><td>0</td><td>0</td><td>100%</td><td>64.086</td></tr></table><br /><p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div><div class="section"><h2>Package List<a name="Package_List"></a></h2><a name="Package_List"></a><p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br /><table border="1" class="bodyTable"><tr class="a"><th>Package</th><th>Tests</th><th>Errors </th><th>Failures</th><th>Skipped</th><th>Success Rate</th><th>Time</th></tr><tr class="b"><td><a href="#uk.co.javahelp.maven.plugin.fitnesse.mojo">uk.co.javahelp.maven.plugin.fitnesse.mojo</a></td><td>1</td><td>0</td><td>0</td><td>0</td><td>100%</td><td>64.086</td></tr></table><br /><p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><div class="section"><h3>uk.co.javahelp.maven.plugin.fitnesse.mojo<a name="uk.co.javahelp.maven.plugin.fitnesse.mojo"></a></h3><a name="uk.co.javahelp.maven.plugin.fitnesse.mojo"></a><table border="1" class="bodyTable"><tr class="a"><th></th><th>Class</th><th>Tests</th><th>Errors </th><th>Failures</th><th>Skipped</th><th>Success Rate</th><th>Time</th></tr><tr class="b"><td><a href="#uk.co.javahelp.maven.plugin.fitnesse.mojoClasspathIT"><img src="images/icon_success_sml.gif" alt="" /></a></td><td><a href="#uk.co.javahelp.maven.plugin.fitnesse.mojoClasspathIT">ClasspathIT</a></td><td>1</td><td>0</td><td>0</td><td>0</td><td>100%</td><td>64.086</td></tr></table></div><br /></div><div class="section"><h2>Test Cases<a name="Test_Cases"></a></h2><a name="Test_Cases"></a><p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><div class="section"><h3>ClasspathIT<a name="ClasspathIT"></a></h3><a name="uk.co.javahelp.maven.plugin.fitnesse.mojoClasspathIT"></a><table border="1" class="bodyTable"><tr class="a"><td><img src="images/icon_success_sml.gif" alt="" /></td><td>testRunTests</td><td>64.086</td></tr></table></div><br /></div>
       </div>
     </div>
     <div class="clear">

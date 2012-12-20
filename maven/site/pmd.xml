@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2012-12-14T12:50:01.490">
+<pmd version="4.3" timestamp="2012-12-20T16:07:33.920">
 <file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/SetUpMojo.java">
 <violation beginline="1" endline="177" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="uk.co.javahelp.maven.plugin.fitnesse.mojo" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code

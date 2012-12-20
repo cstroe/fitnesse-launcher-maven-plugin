@@ -26,40 +26,44 @@ public class FitNesseHelper {
 <span class="fc" id="L26">	}</span>
     
     public StringBuilder formatAndAppendClasspathArtifact(final StringBuilder wikiFormatClasspath, final Artifact artifact) {
-<span class="fc" id="L29">       	wikiFormatClasspath.append(&quot;!path &quot;);</span>
-<span class="fc" id="L30">       	wikiFormatClasspath.append(artifact.getFile().getPath());</span>
-<span class="fc" id="L31">       	wikiFormatClasspath.append(&quot;\n&quot;);</span>
-<span class="fc" id="L32">       	return wikiFormatClasspath;</span>
+<span class="fc" id="L29">    	return formatAndAppendClasspath(wikiFormatClasspath, artifact.getFile().getPath());</span>
+	}
+    
+    public StringBuilder formatAndAppendClasspath(final StringBuilder wikiFormatClasspath, final String path) {
+<span class="fc" id="L33">       	wikiFormatClasspath.append(&quot;!path &quot;);</span>
+<span class="fc" id="L34">       	wikiFormatClasspath.append(path);</span>
+<span class="fc" id="L35">       	wikiFormatClasspath.append(&quot;\n&quot;);</span>
+<span class="fc" id="L36">       	return wikiFormatClasspath;</span>
     }
 
 	public void launchFitNesseServer(
     		final String port, final String workingDir, final String root, final String logDir) throws Exception {
-<span class="fc" id="L37">        final Arguments arguments = new Arguments();</span>
-<span class="fc" id="L38">        arguments.setCommand(null);</span>
-<span class="fc" id="L39">        arguments.setInstallOnly(false);</span>
-<span class="fc" id="L40">        arguments.setOmitUpdates(true);</span>
-<span class="fc" id="L41">        arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
-<span class="fc" id="L42">        arguments.setPort(port);</span>
-<span class="fc" id="L43">        arguments.setRootPath(workingDir);</span>
-<span class="fc" id="L44">        arguments.setRootDirectory(root);</span>
-<span class="fc bfc" id="L45" title="All 4 branches covered.">        if(logDir != null &amp;&amp; !logDir.trim().equals(&quot;&quot;))</span>
-<span class="fc" id="L46">            arguments.setLogDirectory(logDir);</span>
-<span class="fc" id="L47">        FitNesseMain.launchFitNesse(arguments);</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L41">        final Arguments arguments = new Arguments();</span>
+<span class="fc" id="L42">        arguments.setCommand(null);</span>
+<span class="fc" id="L43">        arguments.setInstallOnly(false);</span>
+<span class="fc" id="L44">        arguments.setOmitUpdates(true);</span>
+<span class="fc" id="L45">        arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
+<span class="fc" id="L46">        arguments.setPort(port);</span>
+<span class="fc" id="L47">        arguments.setRootPath(workingDir);</span>
+<span class="fc" id="L48">        arguments.setRootDirectory(root);</span>
+<span class="fc bfc" id="L49" title="All 4 branches covered.">        if(logDir != null &amp;&amp; !logDir.trim().equals(&quot;&quot;))</span>
+<span class="fc" id="L50">            arguments.setLogDirectory(logDir);</span>
+<span class="fc" id="L51">        FitNesseMain.launchFitNesse(arguments);</span>
+<span class="fc" id="L52">    }</span>
 
 	public void shutdownFitNesseServer(final String port) {
         try {
-<span class="fc" id="L52">			Shutdown.main(new String[]{&quot;-p&quot;, port});</span>
-<span class="fc" id="L53">		} catch (ConnectException e) {</span>
+<span class="fc" id="L56">			Shutdown.main(new String[]{&quot;-p&quot;, port});</span>
+<span class="fc" id="L57">		} catch (ConnectException e) {</span>
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">			if(!e.getMessage().startsWith(&quot;Connection refused&quot;)) {</span>
-<span class="nc" id="L57">               	this.log.error(e);</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">			if(!e.getMessage().startsWith(&quot;Connection refused&quot;)) {</span>
+<span class="nc" id="L61">               	this.log.error(e);</span>
 			}
-<span class="fc" id="L59">		} catch (Exception e) {</span>
-<span class="fc" id="L60">           	this.log.error(e);</span>
-<span class="fc" id="L61">		}</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L63">		} catch (Exception e) {</span>
+<span class="fc" id="L64">           	this.log.error(e);</span>
+<span class="fc" id="L65">		}</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Note: Through experiment I've found that we can safely send duplicate 'create SymLink' requests - FitNesse isn't bothered
@@ -68,62 +72,62 @@ public class FitNesseHelper {
      */
     public int createSymLink(final String suite, final String test,
     		final File basedir, final String testResourceDirectory, final int port) throws IOException {
-<span class="fc" id="L71">        final String linkName = calcLinkName(suite, test);</span>
-<span class="fc" id="L72">        final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);</span>
+<span class="fc" id="L75">        final String linkName = calcLinkName(suite, test);</span>
+<span class="fc" id="L76">        final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);</span>
 
-<span class="fc" id="L74">        HttpURLConnection connection = null;</span>
+<span class="fc" id="L78">        HttpURLConnection connection = null;</span>
         try {
-<span class="fc" id="L76">            final String urlPath = </span>
+<span class="fc" id="L80">            final String urlPath = </span>
                 String.format(&quot;/root?responder=symlink&amp;linkName=%s&amp;linkPath=%s&amp;submit=%s&quot;,
                 URLEncoder.encode(linkName, UTF8), URLEncoder.encode(linkPath, UTF8), URLEncoder.encode(&quot;Create/Replace&quot;, UTF8));
-<span class="fc" id="L79">            final URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, port, urlPath);</span>
-<span class="fc" id="L80">            this.log.info(&quot;Calling &quot; + url);</span>
-<span class="fc" id="L81">            connection = (HttpURLConnection) url.openConnection();</span>
-<span class="fc" id="L82">            connection.setRequestMethod(&quot;GET&quot;);</span>
-<span class="fc" id="L83">            connection.connect();</span>
-<span class="fc" id="L84">            final int responseCode = connection.getResponseCode();</span>
-<span class="fc" id="L85">            this.log.info(&quot;Response code: &quot; + responseCode);</span>
-<span class="fc" id="L86">            return responseCode;</span>
+<span class="fc" id="L83">            final URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, port, urlPath);</span>
+<span class="fc" id="L84">            this.log.info(&quot;Calling &quot; + url);</span>
+<span class="fc" id="L85">            connection = (HttpURLConnection) url.openConnection();</span>
+<span class="fc" id="L86">            connection.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L87">            connection.connect();</span>
+<span class="fc" id="L88">            final int responseCode = connection.getResponseCode();</span>
+<span class="fc" id="L89">            this.log.info(&quot;Response code: &quot; + responseCode);</span>
+<span class="fc" id="L90">            return responseCode;</span>
         } finally {
-<span class="pc bpc" id="L88" title="2 of 4 branches missed.">            if(connection != null) {</span>
-<span class="fc" id="L89">                connection.disconnect();</span>
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">            if(connection != null) {</span>
+<span class="fc" id="L93">                connection.disconnect();</span>
             }
         }
     }
 
     public String[] calcPageNameAndType(final String suite, final String test) {
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        final boolean haveSuite = !isBlank(suite);</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        final boolean haveTest = !isBlank(test);</span>
-<span class="fc bfc" id="L97" title="All 4 branches covered.">        if (!haveSuite &amp;&amp; !haveTest) {</span>
-<span class="fc" id="L98">            throw new IllegalArgumentException(&quot;No suite or test page specified&quot;);</span>
-<span class="fc bfc" id="L99" title="All 4 branches covered.">        } else if (haveSuite &amp;&amp; haveTest) {</span>
-<span class="fc" id="L100">            throw new IllegalArgumentException(&quot;Suite and test page parameters are mutually exclusive&quot;);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        final boolean haveSuite = !isBlank(suite);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        final boolean haveTest = !isBlank(test);</span>
+<span class="fc bfc" id="L101" title="All 4 branches covered.">        if (!haveSuite &amp;&amp; !haveTest) {</span>
+<span class="fc" id="L102">            throw new IllegalArgumentException(&quot;No suite or test page specified&quot;);</span>
+<span class="fc bfc" id="L103" title="All 4 branches covered.">        } else if (haveSuite &amp;&amp; haveTest) {</span>
+<span class="fc" id="L104">            throw new IllegalArgumentException(&quot;Suite and test page parameters are mutually exclusive&quot;);</span>
         }
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">        final String pageName = (haveSuite) ? suite : test;</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        final String pageType = (haveSuite) ? TestHelper.PAGE_TYPE_SUITE : TestHelper.PAGE_TYPE_TEST;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        final String pageName = (haveSuite) ? suite : test;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        final String pageType = (haveSuite) ? TestHelper.PAGE_TYPE_SUITE : TestHelper.PAGE_TYPE_TEST;</span>
 
-<span class="fc" id="L106">        return new String[] { pageName, pageType };</span>
+<span class="fc" id="L110">        return new String[] { pageName, pageType };</span>
     }
 
     private String calcLinkName(final String suite, final String test) {
-<span class="fc" id="L110">        final String[] pageNameAndType = calcPageNameAndType(suite, test);</span>
-<span class="fc" id="L111">        return pageNameAndType[0];</span>
+<span class="fc" id="L114">        final String[] pageNameAndType = calcPageNameAndType(suite, test);</span>
+<span class="fc" id="L115">        return pageNameAndType[0];</span>
     }
 
     private String calcLinkPath(final String linkName, final File basedir, final String testResourceDirectory) {
-<span class="fc" id="L115">        final StringBuilder linkPath = new StringBuilder(</span>
+<span class="fc" id="L119">        final StringBuilder linkPath = new StringBuilder(</span>
             basedir.toURI().toString()
                 .replaceFirst(&quot;/[A-Z]:&quot;, &quot;&quot;)
 				.replaceFirst(&quot;:&quot;, &quot;://&quot;));
-<span class="fc" id="L119">		linkPath.append(testResourceDirectory);</span>
-<span class="fc" id="L120">		linkPath.append(&quot;/&quot;);</span>
-<span class="fc" id="L121">		linkPath.append(linkName);</span>
-<span class="fc" id="L122">		return linkPath.toString();</span>
+<span class="fc" id="L123">		linkPath.append(testResourceDirectory);</span>
+<span class="fc" id="L124">		linkPath.append(&quot;/&quot;);</span>
+<span class="fc" id="L125">		linkPath.append(linkName);</span>
+<span class="fc" id="L126">		return linkPath.toString();</span>
     }
 
     public static boolean isBlank(final String string) {
-<span class="fc bfc" id="L126" title="All 4 branches covered.">        return string == null || string.trim().equals(&quot;&quot;);</span>
+<span class="fc bfc" id="L130" title="All 4 branches covered.">        return string == null || string.trim().equals(&quot;&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>
