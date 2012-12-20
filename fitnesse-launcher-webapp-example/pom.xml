@@ -163,10 +163,4 @@
 		</profile>
 	</profiles>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>maven-googlecode-plugin</id>
-			<url>http://maven-googlecode-plugin.googlecode.com/svn/maven2</url>
-		</pluginRepository>
-	</pluginRepositories>
 </project>
