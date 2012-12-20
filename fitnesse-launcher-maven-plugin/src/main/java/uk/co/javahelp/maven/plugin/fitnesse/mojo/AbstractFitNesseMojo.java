@@ -16,13 +16,13 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
@@ -181,7 +181,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
     private static final String LOG_LINE = "------------------------------------------------------------------------";
         
-    protected void exportProperties() {
+    protected void exportProperties() throws MojoExecutionException {
         final Properties projectProperties = this.project.getProperties();
         getLog().info(LOG_LINE);
         final String mavenClasspath = calcWikiFormatClasspath();
@@ -211,7 +211,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         }
     }
 
-    protected String calcWikiFormatClasspath() {
+    protected String calcWikiFormatClasspath() throws MojoExecutionException {
         final Set<Artifact> artifacts = new HashSet<Artifact>();
         
         // We should always have FitNesse itself on the FitNesse classpath!
@@ -225,11 +225,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         	artifacts.addAll(resolveDependencyKey(key));
         }
         final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
-        final Build build = this.project.getBuild();
-        // Put the test classes earlier on the classpath, in case
-        // a project wants to overwrite a class or two when testing
-        this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, build.getTestOutputDirectory());
-        this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, build.getOutputDirectory());
+	    setupLocalTestClasspath(wikiFormatClasspath);
         for (Artifact artifact : artifacts) {
             if(artifact.getFile() != null) {
                 getLog().debug(String.format("Adding artifact to FitNesse classpath [%s]", artifact));
@@ -240,6 +236,21 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         }
         return wikiFormatClasspath.toString();
     }
+
+	private void setupLocalTestClasspath(final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
+		try {
+			final List<String> runtimeClasspathElements = this.project.getTestClasspathElements();
+			final ClassRealm realm = this.pluginDescriptor.getClassRealm();
+
+			for(final String element : runtimeClasspathElements) {
+                this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, element);
+			    final File elementFile = new File(element);
+			    realm.addURL(elementFile.toURI().toURL());
+			}
+		} catch (Exception e) {
+            throw new MojoExecutionException("Exception setting up local project test classpath", e);
+		}
+	}
 
     private Set<Artifact> resolveDependencyKey(final String key) {
        	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);
