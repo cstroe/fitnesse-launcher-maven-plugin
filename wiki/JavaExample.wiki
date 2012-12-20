@@ -1,9 +1,7 @@
 #summary An example Java Maven Project
 #labels Featured
 
-== An example project configuration (pom.xml)
-for using fitnesse-launcher-maven-plugin
-to execute FitNesse integration tests for a simple java project ==
+== An example project configuration (pom.xml, etc) for using fitnesse-launcher-maven-plugin to execute `FitNesse` integration tests for a simple java project ==
 
   # [http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-java-example/ Download the example java maven project]
   # Run `FitNesse` as a wiki server using:
