@@ -24,7 +24,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- These next 3 are the default values anyway. -->
+		<!-- These next 3 are the default values anyway -->
 		<fitnesse.port>8787</fitnesse.port>
 		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
 		<fitnesse.root>FitNesseRoot</fitnesse.root>
