@@ -31,7 +31,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * The Maven Session Object
      *
-     * @parameter expression="${session}"
+     * @parameter property="session"
      * @required
      * @readonly
      */
@@ -57,7 +57,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * Location of the local repository.
      *
-     * @parameter expression="${localRepository}"
+     * @parameter property="localRepository"
      * @readonly
      * @required
      */
@@ -66,7 +66,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * List of Remote Repositories used by the resolver
      *
-     * @parameter expression="${project.remoteArtifactRepositories}"
+     * @parameter property="project.remoteArtifactRepositories"
      * @readonly
      * @required
      */
@@ -74,39 +74,39 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     
     /**
      * Maven project, to be injected by Maven itself.
-     * @parameter expression="${project}"
+     * @parameter property="project"
      * @required
      */
     protected MavenProject project;
     
     /**
-     * @parameter expression="${plugin}"
+     * @parameter property="plugin"
      * @required
      */
     protected PluginDescriptor pluginDescriptor;
 
     /**
-     * @parameter expression="${fitnesse.port}" default-value="9123"
+     * @parameter property="fitnesse.port" default-value="9123"
      */
     protected Integer port;
 
     /**
-     * @parameter expression="${fitnesse.test.resource.directory}" default-value="src/test/fitnesse"
+     * @parameter property="fitnesse.test.resource.directory" default-value="src/test/fitnesse"
      */
     protected String testResourceDirectory;
 
     /**
-     * @parameter expression="${fitnesse.working}" default-value="${project.build.directory}/fitnesse"
+     * @parameter property="fitnesse.working" default-value="${project.build.directory}/fitnesse"
      */
     protected String workingDir;
 
     /**
-     * @parameter expression="${fitnesse.root}" default-value="FitNesseRoot"
+     * @parameter property="fitnesse.root" default-value="FitNesseRoot"
      */
     protected String root;
 
     /**
-     * @parameter expression="${fitnesse.logDir}"
+     * @parameter property="fitnesse.logDir"
      */
     protected String logDir;
 
@@ -120,7 +120,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse,
      * let 'createSymLink' be 'false'.
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
-     * @parameter expression="${fitnesse.createSymLink}"
+     * @parameter property="fitnesse.createSymLink"
      */
     protected boolean createSymLink;
 
@@ -149,22 +149,22 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     protected File reportsDir;
 
     /**
-     * @parameter expression="${fitnesse.suite}"
+     * @parameter property="fitnesse.suite"
      */
     protected String suite;
 
     /**
-     * @parameter expression="${fitnesse.test}"
+     * @parameter property="fitnesse.test"
      */
     protected String test;
 
     /**
-     * @parameter expression="${fitnesse.suiteFilter}"
+     * @parameter property="fitnesse.suiteFilter"
      */
     protected String suiteFilter;
 
     /**
-     * @parameter expression="${fitnesse.excludeSuiteFilter}"
+     * @parameter property="fitnesse.excludeSuiteFilter"
      */
     protected String excludeSuiteFilter;
     

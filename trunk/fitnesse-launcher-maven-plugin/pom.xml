@@ -13,12 +13,12 @@
 	    Provides ability to launch FitNesse as a wiki server,
 	    or automatically run FitNesse tests as part of a
 	    standard integration-test / verify build.
-	    Allows configuration of FitNesse's classpath
-	    through plugin dependencies,
+	    Allows configuration of FitNesse's classpath through plugin dependencies,
 	    and injects all Maven project properties as FitNesse variables,
 	    ( which can be overridden from the command line using '-D' ).
     </description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin</url>
+	<inceptionYear>2012</inceptionYear>
 
 	<licenses>
 		<license>
@@ -290,7 +290,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>2.9</version>
+				<version>3.2</version>
 				<configuration>
 					<goalPrefix>fitnesse</goalPrefix>
 				</configuration>
@@ -348,11 +348,20 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
+							<version>2.6</version>
 							<!-- http://jira.codehaus.org/browse/MPIR-137 -->
 							<configuration>
 								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
 								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-plugin-plugin</artifactId>
+							<version>3.2</version>
+							<configuration>
+								<goalPrefix>fitnesse</goalPrefix>
+								<detail>true</detail>
 							</configuration>
 						</plugin>
 						<plugin>
