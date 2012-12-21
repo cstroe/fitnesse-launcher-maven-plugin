@@ -31,7 +31,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     /**
      * The Maven Session Object
      *
-     * @parameter expression=&quot;${session}&quot;
+     * @parameter property=&quot;session&quot;
      * @required
      * @readonly
      */
@@ -57,7 +57,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     /**
      * Location of the local repository.
      *
-     * @parameter expression=&quot;${localRepository}&quot;
+     * @parameter property=&quot;localRepository&quot;
      * @readonly
      * @required
      */
@@ -66,7 +66,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     /**
      * List of Remote Repositories used by the resolver
      *
-     * @parameter expression=&quot;${project.remoteArtifactRepositories}&quot;
+     * @parameter property=&quot;project.remoteArtifactRepositories&quot;
      * @readonly
      * @required
      */
@@ -74,39 +74,39 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     
     /**
      * Maven project, to be injected by Maven itself.
-     * @parameter expression=&quot;${project}&quot;
+     * @parameter property=&quot;project&quot;
      * @required
      */
     protected MavenProject project;
     
     /**
-     * @parameter expression=&quot;${plugin}&quot;
+     * @parameter property=&quot;plugin&quot;
      * @required
      */
     protected PluginDescriptor pluginDescriptor;
 
     /**
-     * @parameter expression=&quot;${fitnesse.port}&quot; default-value=&quot;9123&quot;
+     * @parameter property=&quot;fitnesse.port&quot; default-value=&quot;9123&quot;
      */
     protected Integer port;
 
     /**
-     * @parameter expression=&quot;${fitnesse.test.resource.directory}&quot; default-value=&quot;src/test/fitnesse&quot;
+     * @parameter property=&quot;fitnesse.test.resource.directory&quot; default-value=&quot;src/test/fitnesse&quot;
      */
     protected String testResourceDirectory;
 
     /**
-     * @parameter expression=&quot;${fitnesse.working}&quot; default-value=&quot;${project.build.directory}/fitnesse&quot;
+     * @parameter property=&quot;fitnesse.working&quot; default-value=&quot;${project.build.directory}/fitnesse&quot;
      */
     protected String workingDir;
 
     /**
-     * @parameter expression=&quot;${fitnesse.root}&quot; default-value=&quot;FitNesseRoot&quot;
+     * @parameter property=&quot;fitnesse.root&quot; default-value=&quot;FitNesseRoot&quot;
      */
     protected String root;
 
     /**
-     * @parameter expression=&quot;${fitnesse.logDir}&quot;
+     * @parameter property=&quot;fitnesse.logDir&quot;
      */
     protected String logDir;
 
@@ -120,7 +120,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
      * If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse,
      * let 'createSymLink' be 'false'.
      * @see &lt;a href=&quot;http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks&quot;&gt;FitNesse SymLink User Guide&lt;/a&gt;
-     * @parameter expression=&quot;${fitnesse.createSymLink}&quot;
+     * @parameter property=&quot;fitnesse.createSymLink&quot;
      */
     protected boolean createSymLink;
 
@@ -149,22 +149,22 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     protected File reportsDir;
 
     /**
-     * @parameter expression=&quot;${fitnesse.suite}&quot;
+     * @parameter property=&quot;fitnesse.suite&quot;
      */
     protected String suite;
 
     /**
-     * @parameter expression=&quot;${fitnesse.test}&quot;
+     * @parameter property=&quot;fitnesse.test&quot;
      */
     protected String test;
 
     /**
-     * @parameter expression=&quot;${fitnesse.suiteFilter}&quot;
+     * @parameter property=&quot;fitnesse.suiteFilter&quot;
      */
     protected String suiteFilter;
 
     /**
-     * @parameter expression=&quot;${fitnesse.excludeSuiteFilter}&quot;
+     * @parameter property=&quot;fitnesse.excludeSuiteFilter&quot;
      */
     protected String excludeSuiteFilter;
     
