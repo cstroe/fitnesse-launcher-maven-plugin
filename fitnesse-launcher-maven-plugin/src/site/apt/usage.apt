@@ -1,0 +1,81 @@
+ ------
+ Usage
+ ------
+ Stewart Cambridge
+ ------
+
+
+Usage
+
+  This Maven Plugin directly launches FitNesse integration test server.
+  
+* Run FitNesse as a wiki server
+
+  * To use <<<FitNesse>>> as a wiki server, configure the plugin thus:
+  
++-----+
+<build>
+	<plugins>
+		<plugin>
+			<groupId>uk.co.javahelp.fitnesse</groupId>
+			<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+			<executions>
+				<execution>
+					<goals>
+						<goal>set-up</goal>
+						<goal>wiki</goal>
+						<goal>tear-down</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
++-----+
+
+  * Then run Maven using:
+
++-----+
+mvn install
++-----+
+
+  * Shut down the wiki server using:
+
++-----+
+mvn fitnesse:shutdown
++-----+
+
+* Run FitNesse automated integration tests
+
+  * To use <<<FitNesse>>> to produce JUnit compatible automated test reports, configure the plugin thus:
+  
++-----+
+<build>
+	<plugins>
+		<plugin>
+			<groupId>uk.co.javahelp.fitnesse</groupId>
+			<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+			<executions>
+				<execution>
+					<goals>
+						<goal>set-up</goal>
+						<goal>run-tests</goal>
+						<goal>tear-down</goal>
+						<goal>verify</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
++-----+
+
+  * Then run Maven using:
+
++-----+
+mvn install
++-----+
+
+  * The JUnit XML results can be found at <<<target/fitnesse/results>>>.
+  
+  * The FitNesse HTML reports can be found at <<<target/fitnesse/reports>>>.

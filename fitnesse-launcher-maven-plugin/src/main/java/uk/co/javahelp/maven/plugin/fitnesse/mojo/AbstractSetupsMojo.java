@@ -10,14 +10,14 @@ import org.apache.maven.project.MavenProject;
 public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.AbstractMojo {
     
     /**
-     * @parameter expression="${plugin}"
+     * @parameter property="plugin"
      * @required
      */
     protected PluginDescriptor pluginDescriptor;
     
     /**
      * Maven project, to be injected by Maven itself.
-     * @parameter expression="${project}"
+     * @parameter property="project"
      * @required
      */
     protected MavenProject project;
@@ -25,7 +25,7 @@ public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.Abstrac
     /**
      * The Maven Session Object
      *
-     * @parameter expression="${session}"
+     * @parameter property="session"
      * @required
      * @readonly
      */
@@ -40,7 +40,7 @@ public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.Abstrac
     protected BuildPluginManager pluginManager;
     
     /**
-     * @parameter expression="${fitnesse.working}" default-value="${project.build.directory}/fitnesse"
+     * @parameter property="fitnesse.working" default-value="${project.build.directory}/fitnesse"
      */
     protected String workingDir;
     
