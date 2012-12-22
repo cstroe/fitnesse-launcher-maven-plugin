@@ -32,8 +32,8 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * The Maven Session Object
      *
      * @parameter property="session"
-     * @required
      * @readonly
+     * @required
      */
     protected MavenSession session;
 
@@ -41,6 +41,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * The Maven BuildPluginManager Object
      *
      * @component
+     * @readonly
      * @required
      */
     protected BuildPluginManager pluginManager;
@@ -49,8 +50,8 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * Used to look up Artifacts in the remote repository.
      * 
      * @component role="org.apache.maven.artifact.resolver.ArtifactResolver"
-     * @required
      * @readonly
+     * @required
      */
     protected ArtifactResolver resolver;
 
@@ -75,12 +76,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * Maven project, to be injected by Maven itself.
      * @parameter property="project"
+     * @readonly
      * @required
      */
     protected MavenProject project;
     
     /**
      * @parameter property="plugin"
+     * @readonly
      * @required
      */
     protected PluginDescriptor pluginDescriptor;
@@ -125,14 +128,6 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     protected boolean createSymLink;
 
     /**
-     * The summary file to write integration test results to.
-     * 
-     * @parameter expression="${fitnesse.working}/results/failsafe-summary.xml"
-     * @required
-     */
-    protected File summaryFile;
-
-    /**
      * This is where build results go.
      * 
      * @parameter default-value="${fitnesse.working}/results"
@@ -147,6 +142,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * @required
      */
     protected File reportsDir;
+
+    /**
+     * The summary file to write integration test results to.
+     * 
+     * @parameter default-value="${fitnesse.working}/results/failsafe-summary.xml"
+     * @required
+     */
+    protected File summaryFile;
 
     /**
      * @parameter property="fitnesse.suite"

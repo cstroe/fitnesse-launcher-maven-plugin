@@ -21,9 +21,13 @@
 		</menu>
 
 		<menu name="Examples">
-			<item name="Simple Java Project"
+			<item name="Example Java Project"
 				href="http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/JavaExample" />
-			<item name="Simple Webapp Project"
+			<item name="Example Spring Project"
+				href="http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SpringExample" />
+			<item name="Example SQL Project"
+				href="http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SqlExample" />
+			<item name="Example Webapp Project"
 				href="http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample" />
 		</menu>
 

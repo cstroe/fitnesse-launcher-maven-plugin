@@ -52,6 +52,10 @@
 		<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/list</url>
 	</issueManagement>
 
+    <prerequisites>
+	    <maven>3.0.1</maven>
+	</prerequisites>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -344,6 +348,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
+				    <relativizeDecorationLinks>false</relativizeDecorationLinks>
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>

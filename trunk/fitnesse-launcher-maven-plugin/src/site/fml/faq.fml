@@ -2,9 +2,9 @@
 <faqs id="FAQ" title="Frequently Asked Questions">
   <part id="Running FitNesse using Maven">
     <faq id="help">
-      <question>I ran '<code>mvn fitnesse:help</code>', but I got the help for <em>org.codehaus.mojo:fitnesse-maven-plugin</em> instead. What gives?</question>
+      <question>I ran '<code>mvn fitnesse:help</code>', but I got the help for <code>org.codehaus.mojo:fitnesse-maven-plugin</code> instead. What gives?</question>
       <answer>
-<p><em>org.codehaus.mojo:fitnesse-maven-plugin</em> is the default plugin for the goal prefix '<code>fitnesse</code>'.</p>
+<p><code>org.codehaus.mojo:fitnesse-maven-plugin</code> is the default plugin for the goal prefix '<code>fitnesse</code>'.</p>
 <p>In order to use the goal prefix '<code>fitnesse</code>' with <strong>FitNesse Launcher</strong>, the plugin needs to be configured in your pom.xml.</p>
 <p>To use <strong>FitNesse Launcher</strong> without configuring your pom.xml, use the goal prefix '<code>fitnesse-launcher</code>'.</p>
 <p>For example:<pre>mvn fitnesse-launcher:set-up fitnesse-launcher:wiki</pre></p>
