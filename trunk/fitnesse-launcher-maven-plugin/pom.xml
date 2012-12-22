@@ -52,8 +52,8 @@
 		<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/list</url>
 	</issueManagement>
 
-    <prerequisites>
-	    <maven>3.0.1</maven>
+	<prerequisites>
+		<maven>3.0.1</maven>
 	</prerequisites>
 
 	<properties>
@@ -348,7 +348,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-				    <relativizeDecorationLinks>false</relativizeDecorationLinks>
+					<relativizeDecorationLinks>false</relativizeDecorationLinks>
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -518,6 +518,18 @@
 								<range>30</range>
 								<headingDateFormat>dd MMM yyyy</headingDateFormat>
 							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>license-maven-plugin</artifactId>
+							<version>1.3</version>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>third-party-report</report>
+									</reports>
+								</reportSet>
+							</reportSets>
 						</plugin>
 					</reportPlugins>
 				</configuration>
