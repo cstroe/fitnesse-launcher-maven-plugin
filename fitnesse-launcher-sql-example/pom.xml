@@ -87,7 +87,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.3</version>
+				<version>1.7</version>
 				<executions>
 					<execution>
 						<id>start-derby-network-server</id>
@@ -96,14 +96,14 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<java fork="true" spawn="true" classpathref="maven.runtime.classpath"
 									classname="org.apache.derby.drda.NetworkServerControl">
 									<arg value="start" />
 									<arg value="-noSecurityManager" />
 								</java>
 								<sleep milliseconds="1000" />
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
