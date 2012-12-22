@@ -59,7 +59,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<it.artifactId>fitnesse-launcher-java-example</it.artifactId>
+		<it.java.artifactId>fitnesse-launcher-java-example</it.java.artifactId>
+		<it.spring.artifactId>fitnesse-launcher-spring-example</it.spring.artifactId>
+		<it.sql.artifactId>fitnesse-launcher-sql-example</it.sql.artifactId>
+		<it.webapp.artifactId>fitnesse-launcher-webapp-example</it.webapp.artifactId>
 	</properties>
 
 	<dependencies>
@@ -254,15 +257,37 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<outputDirectory>${project.build.directory}/it</outputDirectory>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
 							<artifactItems>
 								<artifactItem>
+									<artifactId>${it.java.artifactId}</artifactId>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>${it.artifactId}</artifactId>
 									<version>${project.version}</version>
 									<classifier>src</classifier>
 									<type>zip</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${project.build.directory}/it</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<artifactId>${it.spring.artifactId}</artifactId>
+									<groupId>${project.groupId}</groupId>
+									<version>${project.version}</version>
+									<classifier>src</classifier>
+									<type>zip</type>
+								</artifactItem>
+								<artifactItem>
+									<artifactId>${it.sql.artifactId}</artifactId>
+									<groupId>${project.groupId}</groupId>
+									<version>${project.version}</version>
+									<classifier>src</classifier>
+									<type>zip</type>
+								</artifactItem>
+								<artifactItem>
+									<artifactId>${it.webapp.artifactId}</artifactId>
+									<groupId>${project.groupId}</groupId>
+									<version>${project.version}</version>
+									<classifier>src</classifier>
+									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -278,8 +303,10 @@
 						<maven.test.tmpdir>${project.build.directory}/it</maven.test.tmpdir>
 						<maven.repo.local>${project.build.directory}/it-repo</maven.repo.local>
 						<it.groupId>${project.groupId}</it.groupId>
-						<it.artifactId>${it.artifactId}</it.artifactId>
 						<it.version>${project.version}</it.version>
+						<it.artifactIds>${it.java.artifactId},${it.spring.artifactId},${it.sql.artifactId},${it.webapp.artifactId}</it.artifactIds>
+						<it.artifact.testCounts>38,4,26,4</it.artifact.testCounts>
+						<it.artifact.extensions>jar,jar,jar,war</it.artifact.extensions>
 					</systemPropertyVariables>
 				</configuration>
 				<executions>
