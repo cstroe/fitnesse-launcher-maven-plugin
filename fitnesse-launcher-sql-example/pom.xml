@@ -8,6 +8,14 @@
 	<version>1.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+	<name>FitNesse Launcher Plugin - Example SQL Project</name>
+	<description>
+        This pom.xml contains example configuration
+		for using fitnesse-launcher-maven-plugin
+		to execute FitNesse integration tests for an SQL project.
+	</description>
+	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SqlExample</url>
+
 	<scm>
 		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-sql-example</url>
 		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-sql-example</connection>
@@ -220,6 +228,10 @@
 	<profiles>
 		<profile>
 			<id>wiki</id>
+			<!-- 
+                This profile is for use when writing tests using the FitNesse wiki.
+				Simply run 'mvn verify -P wiki' and use a browser to visit http://localhost:9123/SqlExample
+			 -->
 			<build>
 				<plugins>
 					<plugin>
@@ -240,6 +252,9 @@
 		</profile>
 		<profile>
 			<id>auto</id>
+			<!-- 
+                This profile will boot FitNesse to automatically run the configured test suite.
+			 -->
 			<build>
 				<plugins>
 					<plugin>
