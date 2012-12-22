@@ -12,7 +12,7 @@ import fitnesse.Arguments;
 public class ShutdownMojo extends org.apache.maven.plugin.AbstractMojo {
 	
     /**
-     * @parameter expression="${fitnesse.port}" default-value="9123"
+     * @parameter property="fitnesse.port" default-value="9123"
      */
     private String port = Integer.toString(Arguments.DEFAULT_COMMAND_PORT);
 

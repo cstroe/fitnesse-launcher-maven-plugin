@@ -9,34 +9,125 @@ Usage
 
   This Maven Plugin directly launches FitNesse integration test server.
   
+* Basic configuration
+
+  * Advised project directory structure:
+  
++-----+
++- src/
+   +- main/
+   |  +- java/
+   |  +- resources/
+   |  +- webapp/
+   +- test/
+   |  +- java/
+   |  +- resources/
+   |  +- fitnesse/
+   |     +- MyTestSuite
+   |        +- SetUp
+   |        |  +- content.txt
+   |        |  +- properties.xml
+   |        +- AnIndividualTest
+   |        |  +- content.txt
+   |        |  +- properties.xml
+   |        +- content.txt
+   |        +- properties.xml
+   +- pom.xml
++-----+
+
+  * pom.xml configuration:
+  
++-----+
+<project>
+    [...]
+    <properties>
+        <!-- Any properties will be available to FitNesse using '${}' syntax -->
+    </properties>
+    [...]
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>uk.co.javahelp.fitnesse</groupId>
+                <artifactId>fitnesse-launcher-maven-plugin</artifactId>
+                <configuration>
+                       <!-- These next 7 are the default values -->
+                    <port>9123</port>
+                    <workingDir>${project.build.directory}/fitnesse</workingDir>
+                    <root>FitNesseRoot</root>
+                    <testResourceDirectory>src/test/fitnesse</testResourceDirectory>
+                    <reportsDir>${fitnesse.working}/reports</reportsDir>
+                    <resultsDir>${fitnesse.working}/results</resultsDir>
+                    <summaryFile>${fitnesse.working}/results/failsafe-summary.xml</summaryFile>
+                    
+                    <!--
+                        Only your project specific FitNesse tests need go under src/test/fitnesse.
+                        By setting 'createSymLink' to 'true', fitnesse-launcher-maven-plugin will
+                        create a FitNesse SymLink directly from its working directory to your test suite
+                        under src/test/fitnesse. This is most useful when developing tests in 'wiki' mode,
+                        as then you can directly scm commit your changes to the wiki test pages.
+                    
+                        If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse
+                        or use some other mechanism, let 'createSymLink' be 'false'.
+                    -->
+                    <createSymLink>true</createSymLink>
+                    
+                    <!-- Only configure 1 of the following 2 -->
+                    <suite>MyTestSuite</suite>
+                    <test>MyTestSuite.AnIndividualTest</test>
+                </configuration>
+                <dependencies>
+                <!--
+                    Any dependency (including transitive dependencies) placed here
+                    will be available to FitNesse in the variable ${maven.classpath}
+                -->
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+    [...]
+</project>
++-----+
+
+  * Then configure your classpath in FitNesse with:
+  
++-----+
+!*> '''Classpath'''
+${maven.classpath}
+*!
++-----+
+
 * Run FitNesse as a wiki server
 
   * To use <<<FitNesse>>> as a wiki server, configure the plugin thus:
   
 +-----+
-<build>
-	<plugins>
-		<plugin>
-			<groupId>uk.co.javahelp.fitnesse</groupId>
-			<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-			<executions>
-				<execution>
-					<goals>
-						<goal>set-up</goal>
-						<goal>wiki</goal>
-						<goal>tear-down</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-</build>
+<project>
+    [...]
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>uk.co.javahelp.fitnesse</groupId>
+                <artifactId>fitnesse-launcher-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>set-up</goal>
+                            <goal>wiki</goal>
+                            <goal>tear-down</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    [...]
+</project>
 +-----+
 
   * Then run Maven using:
 
 +-----+
-mvn install
+mvn verify
 +-----+
 
   * Shut down the wiki server using:
@@ -50,30 +141,34 @@ mvn fitnesse:shutdown
   * To use <<<FitNesse>>> to produce JUnit compatible automated test reports, configure the plugin thus:
   
 +-----+
-<build>
-	<plugins>
-		<plugin>
-			<groupId>uk.co.javahelp.fitnesse</groupId>
-			<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-			<executions>
-				<execution>
-					<goals>
-						<goal>set-up</goal>
-						<goal>run-tests</goal>
-						<goal>tear-down</goal>
-						<goal>verify</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-</build>
+<project>
+    [...]
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>uk.co.javahelp.fitnesse</groupId>
+                <artifactId>fitnesse-launcher-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>set-up</goal>
+                            <goal>run-tests</goal>
+                            <goal>tear-down</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    [...]
+</project>
 +-----+
 
   * Then run Maven using:
 
 +-----+
-mvn install
+mvn verify
 +-----+
 
   * The JUnit XML results can be found at <<<target/fitnesse/results>>>.
