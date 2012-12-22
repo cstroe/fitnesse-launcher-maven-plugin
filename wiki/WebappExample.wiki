@@ -10,7 +10,7 @@
 {{{
 mvn clean install -P wiki
 }}}
-  # Visit `http://localhost:8787/WebappExample` and explore!
+  # Visit `http://localhost:9123/WebappExample` and explore!
   # Run `FitNesse` as automated integration tests using:
 {{{
 mvn clean install -P auto
