@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
@@ -17,9 +16,9 @@
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample</url>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-webapp-example-1.1.x</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-webapp-example-1.1.x</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-webapp-example-1.1.x</developerConnection>
 	</scm>
 
 	<licenses>
