@@ -101,6 +101,7 @@ public class SetUpMojoTest {
 	public void testClean() throws Exception {
 		
         final Xpp3Dom cleanConfig = Xpp3DomBuilder.build(SetUpMojoTest.class.getResourceAsStream("setup-clean-mojo-config.xml"), "UTF-8");
+        cleanConfig.getChild("filesets").getChild(0).getChild("directory").setValue(workingDir.getCanonicalPath());
         
         doAnswer(new Answer<Void>() {
 			@Override
@@ -118,6 +119,7 @@ public class SetUpMojoTest {
 	public void testUnpack() throws Exception {
 		
         final Xpp3Dom unpackConfig = Xpp3DomBuilder.build(SetUpMojoTest.class.getResourceAsStream("unpack-mojo-config.xml"), "UTF-8");
+        unpackConfig.getChild("artifactItems").getChild(0).getChild("outputDirectory").setValue(workingDir.getCanonicalPath());
         
         doAnswer(new Answer<Void>() {
 			@Override
