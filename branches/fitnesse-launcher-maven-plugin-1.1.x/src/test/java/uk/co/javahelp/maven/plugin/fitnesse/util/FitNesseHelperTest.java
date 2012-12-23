@@ -114,13 +114,16 @@ public class FitNesseHelperTest {
 	@Test
 	public void testLaunchFitNesseServer() throws Exception {
 		File logDir = new File(System.getProperty("java.io.tmpdir"), "fitnesse-launcher-logs");
-	    assertLaunchFitNesseServer(null);
-	    assertLaunchFitNesseServer(" ");
-	    assertLaunchFitNesseServer(logDir.getCanonicalPath());
-	    String[] logFiles = logDir.list();
-	    assertEquals(1, logFiles.length);
-	    assertTrue(logFiles[0].matches("fitnesse[0-9]+\\.log"));
-		FileUtils.deleteQuietly(logDir);
+		// Clean out logDir, as it might still exist from a previous run, 
+		// because Windows doesn't always delete this file on exit
+  		FileUtils.deleteQuietly(logDir);
+		assertLaunchFitNesseServer(null);
+		assertLaunchFitNesseServer(" ");
+		assertLaunchFitNesseServer(logDir.getCanonicalPath());
+		String[] logFiles = logDir.list();
+		assertEquals(1, logFiles.length);
+		assertTrue(logFiles[0].matches("fitnesse[0-9]+\\.log"));
+		FileUtils.forceDeleteOnExit(logDir);
 	}
 		
 	public void assertLaunchFitNesseServer(String logDir) throws Exception {
