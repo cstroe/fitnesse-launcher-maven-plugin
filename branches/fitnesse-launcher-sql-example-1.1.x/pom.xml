@@ -29,6 +29,28 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<id>stewart</id>
+			<name>Stewart Cambridge</name>
+			<email>stewart.cambridge AT gmail.com</email>
+			<url>http://www.linkedin.com/in/stewartcambridge</url>
+			<timezone>0</timezone>
+		</developer>
+	</developers>
+
+	<contributors>
+	</contributors>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/list</url>
+	</issueManagement>
+
+	<prerequisites>
+		<maven>3.0.1</maven>
+	</prerequisites>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- These next 3 are the default values anyway -->
