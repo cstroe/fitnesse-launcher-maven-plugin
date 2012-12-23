@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-spring-example</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>FitNesse Launcher Plugin - Example Spring Framework Project</name>
@@ -16,9 +16,9 @@
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SpringExample</url>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-spring-example-1.1.x</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-spring-example-1.1.x</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-spring-example-1.1.x</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-spring-example-1.1.0</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-spring-example-1.1.0</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-spring-example-1.1.0</developerConnection>
 	</scm>
 
 	<licenses>
