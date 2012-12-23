@@ -3,22 +3,22 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
-	<artifactId>fitnesse-launcher-webapp-example</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
-	<packaging>war</packaging>
-
-	<name>FitNesse Launcher Plugin - Example Webapp Project</name>
+	<artifactId>fitnesse-launcher-java-example</artifactId>
+	<version>1.1.0</version>
+	<packaging>jar</packaging>
+	
+	<name>FitNesse Launcher Plugin - Example Java Project</name>
 	<description>
         This pom.xml contains example configuration
 		for using fitnesse-launcher-maven-plugin
-		to execute FitNesse integration tests for a webapp project.
+		to execute FitNesse integration tests for a java project.
 	</description>
-	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample</url>
+	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/JavaExample</url>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-java-example-1.1.0</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-java-example-1.1.0</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-java-example-1.1.0</developerConnection>
 	</scm>
 
 	<licenses>
@@ -28,6 +28,28 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	
+	<developers>
+		<developer>
+			<id>stewart</id>
+			<name>Stewart Cambridge</name>
+			<email>stewart.cambridge AT gmail.com</email>
+			<url>http://www.linkedin.com/in/stewartcambridge</url>
+			<timezone>0</timezone>
+		</developer>
+	</developers>
+
+	<contributors>
+	</contributors>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/list</url>
+	</issueManagement>
+
+	<prerequisites>
+		<maven>3.0.1</maven>
+	</prerequisites>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,11 +57,25 @@
 		<fitnesse.port>9123</fitnesse.port>
 		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
 		<fitnesse.root>FitNesseRoot</fitnesse.root>
-		<!-- For use with the `headless` profile -->
-		<display>:2</display>
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.fitnesse</groupId>
+			<artifactId>fitnesse</artifactId>
+			<version>20111025</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.beanshell</groupId>
+			<artifactId>bsh</artifactId>
+			<version>2.0b5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -64,25 +100,25 @@
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-               	<version>1.1.0-SNAPSHOT</version>
+				<version>1.1.0</version>
 				<configuration>
-            		<!-- These next 3 are the default values anyway -->
+            		<!-- These next 3 are the default values anyway. -->
 					<port>${fitnesse.port}</port>
 					<workingDir>${fitnesse.working}</workingDir>
 					<root>${fitnesse.root}</root>
 					<createSymLink>true</createSymLink>
-					<suite>WebappExample</suite>
+					<suite>JavaExample</suite>
 				</configuration>
 				<dependencies>
-					<dependency>
-						<groupId>com.xebia.incubator</groupId>
-						<artifactId>xebium</artifactId>
-						<version>0.6</version>
-					</dependency>
 					<dependency>
 						<groupId>org.slf4j</groupId>
 						<artifactId>slf4j-simple</artifactId>
 						<version>1.6.4</version>
+					</dependency>
+					<dependency>
+						<groupId>org.beanshell</groupId>
+						<artifactId>bsh</artifactId>
+						<version>2.0b5</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -91,39 +127,10 @@
 
 	<profiles>
 		<profile>
-			<id>headless</id>
-			<!-- 
-                This profile is for use on a server or any computer without a display.
-				It launches Xvfb (X-Server Virtual Frame Buffer) which must be installed first.
-				The intent of this profile is to enable a Continuous Integration server to run the tests. 
-			 -->
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>selenium-maven-plugin</artifactId>
-						<version>2.2</version>
-						<executions>
-							<execution>
-								<id>xvfb</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>xvfb</goal>
-								</goals>
-								<configuration>
-									<display>${display}</display>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>wiki</id>
 			<!-- 
                 This profile is for use when writing tests using the FitNesse wiki.
-				Simply run 'mvn verify -P wiki' and use a browser to visit http://localhost:9123/WebappExample
+				Simply run 'mvn verify -P wiki' and use a browser to visit http://localhost:9123/JavaExample
 			 -->
 			<build>
 				<plugins>
@@ -133,8 +140,9 @@
 						<executions>
 							<execution>
 								<goals>
-							        <goal>set-up</goal>
+									<goal>set-up</goal>
 									<goal>wiki</goal>
+									<goal>tear-down</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -145,38 +153,52 @@
 		<profile>
 			<id>auto</id>
 			<!-- 
-                This profile will use maven-jetty-plugin to automatically boot the webapp,
-				and then boot FitNesse to run the configured test suite.
+                This profile will boot FitNesse to automatically run the configured test suite.
 			 -->
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.mortbay.jetty</groupId>
-						<artifactId>maven-jetty-plugin</artifactId>
-						<version>6.1.26</version>
-						<executions>
-							<execution>
-								<id>start-jetty</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>run-exploded</goal>
-								</goals>
-								<configuration>
-									<daemon>true</daemon>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<groupId>uk.co.javahelp.fitnesse</groupId>
 						<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 						<executions>
 							<execution>
 								<goals>
-							        <goal>set-up</goal>
+									<goal>set-up</goal>
 									<goal>run-tests</goal>
-							        <goal>tear-down</goal>
+									<goal>tear-down</goal>
 									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<configuration>
+						    <keyname>E171660E</keyname>
+						    <mavenExecutorId>forked-path</mavenExecutorId>
+						</configuration>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
 								</goals>
 							</execution>
 						</executions>
