@@ -131,8 +131,8 @@ public class FitNesseHelperTest {
 		InputStream in = local.openConnection().getInputStream();
 		try {
 			String content = IOUtils.toString(in);
-			assertTrue(content.startsWith("<!DOCTYPE HTML PUBLIC"));
-			assertTrue(content.contains("<title>Page doesn't exist. Edit FrontPage:</title>"));
+			assertTrue(content.startsWith("<!DOCTYPE html>"));
+			assertTrue(content.contains("<title>Page doesn't exist. Edit: FrontPage</title>"));
 		} finally {
 			IOUtils.closeQuietly(in);
     		fitNesseHelper.shutdownFitNesseServer(port);
@@ -174,7 +174,7 @@ public class FitNesseHelperTest {
 	    try {
 			fitNesseHelper.shutdownFitNesseServer(String.valueOf(port));
 			
-			assertTrue(logStream.toString().startsWith(String.format("[ERROR] %njava.lang.Exception: Could not parse Response")));
+			assertTrue(logStream.toString().startsWith(String.format("[ERROR] %njava.io.IOException: Could not parse Response")));
 		} finally {
     		server.stop();
 		}

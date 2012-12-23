@@ -2,17 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>uk.co.javahelp.fitnesse</groupId>
+		<artifactId>fitnesse-launcher-parent</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath/>
+	</parent>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-spring-example</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>FitNesse Launcher Plugin - Example Spring Framework Project</name>
-	<description>
-        This pom.xml contains example configuration
-		for using fitnesse-launcher-maven-plugin
-		to execute FitNesse integration tests for a Spring Framework project.
-	</description>
+	<description>Example configuration for using fitnesse-launcher-maven-plugin in a Spring Framework project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SpringExample</url>
 
 	<scm>
@@ -43,7 +45,7 @@
 		<dependency>
 			<groupId>org.fitnesse</groupId>
 			<artifactId>fitnesse</artifactId>
-			<version>20111025</version>
+			<version>20121220</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -57,27 +59,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>src</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-				<version>1.1.0-SNAPSHOT</version>
+				<version>1.2.0-SNAPSHOT</version>
 				<configuration>
 					<!-- These next 3 are the default values anyway. -->
 					<port>${fitnesse.port}</port>
@@ -90,7 +74,7 @@
 					<dependency>
 						<groupId>org.slf4j</groupId>
 						<artifactId>slf4j-simple</artifactId>
-						<version>1.6.4</version>
+						<version>1.7.2</version>
 					</dependency>
 					<dependency>
 						<groupId>org.springframework</groupId>
@@ -153,18 +137,4 @@
 		</profile>
 	</profiles>
 
-	<distributionManagement>
-		<!-- See http://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom -->
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-	
 </project>
