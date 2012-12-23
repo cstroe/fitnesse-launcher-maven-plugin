@@ -15,7 +15,9 @@ public class JdbcSlimRunner {
 	
 	private final String sql;
 
-	public JdbcSlimRunner(final String url, final String username, final String password, final String sql) {
+	public JdbcSlimRunner(final String driverClassname, final String url, final String username, final String password, final String sql)
+	        throws ClassNotFoundException {
+		Class.forName(driverClassname);
 		this.template = new JdbcTemplate(new SingleConnectionDataSource(url, username, password, false));
 		this.sql = sql;
 	}
