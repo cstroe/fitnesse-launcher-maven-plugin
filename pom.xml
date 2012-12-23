@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>FitNesse Launcher Plugin</name>
@@ -28,9 +28,9 @@
 	</licenses>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-maven-plugin</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-maven-plugin-1.1.0</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-maven-plugin-1.1.0</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-maven-plugin-1.1.0</developerConnection>
 	</scm>
 
 	<developers>
@@ -609,6 +609,10 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
 						<version>1.4</version>
+						<configuration>
+						    <keyname>E171660E</keyname>
+						    <mavenExecutorId>forked-path</mavenExecutorId>
+						</configuration>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
