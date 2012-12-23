@@ -40,11 +40,17 @@
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
 		<!-- This are properties we may need within our FitNesse tests -->
+		<hsqldb.driver>org.hsqldb.jdbc.JDBCDriver</hsqldb.driver>
 		<hsqldb.url>jdbc:hsqldb:file:${project.build.directory}/hsqldb;shutdown=true</hsqldb.url>
+		<hsqldb.username>sa</hsqldb.username>
+		<hsqldb.password>sa</hsqldb.password>
+		<hsqldb.version>2.2.9</hsqldb.version>
+		<derby.driver>org.apache.derby.jdbc.ClientDriver</derby.driver>
 		<derby.url>jdbc:derby://localhost:1527/${project.build.directory}/derbyDB;create=true</derby.url>
 		<derby.username>derbyuser</derby.username>
 		<derby.password>derbyuser</derby.password>
 		<derby.version>10.4.1.3</derby.version>
+		<spring.version>3.2.0.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -61,7 +67,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>3.2.0.RELEASE</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -122,7 +128,7 @@
 					<dependency>
 						<groupId>org.hsqldb</groupId>
 						<artifactId>hsqldb</artifactId>
-						<version>2.2.9</version>
+						<version>${hsqldb.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.derby</groupId>
@@ -138,10 +144,10 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<driver>org.apache.derby.jdbc.ClientDriver</driver>
+							<driver>${derby.driver}</driver>
 							<url>${derby.url}</url>
-							<username>derbyuser</username>
-							<password>derbyuser</password>
+							<username>${derby.username}</username>
+							<password>${derby.password}</password>
 							<srcFiles>
 								<srcFile>src/main/sql/001_init.sql</srcFile>
 							</srcFiles>
@@ -154,10 +160,10 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<driver>org.hsqldb.jdbc.JDBCDriver</driver>
+							<driver>${hsqldb.driver}</driver>
 							<url>${hsqldb.url}</url>
-							<username>sa</username>
-							<password />
+							<username>${hsqldb.username}</username>
+							<password>${hsqldb.password}</password>
 							<srcFiles>
 								<srcFile>src/main/sql/001_init.sql</srcFile>
 							</srcFiles>
@@ -186,7 +192,7 @@
 					<dependency>
 						<groupId>org.hsqldb</groupId>
 						<artifactId>hsqldb</artifactId>
-						<version>2.2.9</version>
+						<version>${hsqldb.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.derby</groupId>
@@ -201,7 +207,7 @@
 					<dependency>
 						<groupId>org.springframework</groupId>
 						<artifactId>spring-jdbc</artifactId>
-						<version>3.2.0.RELEASE</version>
+            			<version>${spring.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
