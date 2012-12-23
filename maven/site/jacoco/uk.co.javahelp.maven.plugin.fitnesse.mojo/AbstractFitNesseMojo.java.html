@@ -32,8 +32,8 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
      * The Maven Session Object
      *
      * @parameter property=&quot;session&quot;
-     * @required
      * @readonly
+     * @required
      */
     protected MavenSession session;
 
@@ -41,6 +41,7 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
      * The Maven BuildPluginManager Object
      *
      * @component
+     * @readonly
      * @required
      */
     protected BuildPluginManager pluginManager;
@@ -49,8 +50,8 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
      * Used to look up Artifacts in the remote repository.
      * 
      * @component role=&quot;org.apache.maven.artifact.resolver.ArtifactResolver&quot;
-     * @required
      * @readonly
+     * @required
      */
     protected ArtifactResolver resolver;
 
@@ -75,12 +76,14 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     /**
      * Maven project, to be injected by Maven itself.
      * @parameter property=&quot;project&quot;
+     * @readonly
      * @required
      */
     protected MavenProject project;
     
     /**
      * @parameter property=&quot;plugin&quot;
+     * @readonly
      * @required
      */
     protected PluginDescriptor pluginDescriptor;
@@ -125,14 +128,6 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
     protected boolean createSymLink;
 
     /**
-     * The summary file to write integration test results to.
-     * 
-     * @parameter expression=&quot;${fitnesse.working}/results/failsafe-summary.xml&quot;
-     * @required
-     */
-    protected File summaryFile;
-
-    /**
      * This is where build results go.
      * 
      * @parameter default-value=&quot;${fitnesse.working}/results&quot;
@@ -147,6 +142,14 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
      * @required
      */
     protected File reportsDir;
+
+    /**
+     * The summary file to write integration test results to.
+     * 
+     * @parameter default-value=&quot;${fitnesse.working}/results/failsafe-summary.xml&quot;
+     * @required
+     */
+    protected File summaryFile;
 
     /**
      * @parameter property=&quot;fitnesse.suite&quot;
@@ -174,113 +177,113 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-<span class="fc" id="L177">    	this.fitNesseHelper = new FitNesseHelper(getLog());</span>
-<span class="fc" id="L178">        exportProperties();</span>
-<span class="fc" id="L179">        executeInternal();</span>
-<span class="fc" id="L180">    }</span>
+<span class="fc" id="L180">    	this.fitNesseHelper = new FitNesseHelper(getLog());</span>
+<span class="fc" id="L181">        exportProperties();</span>
+<span class="fc" id="L182">        executeInternal();</span>
+<span class="fc" id="L183">    }</span>
 
     private static final String LOG_LINE = &quot;------------------------------------------------------------------------&quot;;
         
     protected void exportProperties() throws MojoExecutionException {
-<span class="fc" id="L185">        final Properties projectProperties = this.project.getProperties();</span>
-<span class="fc" id="L186">        getLog().info(LOG_LINE);</span>
-<span class="fc" id="L187">        final String mavenClasspath = calcWikiFormatClasspath();</span>
-<span class="fc" id="L188">        setSystemProperty(&quot;maven.classpath&quot;, mavenClasspath);</span>
+<span class="fc" id="L188">        final Properties projectProperties = this.project.getProperties();</span>
+<span class="fc" id="L189">        getLog().info(LOG_LINE);</span>
+<span class="fc" id="L190">        final String mavenClasspath = calcWikiFormatClasspath();</span>
+<span class="fc" id="L191">        setSystemProperty(&quot;maven.classpath&quot;, mavenClasspath);</span>
 
         // If a System property already exists, it has priority;
         // That way we can override with a -D on the command line
-<span class="fc bfc" id="L192" title="All 2 branches covered.">        for(String key : projectProperties.stringPropertyNames()) {</span>
-<span class="fc" id="L193">            final String value = System.getProperty(key, projectProperties.getProperty(key));</span>
-<span class="fc" id="L194">            setSystemProperty(key, value);</span>
-<span class="fc" id="L195">        }</span>
-<span class="fc" id="L196">        setSystemProperty(&quot;artifact&quot;, this.project.getArtifactId());</span>
-<span class="fc" id="L197">        setSystemProperty(&quot;version&quot;, this.project.getVersion());</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        for(String key : projectProperties.stringPropertyNames()) {</span>
+<span class="fc" id="L196">            final String value = System.getProperty(key, projectProperties.getProperty(key));</span>
+<span class="fc" id="L197">            setSystemProperty(key, value);</span>
+<span class="fc" id="L198">        }</span>
+<span class="fc" id="L199">        setSystemProperty(&quot;artifact&quot;, this.project.getArtifactId());</span>
+<span class="fc" id="L200">        setSystemProperty(&quot;version&quot;, this.project.getVersion());</span>
         try {
-<span class="fc" id="L199">            final String basedir = this.project.getBasedir().getCanonicalPath();</span>
-<span class="fc" id="L200">            setSystemProperty(&quot;basedir&quot;, basedir);</span>
-<span class="nc" id="L201">        } catch (IOException e) {</span>
-<span class="nc" id="L202">        	getLog().error(e);</span>
-<span class="fc" id="L203">        }</span>
-<span class="fc" id="L204">        getLog().info(LOG_LINE);</span>
-<span class="fc" id="L205">    }</span>
+<span class="fc" id="L202">            final String basedir = this.project.getBasedir().getCanonicalPath();</span>
+<span class="fc" id="L203">            setSystemProperty(&quot;basedir&quot;, basedir);</span>
+<span class="nc" id="L204">        } catch (IOException e) {</span>
+<span class="nc" id="L205">        	getLog().error(e);</span>
+<span class="fc" id="L206">        }</span>
+<span class="fc" id="L207">        getLog().info(LOG_LINE);</span>
+<span class="fc" id="L208">    }</span>
 
     protected void setSystemProperty(final String key, final String value) {
-<span class="fc bfc" id="L208" title="All 4 branches covered.">        if(!isBlank(key) &amp;&amp; !isBlank(value)) {</span>
-<span class="fc" id="L209">            getLog().info(String.format(&quot;Setting FitNesse variable [%s] to [%s]&quot;, key, value));</span>
-<span class="fc" id="L210">            System.setProperty(key, value);</span>
+<span class="fc bfc" id="L211" title="All 4 branches covered.">        if(!isBlank(key) &amp;&amp; !isBlank(value)) {</span>
+<span class="fc" id="L212">            getLog().info(String.format(&quot;Setting FitNesse variable [%s] to [%s]&quot;, key, value));</span>
+<span class="fc" id="L213">            System.setProperty(key, value);</span>
         }
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L215">    }</span>
 
     protected String calcWikiFormatClasspath() throws MojoExecutionException {
-<span class="fc" id="L215">        final Set&lt;Artifact&gt; artifacts = new HashSet&lt;Artifact&gt;();</span>
+<span class="fc" id="L218">        final Set&lt;Artifact&gt; artifacts = new HashSet&lt;Artifact&gt;();</span>
         
         // We should always have FitNesse itself on the FitNesse classpath!
-<span class="fc" id="L218">       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey));</span>
+<span class="fc" id="L221">       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey));</span>
                 
-<span class="fc" id="L220">        final List&lt;Dependency&gt; dependecies = </span>
+<span class="fc" id="L223">        final List&lt;Dependency&gt; dependecies = </span>
             this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey()).getDependencies();
         
-<span class="fc bfc" id="L223" title="All 2 branches covered.">        for(Dependency dependency : dependecies) {</span>
-<span class="fc" id="L224">        	final String key = dependency.getGroupId() + &quot;:&quot; + dependency.getArtifactId();</span>
-<span class="fc" id="L225">        	artifacts.addAll(resolveDependencyKey(key));</span>
-<span class="fc" id="L226">        }</span>
-<span class="fc" id="L227">        final StringBuilder wikiFormatClasspath = new StringBuilder(&quot;\n&quot;);</span>
-<span class="fc" id="L228">	    setupLocalTestClasspath(wikiFormatClasspath);</span>
-<span class="fc bfc" id="L229" title="All 2 branches covered.">        for (Artifact artifact : artifacts) {</span>
-<span class="fc bfc" id="L230" title="All 2 branches covered.">            if(artifact.getFile() != null) {</span>
-<span class="fc" id="L231">                getLog().debug(String.format(&quot;Adding artifact to FitNesse classpath [%s]&quot;, artifact));</span>
-<span class="fc" id="L232">                this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        for(Dependency dependency : dependecies) {</span>
+<span class="fc" id="L227">        	final String key = dependency.getGroupId() + &quot;:&quot; + dependency.getArtifactId();</span>
+<span class="fc" id="L228">        	artifacts.addAll(resolveDependencyKey(key));</span>
+<span class="fc" id="L229">        }</span>
+<span class="fc" id="L230">        final StringBuilder wikiFormatClasspath = new StringBuilder(&quot;\n&quot;);</span>
+<span class="fc" id="L231">	    setupLocalTestClasspath(wikiFormatClasspath);</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        for (Artifact artifact : artifacts) {</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">            if(artifact.getFile() != null) {</span>
+<span class="fc" id="L234">                getLog().debug(String.format(&quot;Adding artifact to FitNesse classpath [%s]&quot;, artifact));</span>
+<span class="fc" id="L235">                this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);</span>
             } else {
-<span class="fc" id="L234">                getLog().warn(String.format(&quot;File for artifact [%s] is not found&quot;, artifact));</span>
+<span class="fc" id="L237">                getLog().warn(String.format(&quot;File for artifact [%s] is not found&quot;, artifact));</span>
             }
-<span class="fc" id="L236">        }</span>
-<span class="fc" id="L237">        return wikiFormatClasspath.toString();</span>
+<span class="fc" id="L239">        }</span>
+<span class="fc" id="L240">        return wikiFormatClasspath.toString();</span>
     }
 
 	private void setupLocalTestClasspath(final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
 		try {
-<span class="fc" id="L242">			final List&lt;String&gt; runtimeClasspathElements = this.project.getTestClasspathElements();</span>
-<span class="fc" id="L243">			final ClassRealm realm = this.pluginDescriptor.getClassRealm();</span>
+<span class="fc" id="L245">			final List&lt;String&gt; runtimeClasspathElements = this.project.getTestClasspathElements();</span>
+<span class="fc" id="L246">			final ClassRealm realm = this.pluginDescriptor.getClassRealm();</span>
 
-<span class="fc bfc" id="L245" title="All 2 branches covered.">			for(final String element : runtimeClasspathElements) {</span>
-<span class="fc" id="L246">                this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, element);</span>
-<span class="fc" id="L247">			    final File elementFile = new File(element);</span>
-<span class="fc" id="L248">			    realm.addURL(elementFile.toURI().toURL());</span>
-<span class="fc" id="L249">			}</span>
-<span class="nc" id="L250">		} catch (Exception e) {</span>
-<span class="nc" id="L251">            throw new MojoExecutionException(&quot;Exception setting up local project test classpath&quot;, e);</span>
-<span class="fc" id="L252">		}</span>
-<span class="fc" id="L253">	}</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			for(final String element : runtimeClasspathElements) {</span>
+<span class="fc" id="L249">                this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, element);</span>
+<span class="fc" id="L250">			    final File elementFile = new File(element);</span>
+<span class="fc" id="L251">			    realm.addURL(elementFile.toURI().toURL());</span>
+<span class="fc" id="L252">			}</span>
+<span class="nc" id="L253">		} catch (Exception e) {</span>
+<span class="nc" id="L254">            throw new MojoExecutionException(&quot;Exception setting up local project test classpath&quot;, e);</span>
+<span class="fc" id="L255">		}</span>
+<span class="fc" id="L256">	}</span>
 
     private Set&lt;Artifact&gt; resolveDependencyKey(final String key) {
-<span class="fc" id="L256">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
-<span class="fc bfc" id="L257" title="All 2 branches covered.">       	if(artifact == null) {</span>
-<span class="fc" id="L258">            getLog().warn(String.format(&quot;Lookup for artifact [%s] failed&quot;, key));</span>
-<span class="fc" id="L259">            return Collections.emptySet();</span>
+<span class="fc" id="L259">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">       	if(artifact == null) {</span>
+<span class="fc" id="L261">            getLog().warn(String.format(&quot;Lookup for artifact [%s] failed&quot;, key));</span>
+<span class="fc" id="L262">            return Collections.emptySet();</span>
        	}
-<span class="fc" id="L261">        return resolveArtifactTransitively(artifact);</span>
+<span class="fc" id="L264">        return resolveArtifactTransitively(artifact);</span>
     }
 
     private Set&lt;Artifact&gt; resolveArtifactTransitively(final Artifact artifact) {
-<span class="fc" id="L265">        final ArtifactResolutionRequest request = new ArtifactResolutionRequest()</span>
+<span class="fc" id="L268">        final ArtifactResolutionRequest request = new ArtifactResolutionRequest()</span>
             .setArtifact( artifact )
 			.setResolveRoot( true )
 			.setResolveTransitively( true )
 			.setRemoteRepositories( this.remoteArtifactRepositories )
 			.setLocalRepository( this.localRepository );
-<span class="fc" id="L271">		final ArtifactResolutionResult result = this.resolver.resolve(request);</span>
-<span class="fc bfc" id="L272" title="All 2 branches covered.">        if(!result.isSuccess()) {</span>
-<span class="fc bfc" id="L273" title="All 2 branches covered.">            for(Artifact missing : result.getMissingArtifacts()) {</span>
-<span class="fc" id="L274">    			getLog().warn(String.format(&quot;Could not resolve artifact: [%s]&quot;, missing));</span>
-<span class="fc" id="L275">        	}</span>
-<span class="pc bpc" id="L276" title="1 of 4 branches missed.">        	if(result.hasExceptions() &amp;&amp; getLog().isDebugEnabled()) {</span>
-<span class="fc bfc" id="L277" title="All 2 branches covered.">            	for(Exception exception : result.getExceptions()) {</span>
-<span class="fc" id="L278">    		    	getLog().debug(exception);</span>
-<span class="fc" id="L279">            	}</span>
+<span class="fc" id="L274">		final ArtifactResolutionResult result = this.resolver.resolve(request);</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        if(!result.isSuccess()) {</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">            for(Artifact missing : result.getMissingArtifacts()) {</span>
+<span class="fc" id="L277">    			getLog().warn(String.format(&quot;Could not resolve artifact: [%s]&quot;, missing));</span>
+<span class="fc" id="L278">        	}</span>
+<span class="pc bpc" id="L279" title="1 of 4 branches missed.">        	if(result.hasExceptions() &amp;&amp; getLog().isDebugEnabled()) {</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            	for(Exception exception : result.getExceptions()) {</span>
+<span class="fc" id="L281">    		    	getLog().debug(exception);</span>
+<span class="fc" id="L282">            	}</span>
         	}
         }
-<span class="fc" id="L282">   		final Set&lt;Artifact&gt; dependencies = result.getArtifacts();</span>
-<span class="fc" id="L283">		return dependencies;</span>
+<span class="fc" id="L285">   		final Set&lt;Artifact&gt; dependencies = result.getArtifacts();</span>
+<span class="fc" id="L286">		return dependencies;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

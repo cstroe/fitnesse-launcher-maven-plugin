@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2012-12-21T00:28:28.593">
-<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/SetUpMojo.java">
+<pmd version="4.3" timestamp="2012-12-23T01:32:17.618">
+<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin-1.1.x/target/checkout/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/SetUpMojo.java">
 <violation beginline="1" endline="177" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="uk.co.javahelp.maven.plugin.fitnesse.mojo" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/TearDownMojo.java">
+<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin-1.1.x/target/checkout/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/TearDownMojo.java">
 <violation beginline="1" endline="62" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="uk.co.javahelp.maven.plugin.fitnesse.mojo" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/WikiMojo.java">
+<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin-1.1.x/target/checkout/src/main/java/uk/co/javahelp/maven/plugin/fitnesse/mojo/WikiMojo.java">
 <violation beginline="75" endline="75" begincolumn="50" endcolumn="64" rule="AvoidThreadGroup" ruleset="Basic Rules" package="uk.co.javahelp.maven.plugin.fitnesse.mojo" class="WikiMojo" method="findActiveThreads" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#AvoidThreadGroup" priority="3">
 Avoid using java.lang.ThreadGroup; it is not thread safe
 </violation>
 </file>
-<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin/target/generated-sources/plugin/uk/co/javahelp/maven/plugin/fitnesse/mojo/HelpMojo.java">
+<file name="/home/stewart/workspace/fitnesse-launcher-maven-plugin-1.1.x/target/checkout/target/generated-sources/plugin/uk/co/javahelp/maven/plugin/fitnesse/mojo/HelpMojo.java">
 <violation beginline="18" endline="18" begincolumn="1" endcolumn="26" rule="UnusedImports" ruleset="Import Statement Rules" package="uk.co.javahelp.maven.plugin.fitnesse.mojo" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'java.util.Iterator'
 </violation>
