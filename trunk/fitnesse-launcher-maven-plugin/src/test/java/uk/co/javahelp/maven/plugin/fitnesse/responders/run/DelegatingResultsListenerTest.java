@@ -10,6 +10,7 @@ import org.junit.Test;
 import util.TimeMeasurement;
 import fitnesse.responders.run.CompositeExecutionLog;
 import fitnesse.responders.run.ResultsListener;
+import fitnesse.responders.run.TestPage;
 import fitnesse.responders.run.TestSummary;
 import fitnesse.responders.run.TestSystem;
 import fitnesse.wiki.WikiPageDummy;
@@ -82,7 +83,7 @@ public class DelegatingResultsListenerTest {
     
     @Test
     public void testNewTestStarted() throws Exception {
-        WikiPageDummy test = new WikiPageDummy();
+    	TestPage test = new TestPage(new WikiPageDummy());
         TimeMeasurement timeMeasurement = new TimeMeasurement();
     	
     	delegatingListener.newTestStarted(test, timeMeasurement);
@@ -105,7 +106,7 @@ public class DelegatingResultsListenerTest {
     
     @Test
     public void testTestComplete() throws Exception {
-        WikiPageDummy test = new WikiPageDummy();
+    	TestPage test = new TestPage(new WikiPageDummy());
         TestSummary testSummary = new TestSummary();
         TimeMeasurement timeMeasurement = new TimeMeasurement();
     	

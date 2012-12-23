@@ -88,7 +88,9 @@ public class ExampleProjectsIT
 		verifier.executeGoals(asList("clean", "install"));
 			
 		verifier.verifyErrorFreeLog();
-		verifier.verifyTextInLog(format("%s right, 0 wrong, 0 ignored, 0 exceptions",testCount));
+		if(!"pom".equals(ext)) {
+		    verifier.verifyTextInLog(format("%s right, 0 wrong, 0 ignored, 0 exceptions",testCount));
+		}
 		verifier.assertArtifactPresent(groupId, artifactId, version, ext);
     }
 		

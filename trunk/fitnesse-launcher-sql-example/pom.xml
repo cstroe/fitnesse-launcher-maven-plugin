@@ -2,17 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>uk.co.javahelp.fitnesse</groupId>
+		<artifactId>fitnesse-launcher-parent</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath/>
+	</parent>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-sql-example</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>FitNesse Launcher Plugin - Example SQL Project</name>
-	<description>
-        This pom.xml contains example configuration
-		for using fitnesse-launcher-maven-plugin
-		to execute FitNesse integration tests for an SQL project.
-	</description>
+	<description>Example configuration for using fitnesse-launcher-maven-plugin in an SQL project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SqlExample</url>
 
 	<scm>
@@ -37,6 +39,7 @@
 		<fitnesse.root>FitNesseRoot</fitnesse.root>
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
+		<!-- This are properties we may need within our FitNesse tests -->
 		<hsqldb.url>jdbc:hsqldb:file:${project.build.directory}/hsqldb;shutdown=true</hsqldb.url>
 		<derby.url>jdbc:derby://localhost:1527/${project.build.directory}/derbyDB;create=true</derby.url>
 		<derby.username>derbyuser</derby.username>
@@ -65,24 +68,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>src</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -183,7 +168,7 @@
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-				<version>1.1.0-SNAPSHOT</version>
+				<version>1.2.0-SNAPSHOT</version>
 				<configuration>
 					<!-- These next 3 are the default values anyway. -->
 					<port>${fitnesse.port}</port>
@@ -196,7 +181,7 @@
 					<dependency>
 						<groupId>org.slf4j</groupId>
 						<artifactId>slf4j-simple</artifactId>
-						<version>1.6.4</version>
+						<version>1.7.2</version>
 					</dependency>
 					<dependency>
 						<groupId>org.hsqldb</groupId>
@@ -273,19 +258,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<distributionManagement>
-		<!-- See http://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom -->
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 
 </project>
