@@ -95,7 +95,6 @@
 						<artifactId>maven-gpg-plugin</artifactId>
 						<version>1.4</version>
 						<configuration>
-						    <keyname>E171660E</keyname>
 						    <mavenExecutorId>forked-path</mavenExecutorId>
 						</configuration>
 						<executions>
