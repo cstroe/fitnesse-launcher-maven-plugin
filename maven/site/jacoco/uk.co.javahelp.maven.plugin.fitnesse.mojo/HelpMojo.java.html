@@ -2,6 +2,8 @@
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,39 +25,37 @@ import java.util.List;
  * Call &lt;code&gt;mvn fitnesse:help -Ddetail=true -Dgoal=&amp;lt;goal-name&amp;gt;&lt;/code&gt; to display parameter details.
  * @author
  * @version
- * @goal help
- * @requiresProject false
- * @threadSafe
  */
+@Mojo( name = &quot;help&quot;, requiresProject = false, threadSafe = true )
 <span class="nc" id="L30">public class HelpMojo</span>
     extends AbstractMojo
 {
     /**
      * If &lt;code&gt;true&lt;/code&gt;, display all settable properties for each goal.
      *
-     * @parameter property=&quot;detail&quot; default-value=&quot;false&quot;
      */
+    @Parameter( property = &quot;detail&quot;, defaultValue = &quot;false&quot; )
     private boolean detail;
 
     /**
      * The name of the goal for which to show help. If unspecified, all goals will be displayed.
      *
-     * @parameter property=&quot;goal&quot;
      */
+    @Parameter( property = &quot;goal&quot; )
     private java.lang.String goal;
 
     /**
      * The maximum length of a display line, should be positive.
      *
-     * @parameter property=&quot;lineLength&quot; default-value=&quot;80&quot;
      */
+    @Parameter( property = &quot;lineLength&quot;, defaultValue = &quot;80&quot; )
     private int lineLength;
 
     /**
      * The number of spaces per indentation level, should be positive.
      *
-     * @parameter property=&quot;indentSize&quot; default-value=&quot;2&quot;
      */
+    @Parameter( property = &quot;indentSize&quot;, defaultValue = &quot;2&quot; )
     private int indentSize;
 
     // groupId/artifactId/plugin-help.xml
