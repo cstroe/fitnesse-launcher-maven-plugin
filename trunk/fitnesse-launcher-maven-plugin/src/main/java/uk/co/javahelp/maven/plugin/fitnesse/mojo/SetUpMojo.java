@@ -101,7 +101,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 						<artifactItem>
 	 * 							<groupId>org.fitnesse</groupId>
 	 * 							<artifactId>fitnesse</artifactId>
-	 * 							<version>20111025</version>
+	 * 							<version>20121220</version>
 	 * 							<type>jar</type>
 	 * 							<overWrite>false</overWrite>
 	 * 							<outputDirectory>${fitnesse.working}</outputDirectory>
