@@ -5,7 +5,7 @@
 
 === A project configuration (pom.xml, etc) for using fitnesse-launcher-maven-plugin to execute `FitNesse` integration tests for a simple Spring Framework project ===
 
-  # [http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-spring-example-1.2.0-src.zip Download the example spring project]
+  # [http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-spring-example-1.2.0-src.zip Download the example spring project] ([http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher-spring-example-1.2.0/src/ Browse the source here])
   # Run `FitNesse` as a wiki server using:
 {{{
 mvn clean install -P wiki
