@@ -40,6 +40,14 @@ public class CalcWikiFormatClasspathTest {
 	}
 	
 	@Test
+	public void testStandAloneMode() throws MojoExecutionException {
+		helper.mojo.project.getBuild().getPlugins().clear();
+		
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals(String.format("[INFO] Running standalone - launching vanilla FitNesse%n"), helper.logStream.toString());
+	}
+	
+	@Test
 	public void testNoDependenciesNoFitNesseArtifact() throws MojoExecutionException {
 		helper.mojo.pluginDescriptor.setArtifacts(null);
 		
