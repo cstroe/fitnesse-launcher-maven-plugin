@@ -34,11 +34,16 @@
     <faq id="standalone">
       <question>Can I use this plugin standalone?</question>
       <answer>
-          <p>Please see <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/detail?id=6">issue #6</a></p>
+          <p>From version 1.2.1 onwards, yes. First configure <code>&lt;pluginGroups&gt;</code> in your <code>settings.xml</code>, as in Q1 above, and then run:</p>
+<pre>
+mvn fitnesse:set-up fitnesse:wiki
+</pre>
+          <p>This will launch a vanilla FitNesse server, with no project test suites. Once launched visit <a href="http://localhost:9123" target="fitnesse">http://localhost:9123</a>.</p>
+          <p>(If you want to run any of the example tests that come with vanilla FitNesse, remember to configure the classpath as per <a href="usage.html#FitNesse_classpath_configuration">Usage documentation</a>).</p>
       </answer>
     </faq>
     <faq id="properties">
-      <question>What FitNesse variable get exported?</question>
+      <question>What FitNesse variables get exported?</question>
       <answer>
           <p>Please see <a href="usage.html#FitNesse_Variables">Usage documentation</a></p>
       </answer>
