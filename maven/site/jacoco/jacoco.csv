@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,AbstractFitNesseMojo,12,345,1,25,4,66,1,20,0,8
+FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,AbstractFitNesseMojo,12,354,1,27,4,69,1,21,0,8
 FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,VerifyMojo,8,50,0,0,2,13,0,4,0,4
 FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,AbstractSetupsMojo,0,28,0,0,0,7,0,2,0,2
 FitNesse Launcher Plugin,uk.co.javahelp.maven.plugin.fitnesse.mojo,FitNesse,0,3,0,0,0,1,0,1,0,1
