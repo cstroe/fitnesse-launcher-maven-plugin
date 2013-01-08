@@ -174,7 +174,7 @@
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.1</version>
 				<configuration>
 					<!-- These next 3 are the default values anyway. -->
 					<port>${fitnesse.port}</port>
