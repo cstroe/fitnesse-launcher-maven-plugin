@@ -223,7 +223,9 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
                 
        	// We check plugin for null to allow use in standalone mode
         final Plugin fitnessePlugin = this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey());
-       	if(fitnessePlugin != null) {
+       	if(fitnessePlugin == null) {
+            getLog().info("Running standalone - launching vanilla FitNesse");
+       	} else {
             final List<Dependency> dependecies = fitnessePlugin.getDependencies();
         	for(Dependency dependency : dependecies) {
         		final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
