@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-parent</artifactId>
-	<version>1.2.2-SNAPSHOT</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>FitNesse Launcher Plugin - Parent Project</name>
@@ -12,9 +12,9 @@
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin</url>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-parent-1.2.x</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-parent-1.2.x</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-parent-1.2.x</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-parent</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-parent</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-parent</developerConnection>
 	</scm>
 
 	<licenses>
