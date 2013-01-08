@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>uk.co.javahelp.fitnesse</groupId>
 		<artifactId>fitnesse-launcher-parent</artifactId>
-		<version>1.2.1</version>
+		<version>1.2.2-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-sql-example</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>FitNesse Launcher Plugin - Example SQL Project</name>
@@ -18,9 +18,9 @@
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SqlExample</url>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-sql-example-1.2.1</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-sql-example-1.2.1</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-sql-example-1.2.1</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-sql-example</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-sql-example</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-sql-example</developerConnection>
 	</scm>
 
 	<licenses>
