@@ -17,6 +17,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -220,13 +221,16 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         // We should always have FitNesse itself on the FitNesse classpath!
        	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey));
                 
-        final List<Dependency> dependecies = 
-            this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey()).getDependencies();
-        
-        for(Dependency dependency : dependecies) {
-        	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
-        	artifacts.addAll(resolveDependencyKey(key));
+       	// We check plugin for null to allow use in standalone mode
+        final Plugin fitnessePlugin = this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey());
+       	if(fitnessePlugin != null) {
+            final List<Dependency> dependecies = fitnessePlugin.getDependencies();
+        	for(Dependency dependency : dependecies) {
+        		final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
+        		artifacts.addAll(resolveDependencyKey(key));
+        	}
         }
+       	
         final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
 	    setupLocalTestClasspath(wikiFormatClasspath);
         for (Artifact artifact : artifacts) {
