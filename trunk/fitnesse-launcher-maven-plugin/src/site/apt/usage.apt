@@ -13,7 +13,7 @@ Usage
   
 * Basic configuration
 
-  * Advised project directory structure:
+** Advised project directory structure
   
 +-----+
 +- src/
@@ -37,7 +37,7 @@ Usage
    +- pom.xml
 +-----+
 
-  * pom.xml configuration:
+** pom.xml configuration
   
 +-----+
 <project>
@@ -90,7 +90,7 @@ Usage
 </project>
 +-----+
 
-  * Then configure your classpath in FitNesse with:
+** FitNesse classpath configuration
   
 +-----+
 !*> '''Classpath'''
