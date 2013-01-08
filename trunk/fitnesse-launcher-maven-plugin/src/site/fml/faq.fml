@@ -5,9 +5,18 @@
       <question>I ran '<code>mvn fitnesse:help</code>', but I got the help for <code>org.codehaus.mojo:fitnesse-maven-plugin</code> instead. What gives?</question>
       <answer>
 <p><code>org.codehaus.mojo:fitnesse-maven-plugin</code> is the default plugin for the goal prefix '<code>fitnesse</code>'.</p>
-<p>In order to use the goal prefix '<code>fitnesse</code>' with <strong>FitNesse Launcher</strong>, the plugin needs to be configured in your pom.xml.</p>
-<p>To use <strong>FitNesse Launcher</strong> without configuring your pom.xml, use the goal prefix '<code>fitnesse-launcher</code>'.</p>
-<p>For example:<pre>mvn fitnesse-launcher:set-up fitnesse-launcher:wiki</pre></p>
+<p>In order to use the goal prefix '<code>fitnesse</code>' with <strong>FitNesse Launcher</strong>, either:
+</p>
+<ul>
+<li>The plugin needs to be configured in your <code>pom.xml</code>,</li>
+<li>Or '<code>pluginGroups</code>' needs to be configured in your <code>settings.xml</code>:
+</li>
+</ul>
+<pre>
+  &lt;pluginGroups&gt;
+    &lt;pluginGroup>uk.co.javahelp.fitnesse&lt;/pluginGroup&gt;
+  &lt;/pluginGroups&gt;
+</pre>
       </answer>
     </faq>
     <faq id="shutdown">
@@ -20,6 +29,18 @@
 <li>Use '<code>Ctrl+C</code>' to exit the Maven process; although be aware that this will prevent Maven from finishing its build lifecycle (ie. the 'tear-down' goal will not be run, as the 'post-integration-test' phase will not be run).</li> 
 <li>Send a HTTP GET request to <code>http://localhost:&lt;port&gt;/?responder=shutdown</code> (for example, by using your browser).</li>
 </ul>
+      </answer>
+    </faq>
+    <faq id="standalone">
+      <question>Can I use this plugin standalone?</question>
+      <answer>
+          <p>Please see <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/detail?id=6">issue #6</a></p>
+      </answer>
+    </faq>
+    <faq id="properties">
+      <question>What FitNesse variable get exported?</question>
+      <answer>
+          <p>Please see <a href="usage.html#FitNesse_Variables">Usage documentation</a></p>
       </answer>
     </faq>
   </part>
