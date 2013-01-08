@@ -242,7 +242,7 @@
 		<profile>
 			<id>auto</id>
 			<!-- 
-                This profile will boot FitNesse to automatically run the configured test suite.
+                This profile will boot FitNesse to automatically run the configured test suite. Simply run 'mvn verify -P auto'
 			 -->
 			<build>
 				<plugins>

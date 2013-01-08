@@ -130,7 +130,7 @@
 			<id>auto</id>
 			<!-- 
                 This profile will use maven-jetty-plugin to automatically boot the webapp,
-				and then boot FitNesse to run the configured test suite.
+				and then boot FitNesse to run the configured test suite. Simply run 'mvn verify -P auto'
 			 -->
 			<build>
 				<plugins>
