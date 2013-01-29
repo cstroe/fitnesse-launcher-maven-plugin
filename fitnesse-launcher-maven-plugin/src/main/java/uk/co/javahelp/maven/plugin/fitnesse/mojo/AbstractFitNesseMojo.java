@@ -4,13 +4,16 @@ import static uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper.isBlank;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
@@ -172,6 +175,11 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      */
     protected String excludeSuiteFilter;
     
+    /**
+     * @parameter property="fitnesse.useProjectDependencies"
+     */
+    protected Set<String> useProjectDependencies;
+    
     protected FitNesseHelper fitNesseHelper;
 
     protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
@@ -216,10 +224,10 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
     protected String calcWikiFormatClasspath() throws MojoExecutionException {
-        final Set<Artifact> artifacts = new HashSet<Artifact>();
+        final Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         
         // We should always have FitNesse itself on the FitNesse classpath!
-       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey));
+       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey, this.pluginDescriptor.getArtifactMap()));
                 
        	// We check plugin for null to allow use in standalone mode
         final Plugin fitnessePlugin = this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey());
@@ -227,18 +235,36 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
             getLog().info("Running standalone - launching vanilla FitNesse");
        	} else {
             final List<Dependency> dependecies = fitnessePlugin.getDependencies();
-        	for(Dependency dependency : dependecies) {
-        		final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
-        		artifacts.addAll(resolveDependencyKey(key));
+            if(dependecies != null && !dependecies.isEmpty()) {
+                getLog().info("Using dependencies specified in plugin config");
+        	    for(Dependency dependency : dependecies) {
+        			final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
+        			artifacts.addAll(resolveDependencyKey(key, this.pluginDescriptor.getArtifactMap()));
+        		}
         	}
         }
        	
+       	if(!this.useProjectDependencies.isEmpty()) {
+            getLog().info("Using dependencies in the following scopes: " + this.useProjectDependencies);
+       		final Map<String, Artifact> dependencyArtifactMap = ArtifactUtils.artifactMapByVersionlessId(this.project.getDependencyArtifacts());
+        	final List<Dependency> dependecies = this.project.getDependencies();
+			for(Dependency dependency : dependecies) {
+		    	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
+       	    	if(this.useProjectDependencies.contains(dependency.getScope())) {
+        			artifacts.addAll(resolveDependencyKey(key, dependencyArtifactMap));
+        		}
+       		}
+       	}
+       	
         final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
-	    setupLocalTestClasspath(wikiFormatClasspath);
+		final ClassRealm realm = this.pluginDescriptor.getClassRealm();
+	    setupLocalTestClasspath(realm, wikiFormatClasspath);
         for (Artifact artifact : artifacts) {
-            if(artifact.getFile() != null) {
+		    final File artifactFile = artifact.getFile();
+            if(artifactFile != null) {
                 getLog().debug(String.format("Adding artifact to FitNesse classpath [%s]", artifact));
-                this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);
+				this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);
+    	        addToRealm(realm, artifactFile);
             } else {
                 getLog().warn(String.format("File for artifact [%s] is not found", artifact));
             }
@@ -246,23 +272,34 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         return wikiFormatClasspath.toString();
     }
 
-	private void setupLocalTestClasspath(final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
-		try {
-			final List<String> runtimeClasspathElements = this.project.getTestClasspathElements();
-			final ClassRealm realm = this.pluginDescriptor.getClassRealm();
+	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
+	    setupLocalTestClasspath(realm, wikiFormatClasspath,
+        		//this.project.getTestClasspathElements().toArray()
+	    		this.project.getBuild().getTestOutputDirectory(),
+	    		this.project.getBuild().getOutputDirectory());
+    }
 
-			for(final String element : runtimeClasspathElements) {
-                this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, element);
-			    final File elementFile = new File(element);
-			    realm.addURL(elementFile.toURI().toURL());
-			}
-		} catch (Exception e) {
-            throw new MojoExecutionException("Exception setting up local project test classpath", e);
+	private void setupLocalTestClasspath(final ClassRealm realm,
+			final StringBuilder wikiFormatClasspath,
+			final String... testClasspathElements) throws MojoExecutionException {
+
+		for(final String element : testClasspathElements) {
+            getLog().debug(String.format("Adding element to FitNesse classpath [%s]", element));
+			this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, element);
+	        addToRealm(realm,  new File(element));
+		}
+	}
+	
+	private void addToRealm(final ClassRealm realm, final File file) {
+	    try {
+			realm.addURL(file.toURI().toURL());
+		} catch (final MalformedURLException e) {
+            getLog().error(e);
 		}
 	}
 
-    private Set<Artifact> resolveDependencyKey(final String key) {
-       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);
+    private Set<Artifact> resolveDependencyKey(final String key, final Map<String, Artifact> artifactMap) {
+       	final Artifact artifact = artifactMap.get(key);
        	if(artifact == null) {
             getLog().warn(String.format("Lookup for artifact [%s] failed", key));
             return Collections.emptySet();

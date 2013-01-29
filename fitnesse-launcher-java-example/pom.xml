@@ -44,6 +44,13 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.fitnesse</groupId>
 			<artifactId>fitnesse</artifactId>
 			<version>20121220</version>
@@ -71,19 +78,12 @@
 					<root>${fitnesse.root}</root>
 					<createSymLink>true</createSymLink>
 					<suite>JavaExample</suite>
+					<!-- Since version 1.3.0 -->
+    				<useProjectDependencies>
+    				    <scope>test</scope>
+    				    <scope>runtime</scope>
+    				</useProjectDependencies>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-simple</artifactId>
-						<version>1.7.2</version>
-					</dependency>
-					<dependency>
-						<groupId>org.beanshell</groupId>
-						<artifactId>bsh</artifactId>
-						<version>2.0b5</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
