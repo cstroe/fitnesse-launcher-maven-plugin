@@ -3,13 +3,8 @@ package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.net.URL;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.Before;
@@ -109,8 +104,6 @@ public class ExportPropertiesTest {
 		assertTrue(helper.logStream.toString().contains("[INFO] Setting FitNesse variable [version] to [VERSION]"));
 		assertTrue(helper.logStream.toString().contains(String.format("[INFO] Setting FitNesse variable [basedir] to [%s]", expectedBasedir)));
 	    
-		verify(helper.realm, times(2)).addURL(any(URL.class));
-		verify(helper.realm, times(1)).addURL(argThat(new UrlEndsWith("/target/test-classes/")));
-		verify(helper.realm, times(1)).addURL(argThat(new UrlEndsWith("/target/classes/")));
+        helper.classRealmAssertions();
 	}
 }
