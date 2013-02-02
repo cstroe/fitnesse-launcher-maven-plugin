@@ -86,4 +86,20 @@ public class VerifyMojoTest {
 		
 		assertEquals("", logStream.toString());
 	}
+	
+	@Test
+	public void testBadXml2() throws Exception {
+		
+		mojo.summaryFile = new File(getClass().getResource("verify-not-failsafe.xml").getPath());
+		
+		try {
+			mojo.execute();
+			fail("Expected MojoExecutionException");
+		} catch (MojoExecutionException e) {
+    		assertEquals("Expected root element 'failsafe-summary' but found 'not-failsafe-summary' (position: " +
+    				"START_TAG seen ...ion=\"1.0\" encoding=\"UTF-8\"?>\\n<not-failsafe-summary result=\"255\" />... @2:38) ", e.getMessage());
+		}
+		
+		assertEquals("", logStream.toString());
+	}
 }

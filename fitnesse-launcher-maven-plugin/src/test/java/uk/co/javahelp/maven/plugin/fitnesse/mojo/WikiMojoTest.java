@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -135,7 +136,7 @@ public class WikiMojoTest {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(100L);
+					Thread.sleep(200L);
 					fitNesse.stop();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -148,6 +149,22 @@ public class WikiMojoTest {
 		
 		assertEquals(String.format(
 				"[INFO] FitNesse wiki server launched.%n" +
+				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
+	}
+	
+	@Test
+	public void testFitNesseNotRunning() throws Exception {
+		fitNesse.stop();
+		doNothing().when(fitNesseHelper).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
+		
+		Thread.sleep(100);
+		
+		mojo.executeInternal();
+		
+		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
+		
+		assertEquals(String.format(
+				"[WARNING] Could not identify FitNesse service Thread.%n" +
 				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 }
