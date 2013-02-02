@@ -1,10 +1,15 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -13,12 +18,14 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.monitor.logging.DefaultLog;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.Logger;
@@ -32,6 +39,19 @@ import fitnesse.responders.run.formatters.PageInProgressFormatter;
 
 public class RunTestsMojoTest {
 
+	private static final String TEST_RESULT_XML =
+			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]+\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
+				"<properties></properties>" +
+				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]+\" name=\"ExampleFitNesseTestSuite\">" +
+					"<failure type=\"java.lang.AssertionError\" message=\" exceptions: 0 wrong: 1\">" +
+					"</failure>" +
+				"</testcase>" +
+			"</testsuite>";
+	
+	private static final String FAILSAFE_SUMMARY_XML =
+		    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+			"<failsafe-summary result=\"255\" />\n";
+			
 	private RunTestsMojo mojo;
 	
     private ByteArrayOutputStream logStream;
@@ -87,20 +107,11 @@ public class RunTestsMojoTest {
 		verify(mojo.fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
 		verify(mojo.fitNesseHelper, never()).shutdownFitNesseServer(anyString());
 		
-		assertEquals(
-		    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-			"<failsafe-summary result=\"255\" />\n", FileUtils.readFileToString(mojo.summaryFile));
+		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
 		
 		assertTrue(
 			FileUtils.readFileToString(
-				new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml")).matches(
-			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]+\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
-				"<properties></properties>" +
-				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]+\" name=\"ExampleFitNesseTestSuite\">" +
-					"<failure type=\"java.lang.AssertionError\" message=\" exceptions: 0 wrong: 1\">" +
-					"</failure>" +
-				"</testcase>" +
-			"</testsuite>"));
+				new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml")).matches(TEST_RESULT_XML));
 		
 		assertEquals(
 		    IOUtils.toString(getClass().getResourceAsStream("ExampleFitNesseTestSuite.html")),
@@ -120,23 +131,109 @@ public class RunTestsMojoTest {
 		verify(mojo.fitNesseHelper, times(1)).createSymLink(mojo.suite, mojo.test, mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT);
 		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(WikiMojoTest.PORT_STRING);
 		
-		assertEquals(
-		    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-			"<failsafe-summary result=\"255\" />\n", FileUtils.readFileToString(mojo.summaryFile));
+		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
 		
 		assertTrue(
 			FileUtils.readFileToString(
-				new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml")).matches(
-			"<testsuite errors=\"0\" skipped=\"0\" tests=\"1\" time=\"[0-9]+.[0-9]+\" failures=\"1\" name=\"ExampleFitNesseTestSuite\">" +
-				"<properties></properties>" +
-				"<testcase classname=\"ExampleFitNesseTestSuite\" time=\"[0-9]+.[0-9]+\" name=\"ExampleFitNesseTestSuite\">" +
-					"<failure type=\"java.lang.AssertionError\" message=\" exceptions: 0 wrong: 1\">" +
-					"</failure>" +
-				"</testcase>" +
-			"</testsuite>"));
+				new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml")).matches(TEST_RESULT_XML));
 		
 		assertEquals(
 		    IOUtils.toString(getClass().getResourceAsStream("ExampleFitNesseTestSuite.html")),
 			FileUtils.readFileToString(new File(mojo.reportsDir, "ExampleFitNesseTestSuite.html")).replaceAll("\r\n", "\n"));
+	}
+	
+	@Test
+	public void testCreateSymLinkException() throws Exception {
+		
+		mojo.createSymLink = true;
+		doThrow(new IOException("TEST")).when(mojo.fitNesseHelper).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
+		
+		try {
+			mojo.executeInternal();
+			fail("Expected MojoExecutionException");
+		} catch (MojoExecutionException e) {
+			assertEquals("Exception creating FitNesse SymLink", e.getMessage());
+			assertEquals(IOException.class, e.getCause().getClass());
+		}
+		
+		verify(mojo.fitNesseHelper, times(1)).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
+		verify(mojo.fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
+		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(anyString());
+		
+		assertFalse(mojo.summaryFile.exists());
+		assertFalse(new File(mojo.resultsDir, "TEST-ExampleFitNesseTestSuite.xml").exists());
+		assertFalse(new File(mojo.reportsDir, "ExampleFitNesseTestSuite.html").exists());
+	}
+	
+	@Test
+	public void testSuiteAndTestException() throws Exception {
+		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
+		
+		try {
+			mojo.executeInternal();
+			fail("Expected MojoExecutionException");
+		} catch (MojoExecutionException e) {
+			assertEquals("Exception running FitNesse tests", e.getMessage());
+			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+		}
+	}
+	
+	@Test
+	public void testSuiteOk() throws Exception {
+		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
+		
+		mojo.suite = "ExampleFitNesseTestSuite";
+		
+		mojo.executeInternal();
+		
+		verify(mojo.fitNesseHelper, times(1)).calcPageNameAndType(anyString(), anyString());
+	}
+	
+	@Test
+	public void testWriteSummaryException() throws Exception {
+		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
+		
+		mojo.suite = "ExampleFitNesseTestSuite";
+		mojo.resultsDir.createNewFile();
+		
+		try {
+			mojo.executeInternal();
+			fail("Expected MojoExecutionException");
+		} catch (MojoExecutionException e) {
+			assertEquals("Exception writing Failsafe summary", e.getMessage());
+			assertEquals(FileNotFoundException.class, e.getCause().getClass());
+		}
+	}
+	
+	@Test
+	public void testSurefireReportParameters() {
+		mojo.setSkipTests(true);
+		assertFalse(mojo.isSkipTests());
+		
+		mojo.setSkipExec(true);
+		assertFalse(mojo.isSkipExec());
+		
+		mojo.setSkip(true);
+		assertFalse(mojo.isSkip());
+		
+		mojo.setFailIfNoTests(true);
+		assertFalse(mojo.getFailIfNoTests());
+		
+		mojo.setTestFailureIgnore(false);
+		assertTrue(mojo.isTestFailureIgnore());
+		
+		mojo.setBasedir(new File(""));
+		assertNull(mojo.getBasedir());
+		
+		mojo.setTestClassesDirectory(new File(""));
+		assertNull(mojo.getTestClassesDirectory());
+		
+		File file = mojo.reportsDir;
+		mojo.setReportsDirectory(null);
+		assertNull(mojo.getReportsDirectory());
+		assertNull(mojo.reportsDir);
+		mojo.setReportsDirectory(file);
+		assertSame(file, mojo.getReportsDirectory());
+		assertSame(file, mojo.reportsDir);
 	}
 }

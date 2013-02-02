@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static java.lang.System.getProperty;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,17 +27,37 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class ExampleProjectsIT 
 {
-	private static String SEPARATOR = "-------------------------------------------------------";
+	private static final String SEPARATOR = "-------------------------------------------------------";
 	
-	private static String groupId = getProperty("it.groupId");
+	private static final String groupId;
 	
-	private static String[] artifactIds = getProperty("it.artifactIds").split(",");
+	private static final String[] artifactIds;
 	
-	private static String[] artifactTestCounts = getProperty("it.artifact.testCounts").split(",");
+	private static final String[] artifactTestCounts;
 	
-	private static String[] artifactExts = getProperty("it.artifact.extensions").split(",");
+	private static final String[] artifactExts;
 	
-	private static String version = getProperty("it.version");
+	private static final String version;
+	
+	static {
+	    final String groupIdProperty = getProperty("it.groupId");
+		final String artifactIdsProperty = getProperty("it.artifactIds");
+		final String artifactTestCountsProperty = getProperty("it.artifact.testCounts");
+		final String artifactExtsProperty = getProperty("it.artifact.extensions");
+		final String versionProperty = getProperty("it.version");
+		
+		assertNotNull("This is an Integration Test. Please set System property 'it.groupId'", groupIdProperty);
+		assertNotNull("This is an Integration Test. Please set System property 'it.artifactIds'", artifactIdsProperty);
+		assertNotNull("This is an Integration Test. Please set System property 'it.artifact.testCounts'", artifactTestCountsProperty);
+		assertNotNull("This is an Integration Test. Please set System property 'it.artifact.extensions'", artifactExtsProperty);
+		assertNotNull("This is an Integration Test. Please set System property 'it.version'", versionProperty);
+		
+	    groupId = groupIdProperty;
+		artifactIds = artifactIdsProperty.split(",");
+		artifactTestCounts = artifactTestCountsProperty.split(",");
+		artifactExts = artifactExtsProperty.split(",");
+		version = versionProperty;
+	}
 	
     @Parameters
     public static Collection<Object[]> data() {

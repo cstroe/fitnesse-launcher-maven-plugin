@@ -54,12 +54,12 @@ public class FitNesseHelper {
 	public void shutdownFitNesseServer(final String port) {
         try {
 			Shutdown.main(new String[]{"-p", port});
+			// Pause to give it a chance to shutdown
+    		Thread.sleep(50L);
 		} catch (ConnectException e) {
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
-			if(!e.getMessage().startsWith("Connection refused")) {
-               	this.log.error(e);
-			}
+            this.log.info("FitNesse already not running.");
 		} catch (Exception e) {
            	this.log.error(e);
 		}

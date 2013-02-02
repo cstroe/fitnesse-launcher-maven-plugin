@@ -78,7 +78,6 @@ public class ExportPropertiesTest {
 		assertTrue(helper.logStream.toString().contains("[INFO] Setting FitNesse variable [password] to [Holy Mashed Potato!]"));
 	}
 	
-	
 	@Test
 	public void testExportPropertiesBlankPropertyIgnored() throws MojoExecutionException {
 		
@@ -89,6 +88,17 @@ public class ExportPropertiesTest {
 		helper.mojo.exportProperties();
 		
 	    commonAssertions();
+	}
+	
+	@Test
+	public void testExportPropertiesBasedirException() throws MojoExecutionException {
+		
+		helper.mojo.project.setFile(null);
+		helper.mojo.exportProperties();
+		
+		assertTrue(helper.logStream.toString().contains(String.format(
+		"[ERROR] %njava.lang.NullPointerException%n" +
+		"	at uk.co.javahelp.maven.plugin.fitnesse.mojo.AbstractFitNesseMojo.exportProperties(AbstractFitNesseMojo.java:")));
 	}
 	
 	private void commonAssertions() {

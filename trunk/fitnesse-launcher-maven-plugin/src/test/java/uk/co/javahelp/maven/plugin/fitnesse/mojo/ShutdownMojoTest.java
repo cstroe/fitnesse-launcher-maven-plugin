@@ -61,10 +61,10 @@ public class ShutdownMojoTest {
 	
 	@Test
 	public void testServerNotRunning() throws Exception {
-		
 		mojo.execute();
-		
-		assertEquals(String.format("[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
+		assertEquals(String.format(
+				"[INFO] FitNesse already not running.%n" +
+				"[INFO] FitNesse wiki server is shutdown.%n"), logStream.toString());
 	}
 	
 	private static class Handler extends AbstractHandler {

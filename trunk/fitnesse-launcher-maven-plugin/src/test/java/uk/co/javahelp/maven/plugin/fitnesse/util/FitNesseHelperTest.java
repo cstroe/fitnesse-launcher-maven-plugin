@@ -162,9 +162,7 @@ public class FitNesseHelperTest {
 	public void testShutdownFitNesseServerNotRunning() throws Exception {
 		int port = Arguments.DEFAULT_COMMAND_PORT;
 		fitNesseHelper.shutdownFitNesseServer(String.valueOf(port));
-			
-		// Not running is silent in the logs
-		assertEquals("", logStream.toString());
+		assertEquals(String.format("[INFO] FitNesse already not running.%n"), logStream.toString());
 	}
 	
 	@Test

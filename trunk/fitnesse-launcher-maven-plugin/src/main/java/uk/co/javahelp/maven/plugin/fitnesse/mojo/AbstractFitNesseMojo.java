@@ -3,7 +3,6 @@ package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 import static uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper.isBlank;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -210,7 +209,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         try {
             final String basedir = this.project.getBasedir().getCanonicalPath();
             setSystemProperty("basedir", basedir);
-        } catch (IOException e) {
+        } catch (Exception e) {
         	getLog().error(e);
         }
         getLog().info(LOG_LINE);
