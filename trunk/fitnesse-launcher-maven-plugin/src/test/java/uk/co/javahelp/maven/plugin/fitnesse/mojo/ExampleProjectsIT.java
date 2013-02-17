@@ -16,6 +16,7 @@ import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -25,6 +26,7 @@ import org.junit.runners.Parameterized.Parameters;
  * http://maven.apache.org/shared/maven-verifier/apidocs/index.html
  */
 @RunWith(Parameterized.class)
+@Ignore
 public class ExampleProjectsIT 
 {
 	private static final String SEPARATOR = "-------------------------------------------------------";
