@@ -173,9 +173,11 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 
 	@Override
     public Boolean getFailIfNoTests() {
-        return false;
+        return this.failIfNoTests;
     }
 
 	@Override
-    public void setFailIfNoTests(Boolean failIfNoTests) {}
+    public void setFailIfNoTests(final Boolean failIfNoTests) {
+        this.failIfNoTests = failIfNoTests;
+	}
 }
