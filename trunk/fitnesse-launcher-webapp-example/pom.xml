@@ -6,22 +6,13 @@
 		<groupId>uk.co.javahelp.fitnesse</groupId>
 		<artifactId>fitnesse-launcher-parent</artifactId>
 		<version>1.3.0-SNAPSHOT</version>
-		<relativePath />
 	</parent>
-	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-webapp-example</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>FitNesse Launcher Plugin - Example Webapp Project</name>
+	<name>FitNesse Launcher Example Webapp Project</name>
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in a webapp project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample</url>
-
-	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-webapp-example</developerConnection>
-	</scm>
 
 	<licenses>
 		<license>
@@ -32,7 +23,6 @@
 	</licenses>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- These next 3 are the default values anyway -->
 		<fitnesse.port>9123</fitnesse.port>
 		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
@@ -41,14 +31,22 @@
 		<display>:2</display>
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
+		<webdriver.firefox.logfile>${project.build.directory}/firefox.log</webdriver.firefox.logfile>
 	</properties>
+	
+				<dependencies>
+					<dependency>
+						<groupId>com.xebia.incubator</groupId>
+						<artifactId>xebium</artifactId>
+						<version>0.10</version>
+					</dependency>
+				</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-               	<version>1.3.0-SNAPSHOT</version>
 				<configuration>
             		<!-- These next 3 are the default values anyway -->
 					<port>${fitnesse.port}</port>
@@ -61,12 +59,7 @@
 					<dependency>
 						<groupId>com.xebia.incubator</groupId>
 						<artifactId>xebium</artifactId>
-						<version>0.9</version>
-					</dependency>
-					<dependency>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-simple</artifactId>
-						<version>1.7.2</version>
+						<version>0.10</version>
 					</dependency>
 				</dependencies>
 			</plugin>

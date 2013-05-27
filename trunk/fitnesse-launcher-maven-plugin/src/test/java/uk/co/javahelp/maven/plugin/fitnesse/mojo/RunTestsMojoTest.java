@@ -216,8 +216,11 @@ public class RunTestsMojoTest {
 		mojo.setSkip(true);
 		assertFalse(mojo.isSkip());
 		
-		mojo.setFailIfNoTests(true);
+		mojo.setFailIfNoTests(false);
 		assertFalse(mojo.getFailIfNoTests());
+		
+		mojo.setFailIfNoTests(true);
+		assertTrue(mojo.getFailIfNoTests());
 		
 		mojo.setTestFailureIgnore(false);
 		assertTrue(mojo.isTestFailureIgnore());

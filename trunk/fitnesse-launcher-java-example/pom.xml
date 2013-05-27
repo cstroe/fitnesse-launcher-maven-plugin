@@ -7,33 +7,15 @@
 		<groupId>uk.co.javahelp.fitnesse</groupId>
 		<artifactId>fitnesse-launcher-parent</artifactId>
 		<version>1.3.0-SNAPSHOT</version>
-		<relativePath />
 	</parent>
-	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-java-example</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>FitNesse Launcher Plugin - Example Java Project</name>
+	<name>FitNesse Launcher Example Java Project</name>
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in a java project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/JavaExample</url>
 
-	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-java-example</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-java-example</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk/fitnesse-launcher-java-example</developerConnection>
-	</scm>
-
-	<licenses>
-		<license>
-			<name>Apache License version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- These next 3 are the default values anyway -->
 		<fitnesse.port>9123</fitnesse.port>
 		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
@@ -70,7 +52,6 @@
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-				<version>1.3.0-SNAPSHOT</version>
 				<configuration>
 					<!-- These next 3 are the default values anyway. -->
 					<port>${fitnesse.port}</port>
@@ -104,7 +85,6 @@
 						<plugin>
 							<groupId>uk.co.javahelp.fitnesse</groupId>
 							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-							<version>1.3.0-SNAPSHOT</version>
 						</plugin>
 					</reportPlugins>
 				</configuration>

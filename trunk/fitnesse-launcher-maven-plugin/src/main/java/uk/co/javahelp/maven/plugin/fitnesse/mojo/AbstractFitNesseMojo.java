@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
@@ -179,6 +180,11 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      */
     protected Set<String> useProjectDependencies;
     
+    /**
+     * @parameter property="fitnesse.failIfNoTests" default-value=true
+     */
+    protected Boolean failIfNoTests;
+    
     protected FitNesseHelper fitNesseHelper;
 
     protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
@@ -225,8 +231,9 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     protected String calcWikiFormatClasspath() throws MojoExecutionException {
         final Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         
+   		Map<String, Artifact> dependencyArtifactMap = this.pluginDescriptor.getArtifactMap(); 
         // We should always have FitNesse itself on the FitNesse classpath!
-       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey, this.pluginDescriptor.getArtifactMap()));
+       	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey, dependencyArtifactMap));
                 
        	// We check plugin for null to allow use in standalone mode
         final Plugin fitnessePlugin = this.project.getPlugin(this.pluginDescriptor.getPluginLookupKey());
@@ -238,14 +245,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
                 getLog().info("Using dependencies specified in plugin config");
         	    for(Dependency dependency : dependecies) {
         			final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
-        			artifacts.addAll(resolveDependencyKey(key, this.pluginDescriptor.getArtifactMap()));
+        			artifacts.addAll(resolveDependencyKey(key, dependencyArtifactMap));
         		}
         	}
         }
        	
        	if(!this.useProjectDependencies.isEmpty()) {
             getLog().info("Using dependencies in the following scopes: " + this.useProjectDependencies);
-       		final Map<String, Artifact> dependencyArtifactMap = ArtifactUtils.artifactMapByVersionlessId(this.project.getDependencyArtifacts());
+       		dependencyArtifactMap = ArtifactUtils.artifactMapByVersionlessId(this.project.getDependencyArtifacts());
         	final List<Dependency> dependecies = this.project.getDependencies();
 			for(Dependency dependency : dependecies) {
 		    	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
@@ -272,10 +279,16 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
 	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
-	    setupLocalTestClasspath(realm, wikiFormatClasspath,
-        		//this.project.getTestClasspathElements().toArray()
-	    		this.project.getBuild().getTestOutputDirectory(),
-	    		this.project.getBuild().getOutputDirectory());
+	    try {
+			setupLocalTestClasspath(realm, wikiFormatClasspath,
+					this.project.getTestClasspathElements().toArray(new String[this.project.getTestClasspathElements().size()])
+					//this.project.getBuild().getTestOutputDirectory(),
+					//this.project.getBuild().getOutputDirectory()
+			);
+		} catch (DependencyResolutionRequiredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 	private void setupLocalTestClasspath(final ClassRealm realm,
