@@ -34,6 +34,7 @@
 		<webdriver.firefox.logfile>${project.build.directory}/firefox.log</webdriver.firefox.logfile>
 	</properties>
 	
+	<!-- 
 				<dependencies>
 					<dependency>
 						<groupId>com.xebia.incubator</groupId>
@@ -41,7 +42,8 @@
 						<version>0.10</version>
 					</dependency>
 				</dependencies>
-
+	 -->
+	 
 	<build>
 		<plugins>
 			<plugin>
