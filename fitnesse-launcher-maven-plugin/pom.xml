@@ -66,6 +66,31 @@
 			<groupId>org.apache.maven.reporting</groupId>
 			<artifactId>maven-reporting-impl</artifactId>
 			<version>2.2</version>
+			<exclusions>
+			    <!-- 
+			        The httpclient dependency included is of version 4.0.2,
+			        which is incompatible with the version of httpclient pulled in
+			        by Xebium in the webapp-example project, which is 4.1.2.
+			        The result is a hidden
+			        NoClassDefFoundError: org/apache/http/conn/scheme/SchemeSocketFactory
+			        which causes Firefox to silently fail to boot from Selenium
+			        and hence no Xebium based tests get run under the RunTestsMojo.
+			        Ultimately we probably need to implement a custom-scoped
+			        org.codehaus.plexus.classworlds.realm.ClassRealm
+			        with which to boot FitNesse, but this is difficult as
+			        the threads it launches are without any public access or interface,
+			        meaning a custom FitNesseMain class might need to be written.
+			        This may be desirable anyway, as we also have trouble identifying
+			        the FitNesse thread to join in WikiMojo.
+			        For now, as reporting functionality is not yet implemented,
+			        an exclusion will do!
+			        http://maven.apache.org/guides/mini/guide-maven-classloading.html
+		         -->
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Test dependencies -->
@@ -110,15 +135,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco.version}</version>
@@ -142,17 +158,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<!--
-				    This version needs to match that of
-				    dependency for maven-failsafe-plugin
-				    otherwise the unit-tests of the RunTestsMojo
-				    will have incompatible versions of classes loaded.
-				 -->
-				<version>${failsafe.version}</version>
-			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
+				This version needs to match that of dependency for maven-failsafe-plugin 
+				otherwise the unit-tests of the RunTestsMojo will have incompatible versions 
+				of classes loaded. <version>${failsafe.version}</version> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
@@ -169,71 +178,26 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<quiet>true</quiet>
-					<use>false</use>
-					<show>private</show>
-					<includeDependencySources>false</includeDependencySources>
-					<links>
-						<link>http://java.sun.com/javase/6/docs/api/</link>
-						<link>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.4/maven-plugin-api/apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.4/maven-artifact/apidocs/</link>
-						<link>http://maven.apache.org/surefire/maven-surefire-common/apidocs/</link>
-						<link>http://plexus.codehaus.org/plexus-containers/plexus-container-default-1.0-alpha-9-stable/apidocs/</link>
-					</links>
-					<tagletArtifacts>
-						<tagletArtifact>
-							<groupId>org.apache.maven.plugin-tools</groupId>
-							<artifactId>maven-plugin-tools-javadoc</artifactId>
-							<version>3.2</version>
-						</tagletArtifact>
-					</tagletArtifacts>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.googlecode</groupId>
-				<artifactId>maven-googlecode-changes-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<issueTypes>
-						<Defect>fix</Defect>
-						<Enhancement>update</Enhancement>
-					</issueTypes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<enableRulesSummary>true</enableRulesSummary>
-					<configLocation>src/site/checkstyle.xml</configLocation>
-				</configuration>
-			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-source-plugin</artifactId> 
+				<version>2.2.1</version> <executions> <execution> <goals> <goal>jar</goal> 
+				</goals> </execution> </executions> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-javadoc-plugin</artifactId> <version>2.9</version> <configuration> 
+				<quiet>true</quiet> <use>false</use> <show>private</show> <includeDependencySources>false</includeDependencySources> 
+				<links> <link>http://java.sun.com/javase/6/docs/api/</link> <link>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-apidocs/</link> 
+				<link>http://maven.apache.org/ref/3.0.4/maven-plugin-api/apidocs/</link> 
+				<link>http://maven.apache.org/ref/3.0.4/maven-artifact/apidocs/</link> <link>http://maven.apache.org/surefire/maven-surefire-common/apidocs/</link> 
+				<link>http://plexus.codehaus.org/plexus-containers/plexus-container-default-1.0-alpha-9-stable/apidocs/</link> 
+				</links> <tagletArtifacts> <tagletArtifact> <groupId>org.apache.maven.plugin-tools</groupId> 
+				<artifactId>maven-plugin-tools-javadoc</artifactId> <version>3.2</version> 
+				</tagletArtifact> </tagletArtifacts> </configuration> <executions> <execution> 
+				<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> <plugin> 
+				<groupId>com.googlecode</groupId> <artifactId>maven-googlecode-changes-plugin</artifactId> 
+				<version>1.0</version> <configuration> <issueTypes> <Defect>fix</Defect> 
+				<Enhancement>update</Enhancement> </issueTypes> </configuration> </plugin> 
+				<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId> 
+				<version>2.9.1</version> <configuration> <enableRulesSummary>true</enableRulesSummary> 
+				<configLocation>src/site/checkstyle.xml</configLocation> </configuration> 
+				</plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
