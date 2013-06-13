@@ -129,17 +129,17 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     protected boolean createSymLink;
 
     /**
-     * This is where build results go.
+     * This is where test results go.
      * 
-     * @parameter default-value="${fitnesse.working}/results"
+     * @parameter property="fitnesse.results" default-value="${project.build.directory}/fitnesse/results"
      * @required
      */
     protected File resultsDir;
 
     /**
-     * This is where build results go.
+     * This is where reports go.
      * 
-     * @parameter default-value="${fitnesse.working}/reports"
+     * @parameter property="fitnesse.reports" default-value="${project.build.directory}/fitnesse/reports"
      * @required
      */
     protected File reportsDir;
@@ -147,7 +147,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * The summary file to write integration test results to.
      * 
-     * @parameter default-value="${fitnesse.working}/results/failsafe-summary.xml"
+     * @parameter property="fitnesse.summary.file" default-value="${project.build.directory}/fitnesse/results/failsafe-summary.xml"
      * @required
      */
     protected File summaryFile;
