@@ -33,10 +33,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- These next 3 are the default values anyway -->
-		<fitnesse.port>9123</fitnesse.port>
-		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
-		<fitnesse.root>FitNesseRoot</fitnesse.root>
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
 	</properties>
@@ -63,10 +59,6 @@
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<version>1.2.2-SNAPSHOT</version>
 				<configuration>
-					<!-- These next 3 are the default values anyway. -->
-					<port>${fitnesse.port}</port>
-					<workingDir>${fitnesse.working}</workingDir>
-					<root>${fitnesse.root}</root>
 					<createSymLink>true</createSymLink>
 					<suite>SpringExample</suite>
 				</configuration>
