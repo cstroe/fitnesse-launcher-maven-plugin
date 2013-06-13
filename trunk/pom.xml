@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-parent</artifactId>
 	<version>1.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<name>FitNesse Launcher Parent</name>
 	<description>
 	    Provides ability to launch FitNesse as a wiki server,
@@ -32,7 +33,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<developers>
 		<developer>
 			<id>stewart</id>
@@ -62,14 +63,14 @@
 		<failsafe.version>2.12.4</failsafe.version>
 		<jacoco.version>0.6.0.201210061924</jacoco.version>
 	</properties>
-	
+
 	<modules>
-	    <module>fitnesse-launcher-maven-plugin</module>
-	    <module>fitnesse-launcher-java-example</module>
-	    <module>fitnesse-launcher-spring-example</module>
-	    <module>fitnesse-launcher-sql-example</module>
-	    <module>fitnesse-launcher-webapp-example</module>
-	    <module>fitnesse-launcher-integration-test</module>
+		<module>fitnesse-launcher-maven-plugin</module>
+		<module>fitnesse-launcher-java-example</module>
+		<module>fitnesse-launcher-spring-example</module>
+		<module>fitnesse-launcher-sql-example</module>
+		<module>fitnesse-launcher-webapp-example</module>
+		<!-- <module>fitnesse-launcher-integration-test</module> -->
 	</modules>
 
 	<build>
@@ -106,6 +107,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -139,6 +141,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			 -->
 			<plugin>
 				<groupId>com.googlecode</groupId>
 				<artifactId>maven-googlecode-changes-plugin</artifactId>
@@ -183,44 +186,44 @@
 				<version>2.4</version>
 			</plugin>
 		</plugins>
-	    <pluginManagement>
-	        <plugins>
-			<plugin>
-				<groupId>uk.co.javahelp.fitnesse</groupId>
-				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-									<version>${project.version}</version>
-           	</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${failsafe.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<configuration>
-					<destfile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destfile>
-					<datafile>${project.build.directory}/coverage-reports/jacoco-unit.exec</datafile>
-				</configuration>
-				<executions>
-					<execution>
-						<id>jacoco-initialize</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jacoco-site</id>
-						<phase>package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-	        </plugins>
-	    </pluginManagement>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>uk.co.javahelp.fitnesse</groupId>
+					<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+					<version>${project.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${failsafe.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.version}</version>
+					<configuration>
+						<destfile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destfile>
+						<datafile>${project.build.directory}/coverage-reports/jacoco-unit.exec</datafile>
+					</configuration>
+					<executions>
+						<execution>
+							<id>jacoco-initialize</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>jacoco-site</id>
+							<phase>package</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<extensions>
 			<extension>
 				<groupId>com.google.code.maven-svn-wagon</groupId>
@@ -246,7 +249,7 @@
 						<artifactId>maven-gpg-plugin</artifactId>
 						<version>1.4</version>
 						<configuration>
-						    <mavenExecutorId>forked-path</mavenExecutorId>
+							<mavenExecutorId>forked-path</mavenExecutorId>
 						</configuration>
 						<executions>
 							<execution>

@@ -289,7 +289,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
             if(artifactFile != null) {
                 getLog().debug(String.format("Adding artifact to FitNesse classpath [%s]", artifact));
 				this.fitNesseHelper.formatAndAppendClasspathArtifact(wikiFormatClasspath, artifact);
-    	        //addToRealm(realm, artifactFile);
+    	        addToRealm(realm, artifactFile);
             } else {
                 getLog().warn(String.format("File for artifact [%s] is not found", artifact));
             }

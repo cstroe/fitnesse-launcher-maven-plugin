@@ -177,9 +177,9 @@ public class AbstractFitNesseMojoTestHelper {
 	}
 	
 	void classRealmAssertions(int artifactCount) {
-		verify(realm, times(2 /* + artifactCount*/)).addURL(any(URL.class));
+		verify(realm, times(2 + artifactCount)).addURL(any(URL.class));
 		verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/test-classes/")));
 		verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/classes/")));
-		//verify(realm, times(artifactCount)).addURL(argThat(new UrlEndsWith("/target/test-classes/dummy.jar")));
+		verify(realm, times(artifactCount)).addURL(argThat(new UrlEndsWith("/target/test-classes/dummy.jar")));
 	}
 }
