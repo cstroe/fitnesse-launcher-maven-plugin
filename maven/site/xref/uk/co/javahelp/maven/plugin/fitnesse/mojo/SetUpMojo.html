@@ -174,8 +174,8 @@
 <a class="jxr_linenumber" name="164" href="#164">164</a>         	element(<span class="jxr_string">"target"</span>,
 <a class="jxr_linenumber" name="165" href="#165">165</a>             	element(<span class="jxr_string">"move"</span>)));
 <a class="jxr_linenumber" name="166" href="#166">166</a>         <strong class="jxr_keyword">final</strong> Xpp3Dom move = config.getChild(<span class="jxr_string">"target"</span>).getChild(<span class="jxr_string">"move"</span>);
-<a class="jxr_linenumber" name="167" href="#167">167</a>         move.setAttribute(<span class="jxr_string">"file"</span>, <span class="jxr_string">"${fitnesse.working}/Resources/FitNesseRoot"</span>);
-<a class="jxr_linenumber" name="168" href="#168">168</a> 		move.setAttribute(<span class="jxr_string">"todir"</span>, <span class="jxr_string">"${fitnesse.working}"</span>);
+<a class="jxr_linenumber" name="167" href="#167">167</a>         move.setAttribute(<span class="jxr_string">"file"</span>, <strong class="jxr_keyword">this</strong>.workingDir + <span class="jxr_string">"/Resources/FitNesseRoot"</span>);
+<a class="jxr_linenumber" name="168" href="#168">168</a> 		move.setAttribute(<span class="jxr_string">"todir"</span>, <strong class="jxr_keyword">this</strong>.workingDir);
 <a class="jxr_linenumber" name="169" href="#169">169</a> 		move.setAttribute(<span class="jxr_string">"failonerror"</span>, <span class="jxr_string">"false"</span>);
 <a class="jxr_linenumber" name="170" href="#170">170</a> 		executeMojo(
 <a class="jxr_linenumber" name="171" href="#171">171</a> 			plugin(<span class="jxr_string">"org.apache.maven.plugins:maven-antrun-plugin"</span>),
