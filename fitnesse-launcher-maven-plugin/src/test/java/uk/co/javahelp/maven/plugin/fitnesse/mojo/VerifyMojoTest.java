@@ -1,13 +1,13 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -25,13 +25,10 @@ public class VerifyMojoTest {
 	public void setUp() throws IOException {
 		
 		mojo = new VerifyMojo();
-		mojo.reportsDir = new File(System.getProperty("java.io.tmpdir"), "unit_test_reports");
 		
 		logStream = new ByteArrayOutputStream();
 		mojo.setLog(new DefaultLog(new PrintStreamLogger(
 			Logger.LEVEL_INFO, "test", new PrintStream(logStream))));
-		
-		FileUtils.deleteQuietly(mojo.resultsDir);
 	}
 	
 	@Test

@@ -15,10 +15,6 @@
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SpringExample</url>
 
 	<properties>
-		<!-- These next 3 are the default values anyway -->
-		<fitnesse.port>9123</fitnesse.port>
-		<fitnesse.working>${project.build.directory}/fitnesse</fitnesse.working>
-		<fitnesse.root>FitNesseRoot</fitnesse.root>
 		<!-- This example has no unit tests, just integration tests -->
 		<skipTests>true</skipTests>
 	</properties>
@@ -44,10 +40,6 @@
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
-					<!-- These next 3 are the default values anyway. -->
-					<port>${fitnesse.port}</port>
-					<workingDir>${fitnesse.working}</workingDir>
-					<root>${fitnesse.root}</root>
 					<createSymLink>true</createSymLink>
 					<suite>SpringExample</suite>
 					<!-- Since version 1.3.0 -->
