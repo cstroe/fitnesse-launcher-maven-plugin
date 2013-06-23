@@ -275,7 +275,7 @@
 		<repository>
 			<id>sonatype-nexus-staging</id>
 			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 		<site>
 			<id>google-code</id>
