@@ -15,6 +15,11 @@ import org.apache.maven.reporting.MavenReportException;
  */
 public class FitNesseHtmlReport extends AbstractMavenReport {
 	
+	/**
+	 * See fitnesse-html-report.properties
+	 */
+	private static final String OUTPUT_NAME = "fitnesse-html-report";
+	
     /**
      * Directory where reports will go.
      *
@@ -40,7 +45,7 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 
 	@Override
 	public String getOutputName() {
-		return "html-report";
+		return OUTPUT_NAME;
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 	}
 	
 	private ResourceBundle getBundle( Locale locale ) {
-	    return ResourceBundle.getBundle( "html-report", locale, this.getClass().getClassLoader() );
+	    return ResourceBundle.getBundle( OUTPUT_NAME, locale, this.getClass().getClassLoader() );
 	}
 
 	@Override

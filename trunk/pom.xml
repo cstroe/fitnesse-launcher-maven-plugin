@@ -38,7 +38,7 @@
 		<developer>
 			<id>stewart</id>
 			<name>Stewart Cambridge</name>
-			<email>stewart.cambridge AT gmail.com</email>
+			<email>stewart @ javahelp.co.uk</email>
 			<url>http://www.linkedin.com/in/stewartcambridge</url>
 			<timezone>0</timezone>
 		</developer>
@@ -106,7 +106,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -119,8 +118,8 @@
 					<links>
 						<link>http://java.sun.com/javase/6/docs/api/</link>
 						<link>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.4/maven-plugin-api/apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.4/maven-artifact/apidocs/</link>
+						<link>http://maven.apache.org/ref/3.0.5/maven-plugin-api/apidocs/</link>
+						<link>http://maven.apache.org/ref/3.0.5/maven-artifact/apidocs/</link>
 						<link>http://maven.apache.org/surefire/maven-surefire-common/apidocs/</link>
 						<link>http://plexus.codehaus.org/plexus-containers/plexus-container-default-1.0-alpha-9-stable/apidocs/</link>
 					</links>
@@ -140,7 +139,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			 -->
 			<plugin>
 				<groupId>com.googlecode</groupId>
 				<artifactId>maven-googlecode-changes-plugin</artifactId>
@@ -154,11 +152,10 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.9.1</version>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.2</version>
 				<configuration>
-					<enableRulesSummary>true</enableRulesSummary>
-					<configLocation>src/site/checkstyle.xml</configLocation>
+   					<relativizeDecorationLinks>false</relativizeDecorationLinks>
 				</configuration>
 			</plugin>
 			<plugin>

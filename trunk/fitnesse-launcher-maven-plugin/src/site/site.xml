@@ -31,7 +31,10 @@
 				href="http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample" />
 		</menu>
 
-		<menu ref="parent" />
+		<menu name="Example Reports">
+			<item name="Example Java Project Report" href="../fitnesse-launcher-java-example/project-reports.html"/>
+		</menu>
+		
 		<menu ref="reports" />
 	</body>
 </project>
