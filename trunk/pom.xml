@@ -70,7 +70,6 @@
 		<module>fitnesse-launcher-spring-example</module>
 		<module>fitnesse-launcher-sql-example</module>
 		<module>fitnesse-launcher-webapp-example</module>
-		<!-- <module>fitnesse-launcher-integration-test</module> -->
 	</modules>
 
 	<build>
