@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>uk.co.javahelp.fitnesse</groupId>
 		<artifactId>fitnesse-launcher-parent</artifactId>
-		<version>1.2.2-SNAPSHOT</version>
+		<version>1.2.2</version>
 		<relativePath />
 	</parent>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-webapp-example</artifactId>
-	<version>1.2.2-SNAPSHOT</version>
+	<version>1.2.2</version>
 	<packaging>war</packaging>
 
 	<name>FitNesse Launcher Plugin - Example Webapp Project</name>
@@ -18,9 +18,9 @@
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample</url>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-webapp-example-1.2.x</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-webapp-example-1.2.x</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/branches/fitnesse-launcher-webapp-example-1.2.x</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-webapp-example-1.2.2</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-webapp-example-1.2.2</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-webapp-example-1.2.2</developerConnection>
 	</scm>
 
 	<licenses>
@@ -44,7 +44,7 @@
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-               	<version>1.2.2-SNAPSHOT</version>
+               	<version>1.2.2</version>
 				<configuration>
 					<createSymLink>true</createSymLink>
 					<suite>WebappExample</suite>
