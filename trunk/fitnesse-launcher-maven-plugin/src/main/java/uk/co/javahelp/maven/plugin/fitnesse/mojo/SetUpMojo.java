@@ -164,8 +164,8 @@ public class SetUpMojo extends AbstractSetupsMojo {
         	element("target",
             	element("move")));
         final Xpp3Dom move = config.getChild("target").getChild("move");
-        move.setAttribute("file", "${fitnesse.working}/Resources/FitNesseRoot");
-		move.setAttribute("todir", "${fitnesse.working}");
+        move.setAttribute("file", this.workingDir + "/Resources/FitNesseRoot");
+		move.setAttribute("todir", this.workingDir);
 		move.setAttribute("failonerror", "false");
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-antrun-plugin"),
