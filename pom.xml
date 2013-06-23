@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-parent</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.2.2</version>
 	<packaging>pom</packaging>
-
-	<name>FitNesse Launcher Parent</name>
-	<description>
-	    Provides ability to launch FitNesse as a wiki server,
-	    or automatically run FitNesse tests as part of a
-	    standard integration-test / verify build.
-	    Allows configuration of FitNesse's classpath through plugin dependencies,
-	    and injects all Maven project properties as FitNesse variables,
-	    ( which can be overridden from the command line using '-D' ).
-    </description>
+	
+	<name>FitNesse Launcher Plugin - Parent Project</name>
+	<description>Common configuration which we want to keep out of the way of the example projects.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin</url>
-	<inceptionYear>2012</inceptionYear>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-parent-1.2.2</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-parent-1.2.2</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-parent-1.2.2</developerConnection>
 	</scm>
 
 	<licenses>
@@ -33,7 +24,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
+	
 	<developers>
 		<developer>
 			<id>stewart</id>
@@ -58,110 +49,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.version>3.0.4</maven.version>
-		<failsafe.version>2.12.4</failsafe.version>
-		<jacoco.version>0.6.0.201210061924</jacoco.version>
 	</properties>
-
-	<modules>
-		<module>fitnesse-launcher-maven-plugin</module>
-		<module>fitnesse-launcher-java-example</module>
-		<module>fitnesse-launcher-spring-example</module>
-		<module>fitnesse-launcher-sql-example</module>
-		<module>fitnesse-launcher-webapp-example</module>
-		<!-- <module>fitnesse-launcher-integration-test</module> -->
-	</modules>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<!--
-				    This version needs to match that of
-				    dependency for maven-failsafe-plugin
-				    otherwise the unit-tests of the RunTestsMojo
-				    will have incompatible versions of classes loaded.
-				 -->
-				<version>${failsafe.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<quiet>true</quiet>
-					<use>false</use>
-					<show>private</show>
-					<includeDependencySources>false</includeDependencySources>
-					<links>
-						<link>http://java.sun.com/javase/6/docs/api/</link>
-						<link>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.4/maven-plugin-api/apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.4/maven-artifact/apidocs/</link>
-						<link>http://maven.apache.org/surefire/maven-surefire-common/apidocs/</link>
-						<link>http://plexus.codehaus.org/plexus-containers/plexus-container-default-1.0-alpha-9-stable/apidocs/</link>
-					</links>
-					<tagletArtifacts>
-						<tagletArtifact>
-							<groupId>org.apache.maven.plugin-tools</groupId>
-							<artifactId>maven-plugin-tools-javadoc</artifactId>
-							<version>3.2</version>
-						</tagletArtifact>
-					</tagletArtifacts>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			 -->
-			<plugin>
-				<groupId>com.googlecode</groupId>
-				<artifactId>maven-googlecode-changes-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<issueTypes>
-						<Defect>fix</Defect>
-						<Enhancement>update</Enhancement>
-					</issueTypes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<enableRulesSummary>true</enableRulesSummary>
-					<configLocation>src/site/checkstyle.xml</configLocation>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.3</version>
@@ -186,51 +77,6 @@
 				<version>2.4</version>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>uk.co.javahelp.fitnesse</groupId>
-					<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-					<version>${project.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>${failsafe.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>${jacoco.version}</version>
-					<configuration>
-						<destfile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destfile>
-						<datafile>${project.build.directory}/coverage-reports/jacoco-unit.exec</datafile>
-					</configuration>
-					<executions>
-						<execution>
-							<id>jacoco-initialize</id>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>jacoco-site</id>
-							<phase>package</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		<extensions>
-			<extension>
-				<groupId>com.google.code.maven-svn-wagon</groupId>
-				<artifactId>maven-svn-wagon</artifactId>
-				<version>1.4</version>
-			</extension>
-		</extensions>
 	</build>
 
 	<profiles>
@@ -249,7 +95,7 @@
 						<artifactId>maven-gpg-plugin</artifactId>
 						<version>1.4</version>
 						<configuration>
-							<mavenExecutorId>forked-path</mavenExecutorId>
+						    <mavenExecutorId>forked-path</mavenExecutorId>
 						</configuration>
 						<executions>
 							<execution>
@@ -276,13 +122,8 @@
 		<repository>
 			<id>sonatype-nexus-staging</id>
 			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-		<site>
-			<id>google-code</id>
-			<name>Google Code Reports</name>
-			<url>svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site</url>
-		</site>
 	</distributionManagement>
 
 </project>
