@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
@@ -112,7 +113,8 @@ public class FitNesseHelper {
 
     private String calcLinkName(final String suite, final String test) {
         final String[] pageNameAndType = calcPageNameAndType(suite, test);
-        return pageNameAndType[0];
+        final String linkName = StringUtils.substringBefore(pageNameAndType[0], ".");
+        return linkName;
     }
 
     private String calcLinkPath(final String linkName, final File basedir, final String testResourceDirectory) {
