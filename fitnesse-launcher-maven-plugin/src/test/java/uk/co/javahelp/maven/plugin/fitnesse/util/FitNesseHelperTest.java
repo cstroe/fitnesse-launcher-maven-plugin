@@ -58,25 +58,25 @@ public class FitNesseHelperTest {
 	@Test
 	public void testCalcPageNameAndTypeSuite() {
 		
-		String[] result = fitNesseHelper.calcPageNameAndType("SUITE_NAME", null);
+		String[] result = fitNesseHelper.calcPageNameAndType("SuiteName", null);
 		assertEquals(2, result.length);
-		assertEquals("SUITE_NAME", result[0]);
+		assertEquals("SuiteName", result[0]);
 		assertEquals(TestHelper.PAGE_TYPE_SUITE, result[1]);
 	}
 		
 	@Test
 	public void testCalcPageNameAndTypeTest() {
 		
-		String[] result = fitNesseHelper.calcPageNameAndType(null, "TEST_NAME");
+		String[] result = fitNesseHelper.calcPageNameAndType(null, "SuiteName.NestedSuite.TestName");
 		assertEquals(2, result.length);
-		assertEquals("TEST_NAME", result[0]);
+		assertEquals("SuiteName.NestedSuite.TestName", result[0]);
 		assertEquals(TestHelper.PAGE_TYPE_TEST, result[1]);
 	}
 		
 	@Test
 	public void testCalcPageNameAndTypeIllegalBoth() {
 		try {
-			fitNesseHelper.calcPageNameAndType("SUITE_NAME", "TEST_NAME");
+			fitNesseHelper.calcPageNameAndType("SuiteName", "SuiteName.NestedSuite.TestName");
 			fail("Expected IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertEquals("Suite and test page parameters are mutually exclusive", e.getMessage());
@@ -182,21 +182,44 @@ public class FitNesseHelperTest {
 	}
 		
 	@Test
-	public void testCreateSymLinkOk() throws Exception {
+	public void testCreateSymLinkOkSuite() throws Exception {
 		int port = Arguments.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new OkHandler("/root", 
-			"responder=symlink&linkName=SUITE_NAME&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSUITE_NAME&submit=Create%2FReplace"));
+			"responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace"));
 	    server.start();
 	    
 	    try {
 			int response = fitNesseHelper.createSymLink(
-				"SUITE_NAME", null, new File("/tmp", "BASEDIR"),
+				"SuiteName.NestedSuite", null, new File("/tmp", "BASEDIR"),
 				"/TEST_RESOURCE_DIR", port);
 			
 			assertEquals(200, response);
 			assertEquals(
-			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SUITE_NAME&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSUITE_NAME&submit=Create%2FReplace" +
+			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace" +
+				String.format("%n[INFO] Response code: 200%n"), logStream.toString());
+
+		} finally {
+    		server.stop();
+		}
+	}
+		
+	@Test
+	public void testCreateSymLinkOkTest() throws Exception {
+		int port = Arguments.DEFAULT_COMMAND_PORT;
+		Server server = new Server(port);
+	    server.setHandler(new OkHandler("/root", 
+			"responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace"));
+	    server.start();
+	    
+	    try {
+			int response = fitNesseHelper.createSymLink(
+				null, "SuiteName.NestedSuite.TestName", new File("/tmp", "BASEDIR"),
+				"/TEST_RESOURCE_DIR", port);
+			
+			assertEquals(200, response);
+			assertEquals(
+			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace" +
 				String.format("%n[INFO] Response code: 200%n"), logStream.toString());
 
 		} finally {
@@ -213,7 +236,7 @@ public class FitNesseHelperTest {
 	    
 	    try {
 			fitNesseHelper.createSymLink(
-				"SUITE_NAME", null, new File("/tmp", "BASEDIR"),
+				"SuiteName.NestedSuite", null, new File("/tmp", "BASEDIR"),
 				"/TEST_RESOURCE_DIR", port);
 			
 			fail("Expected ConnectException");
