@@ -71,18 +71,12 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
         final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);
 		helper.setDebugMode(true);
 
-		// ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-		// org.codehaus.plexus.classworlds.realm.ClassRealm oldLookupRealm = container.setLookupRealm( this.realm );
 		try {
 			final String[] pageNameAndType = this.fitNesseHelper.calcPageNameAndType(this.suite, this.test);
-			// Thread.currentThread().setContextClassLoader( this.realm );
 			final TestSummary summary = helper.run(pageNameAndType[0], pageNameAndType[1], this.suiteFilter, this.excludeSuiteFilter, this.port);
 			return summary;
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception running FitNesse tests", e);
-		} finally {
-			// Thread.currentThread().setContextClassLoader( oldClassLoader );
-			// container.setLookupRealm( oldLookupRealm );
 		}
 	}
 

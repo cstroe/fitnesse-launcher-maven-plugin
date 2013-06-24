@@ -13,7 +13,6 @@ import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
@@ -28,7 +27,6 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
@@ -175,11 +173,13 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     protected String test;
 
     /**
+     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.suiteFilter"
      */
     protected String suiteFilter;
 
     /**
+     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.excludeSuiteFilter"
      */
     protected String excludeSuiteFilter;
@@ -196,21 +196,11 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     
     protected FitNesseHelper fitNesseHelper;
     
-    //protected ClassRealm realm;
-
     protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
 
 	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	this.fitNesseHelper = new FitNesseHelper(getLog());
-        //try {
-			//this.realm = this.pluginDescriptor.getClassRealm().getWorld().newRealm("fitnesse-launcher");
-			//this.realm = this.pluginDescriptor.getClassRealm().createChildRealm("fitnesse-launcher");
-			//this.realm = this.pluginDescriptor.getClassRealm();
-		//} catch (DuplicateRealmException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
         exportProperties();
         executeInternal();
     }
@@ -298,16 +288,10 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
 	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
-	    //try {
-			setupLocalTestClasspath(realm, wikiFormatClasspath,
-					//this.project.getTestClasspathElements().toArray(new String[this.project.getTestClasspathElements().size()])
-					this.project.getBuild().getTestOutputDirectory(),
-					this.project.getBuild().getOutputDirectory()
-			);
-		//} catch (DependencyResolutionRequiredException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
+		setupLocalTestClasspath(realm, wikiFormatClasspath,
+			this.project.getBuild().getTestOutputDirectory(),
+			this.project.getBuild().getOutputDirectory()
+		);
     }
 
 	private void setupLocalTestClasspath(final ClassRealm realm,
