@@ -32,8 +32,8 @@ public class FitNesseHelper {
 	}
     
     public StringBuilder formatAndAppendClasspath(final StringBuilder wikiFormatClasspath, final String path) {
-		if(path.contains(" ") && !Utils.isWindows()) {
-            log.warn(String.format("THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]", path));
+		if(Utils.whitespaceSituation(path)) {
+            log.error(Utils.whitespaceWarning(path, "FitNesse classpath may not function correctly in wiki mode"));
 		}
        	wikiFormatClasspath.append("!path ");
        	wikiFormatClasspath.append(path);

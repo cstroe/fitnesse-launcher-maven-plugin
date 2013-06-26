@@ -13,11 +13,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -461,29 +463,59 @@ public class CalcWikiFormatClasspathTest {
 	    helper.classRealmAssertions(12);
 	}
 	
+	private static final String WHITESPACE_DIR = "white space test";
+	
 	@Test
-	public void testWhitespaceHandling() throws MojoExecutionException {
-		// Save the real os.name
-		String os = System.getProperty("os.name");
-		System.setProperty("os.name", "linux");
+	public void testWhitespaceHandling1() throws IOException {
+	    assertWhitespaceHandling(new File(System.getProperty("java.io.tmpdir"), WHITESPACE_DIR));
+		assertEquals("", helper.logStream.toString());
+	}
+	
+	@Test
+	public void testWhitespaceHandling2() throws IOException {
+		File whitespace = new File(new File(".").getCanonicalFile(), WHITESPACE_DIR);
 		
+		// Save the real user.dir
+		String dir = System.getProperty("user.dir");
+		whitespace.mkdir();
+		System.setProperty("user.dir", whitespace.getCanonicalPath());
+	    Build build = assertWhitespaceHandling(whitespace);
+	    
 		String warning1 = "[WARNING] THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]%n";
-		String warning2 = "[WARNING] FitNesse classpath may not function correctly in wiki mode. Attempting relative path workaround%n";
-		String whitespace = "/tmp/white space test/";
-		Build build = helper.mojo.project.getBuild();
-		build.setOutputDirectory(whitespace + build.getOutputDirectory());
-		build.setTestOutputDirectory(whitespace + build.getTestOutputDirectory());
-		helper.mojo.project.setFile(new File(whitespace, "pom.xml"));
-		
-		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		String warning2 = "Attempting relative path workaround%n";
 		assertEquals(format(warning1 + warning2 + warning1 + warning2,
 				build.getTestOutputDirectory(), build.getOutputDirectory()),
 				helper.logStream.toString());
 	    
+		// Restore the real user.dir (to prevent side-effects on other tests)
+		System.setProperty("user.dir", dir);
+	}
+	
+	private Build assertWhitespaceHandling(File whitespace) throws IOException {
+		// Save the real os.name
+		String os = System.getProperty("os.name");
+		System.setProperty("os.name", "linux");
+		
+		Build build = helper.mojo.project.getBuild();
+		build.setOutputDirectory(mkdir(whitespace, build.getOutputDirectory()));
+		build.setTestOutputDirectory(mkdir(whitespace, build.getTestOutputDirectory()));
+		helper.mojo.project.setFile(new File(whitespace, "pom.xml"));
+		
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+	    
 	    helper.classRealmAssertions();
+	    
+		FileUtils.deleteQuietly(whitespace);
 	    
 		// Restore the real os.name (to prevent side-effects on other tests)
 		System.setProperty("os.name", os);
+	    return build;
+	}
+	
+	private String mkdir(File whitespace, String dir) throws IOException {
+		File dirFile = new File(whitespace, dir);
+		dirFile.mkdirs();
+		return dirFile.getCanonicalPath();
 	}
 	
 	private Dependency createDependecy(String groupId, String artifactId) {

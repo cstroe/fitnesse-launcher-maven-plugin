@@ -99,7 +99,8 @@ public class FitNesseHelperTest {
 	    assertFormatAndAppendClasspath("");
 		
 		System.setProperty("os.name", "linux");
-	    assertFormatAndAppendClasspath(String.format("[WARNING] THERE IS WHITESPACE IN CLASSPATH ELEMENT [/x/y z]%n"));
+	    assertFormatAndAppendClasspath(String.format(
+	    		"[ERROR] THERE IS WHITESPACE IN CLASSPATH ELEMENT [/x/y z]%nFitNesse classpath may not function correctly in wiki mode%n"));
 		
 		// Restore the real os.name (to prevent side-effects on other tests)
 		System.setProperty("os.name", os);
