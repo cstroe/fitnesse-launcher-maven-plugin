@@ -1,6 +1,7 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -10,7 +11,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -190,7 +190,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
     private static final String LOG_LINE = "------------------------------------------------------------------------";
         
-    protected void exportProperties() throws MojoExecutionException {
+    protected void exportProperties() {
         final Properties projectProperties = this.project.getProperties();
         getLog().info(LOG_LINE);
         final String mavenClasspath = calcWikiFormatClasspath();
@@ -220,7 +220,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         }
     }
 
-    protected String calcWikiFormatClasspath() throws MojoExecutionException {
+    protected String calcWikiFormatClasspath() {
         final Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         
    		Map<String, Artifact> dependencyArtifactMap = this.pluginDescriptor.getArtifactMap(); 
@@ -270,7 +270,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         return wikiFormatClasspath.toString();
     }
 
-	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
+	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) {
 		setupLocalTestClasspath(realm, wikiFormatClasspath,
 			handleWhitespace(this.project.getBuild().getTestOutputDirectory()),
 			handleWhitespace(this.project.getBuild().getOutputDirectory())
@@ -278,11 +278,16 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 	
 	private String handleWhitespace(final String directory) {
-		if(directory.contains(" ") && !Utils.isWindows()) {
-            getLog().warn(String.format("THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]", directory));
-            getLog().warn("FitNesse classpath may not function correctly in wiki mode. Attempting relative path workaround");
-            final String basedir = this.project.getBasedir().toString();
-            return "." + StringUtils.substringAfter(directory, basedir);
+		if(Utils.whitespaceSituation(directory)) {
+            try {
+        		final String relativePath = Utils.getRelativePath(new File("."), new File(directory));
+        		if(!Utils.whitespaceSituation(relativePath)) {
+            		getLog().warn(Utils.whitespaceWarning(directory, "Attempting relative path workaround"));
+            		return relativePath;
+        		}
+			} catch (final IOException e) {
+            	getLog().error(e);
+			}
 		}
 		return directory;
 	}

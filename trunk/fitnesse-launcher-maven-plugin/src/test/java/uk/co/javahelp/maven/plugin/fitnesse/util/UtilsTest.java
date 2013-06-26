@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -55,6 +57,21 @@ public class UtilsTest {
 	private void assertIsWindows(String osname, boolean expected) {
 		System.setProperty("os.name", osname);
 		assertEquals(expected, Utils.isWindows());
+	}
+	
+	@Test
+	public void testGetRelativePath() throws IOException {
+		assertEquals(".",               Utils.getRelativePath(new File("/x/y/z"),     new File("/x/y/z")));
+		assertEquals("/",               Utils.getRelativePath(new File("/a/b/c"),     new File("/")));
+		assertEquals("/x/y/z",          Utils.getRelativePath(new File("/"),          new File("/x/y/z")));
+		assertEquals("/x/y/z",          Utils.getRelativePath(new File("/a/b/c"),     new File("/x/y/z")));
+		assertEquals("../../y/z",       Utils.getRelativePath(new File("/x/a/b"),     new File("/x/y/z")));
+		assertEquals("../../../../y/z", Utils.getRelativePath(new File("/x/a/b/c/d"), new File("/x/y/z")));
+		assertEquals("../z",            Utils.getRelativePath(new File("/w/x/y/b"),   new File("/w/x/y/z")));
+		assertEquals("..",              Utils.getRelativePath(new File("/w/x/y/z"),   new File("/w/x/y")));
+		assertEquals("../..",           Utils.getRelativePath(new File("/w/x/y/z"),   new File("/w/x")));
+		assertEquals("z",               Utils.getRelativePath(new File("/w/x/y"),     new File("/w/x/y/z")));
+		assertEquals("y/z",             Utils.getRelativePath(new File("/w/x"),       new File("/w/x/y/z")));
 	}
 
 	@Test
