@@ -23,7 +23,7 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
     /**
      * Directory where reports will go.
      *
-     * @parameter expression="${project.reporting.outputDirectory}"
+     * @parameter default-value="${project.reporting.outputDirectory}"
      * @required
      * @readonly
      */
@@ -79,8 +79,8 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 
 	@Override
 	protected void executeReport(Locale locale) throws MavenReportException {
-		// TODO Auto-generated method stub
 
+		// Be aware of http://maven.apache.org/plugin-developers/common-bugs.html#Determining_the_Output_Directory_for_a_Site_Report
 	}
 
 }
