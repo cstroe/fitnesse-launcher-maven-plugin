@@ -137,6 +137,8 @@ public class SetUpMojoTest {
 	public void testMove() throws Exception {
 		
         final Xpp3Dom antrunConfig = Xpp3DomBuilder.build(SetUpMojoTest.class.getResourceAsStream("antrun-mojo-config.xml"), "UTF-8");
+        antrunConfig.getChild("target").getChild("move").setAttribute("todir", workingDir.getCanonicalPath());
+        antrunConfig.getChild("target").getChild("move").setAttribute("file", workingDir.getCanonicalPath() + "/Resources/FitNesseRoot");
         
         doAnswer(new Answer<Void>() {
 			@Override
