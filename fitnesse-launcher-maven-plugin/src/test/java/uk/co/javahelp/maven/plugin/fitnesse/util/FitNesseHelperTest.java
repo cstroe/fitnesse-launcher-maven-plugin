@@ -91,6 +91,34 @@ public class FitNesseHelperTest {
 	}
 		
 	@Test
+	public void testFormatAndAppendClasspath() {
+		// Save the real os.name
+		String os = System.getProperty("os.name");
+	    
+		System.setProperty("os.name", "windows");
+	    assertFormatAndAppendClasspath("");
+		
+		System.setProperty("os.name", "linux");
+	    assertFormatAndAppendClasspath(String.format("[WARNING] THERE IS WHITESPACE IN CLASSPATH ELEMENT [/x/y z]%n"));
+		
+		// Restore the real os.name (to prevent side-effects on other tests)
+		System.setProperty("os.name", os);
+	}
+		
+	private void assertFormatAndAppendClasspath(String expectedLogMsg) {
+        
+		StringBuilder sb = new StringBuilder();
+		
+		assertSame(sb, fitNesseHelper.formatAndAppendClasspath(sb, "/x/y/z"));
+		assertEquals("!path /x/y/z\n", sb.toString());
+		assertEquals("", logStream.toString());
+	    
+		assertSame(sb, fitNesseHelper.formatAndAppendClasspath(sb, "/x/y z"));
+		assertEquals("!path /x/y/z\n!path /x/y z\n", sb.toString());
+		assertEquals(expectedLogMsg, logStream.toString());
+	}
+		
+	@Test
 	public void testFormatAndAppendClasspathArtifact() {
         String jarPath = new File(getClass().getResource("/dummy.jar").getPath()).getPath();
         Artifact artifact = new DefaultArtifact(

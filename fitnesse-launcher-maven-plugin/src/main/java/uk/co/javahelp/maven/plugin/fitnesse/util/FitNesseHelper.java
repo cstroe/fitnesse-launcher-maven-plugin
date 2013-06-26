@@ -32,6 +32,9 @@ public class FitNesseHelper {
 	}
     
     public StringBuilder formatAndAppendClasspath(final StringBuilder wikiFormatClasspath, final String path) {
+		if(path.contains(" ") && !Utils.isWindows()) {
+            log.warn(String.format("THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]", path));
+		}
        	wikiFormatClasspath.append("!path ");
        	wikiFormatClasspath.append(path);
        	wikiFormatClasspath.append("\n");
@@ -98,8 +101,8 @@ public class FitNesseHelper {
     }
 
     public String[] calcPageNameAndType(final String suite, final String test) {
-        final boolean haveSuite = !isBlank(suite);
-        final boolean haveTest = !isBlank(test);
+        final boolean haveSuite = !Utils.isBlank(suite);
+        final boolean haveTest = !Utils.isBlank(test);
         if (!haveSuite && !haveTest) {
             throw new IllegalArgumentException("No suite or test page specified");
         } else if (haveSuite && haveTest) {
@@ -132,9 +135,5 @@ public class FitNesseHelper {
 		linkPath.append("/");
 		linkPath.append(linkName);
 		return linkPath.toString();
-    }
-
-    public static boolean isBlank(final String string) {
-        return string == null || string.trim().equals("");
     }
 }
