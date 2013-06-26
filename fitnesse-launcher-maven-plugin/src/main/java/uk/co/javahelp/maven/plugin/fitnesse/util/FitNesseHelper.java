@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -117,9 +118,14 @@ public class FitNesseHelper {
         return linkName;
     }
 
-    private String calcLinkPath(final String linkName, final File basedir, final String testResourceDirectory) {
+    /**
+     * We want File.toURL() exactly because it doesn't properly encode URI's,
+     * otherwise we end up encoding parts of the returned linkPath twice.
+     */
+    @SuppressWarnings("deprecation")
+	private String calcLinkPath(final String linkName, final File basedir, final String testResourceDirectory) throws MalformedURLException {
         final StringBuilder linkPath = new StringBuilder(
-            basedir.toURI().toString()
+            basedir.toURL().toString()
                 .replaceFirst("/[A-Z]:", "")
 				.replaceFirst(":", "://"));
 		linkPath.append(testResourceDirectory);

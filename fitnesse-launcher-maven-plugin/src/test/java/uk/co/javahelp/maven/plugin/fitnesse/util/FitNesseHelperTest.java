@@ -8,15 +8,9 @@ import static org.mockito.Mockito.mock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.ConnectException;
 import java.net.URL;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -26,9 +20,7 @@ import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.Logger;
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -178,119 +170,6 @@ public class FitNesseHelperTest {
 			assertTrue(logStream.toString().startsWith(String.format("[ERROR] %njava.io.IOException: Could not parse Response")));
 		} finally {
     		server.stop();
-		}
-	}
-		
-	@Test
-	public void testCreateSymLinkOkSuite() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
-	    server.setHandler(new OkHandler("/root", 
-			"responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace"));
-	    server.start();
-	    
-	    try {
-			int response = fitNesseHelper.createSymLink(
-				"SuiteName.NestedSuite", null, new File("/tmp", "BASEDIR"),
-				"/TEST_RESOURCE_DIR", port);
-			
-			assertEquals(200, response);
-			assertEquals(
-			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace" +
-				String.format("%n[INFO] Response code: 200%n"), logStream.toString());
-
-		} finally {
-    		server.stop();
-		}
-	}
-		
-	@Test
-	public void testCreateSymLinkOkTest() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
-	    server.setHandler(new OkHandler("/root", 
-			"responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace"));
-	    server.start();
-	    
-	    try {
-			int response = fitNesseHelper.createSymLink(
-				null, "SuiteName.NestedSuite.TestName", new File("/tmp", "BASEDIR"),
-				"/TEST_RESOURCE_DIR", port);
-			
-			assertEquals(200, response);
-			assertEquals(
-			    "[INFO] Calling http://localhost:9123/root?responder=symlink&linkName=SuiteName&linkPath=file%3A%2F%2F%2Ftmp%2FBASEDIR%2FTEST_RESOURCE_DIR%2FSuiteName&submit=Create%2FReplace" +
-				String.format("%n[INFO] Response code: 200%n"), logStream.toString());
-
-		} finally {
-    		server.stop();
-		}
-	}
-		
-	@Test
-	public void testCreateSymLinkDisconnect() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
-	    server.setHandler(new DisconnectingHandler(server));
-	    server.start();
-	    
-	    try {
-			fitNesseHelper.createSymLink(
-				"SuiteName.NestedSuite", null, new File("/tmp", "BASEDIR"),
-				"/TEST_RESOURCE_DIR", port);
-			
-			fail("Expected ConnectException");
-
-		} catch(ConnectException e) {
-			// OK
-		} finally {
-    		server.stop();
-		}
-	}
-	
-	private static class OkHandler extends AbstractHandler {
-		
-		private String expectedRequestUri;
-		
-		private String expectedQueryString;
-
-		public OkHandler(String expectedRequestUri, String expectedQueryString) {
-			this.expectedRequestUri = expectedRequestUri;
-			this.expectedQueryString = expectedQueryString;
-		}
-
-		@Override
-		public void handle(String target, Request baseRequest,
-				HttpServletRequest request, HttpServletResponse response)
-				throws IOException, ServletException {
-			
-			assertEquals(expectedRequestUri, request.getRequestURI());
-			assertEquals(expectedQueryString, request.getQueryString());
-			
-			response.addHeader("Server", "FitNesse");
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.flushBuffer();
-		}
-	}
-	
-	private static class DisconnectingHandler extends AbstractHandler {
-		
-		private Server server;
-
-		public DisconnectingHandler(Server server) {
-			this.server = server;
-		}
-
-		@Override
-		public void handle(String target, Request baseRequest,
-				HttpServletRequest request, HttpServletResponse response)
-				throws IOException, ServletException {
-			
-			try {
-				server.stop();
-			} catch (Exception e) {
-				// Swallow
-			}
 		}
 	}
 }
