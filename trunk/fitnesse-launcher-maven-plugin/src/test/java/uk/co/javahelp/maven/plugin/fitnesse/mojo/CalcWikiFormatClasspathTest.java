@@ -12,6 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -21,6 +22,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException;
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -54,7 +56,7 @@ public class CalcWikiFormatClasspathTest {
 		helper.mojo.pluginDescriptor.setArtifacts(null);
 		
 		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
-		assertEquals(format("[WARNING] Lookup for artifact [org.fitnesse:fitnesse] failed%n"), helper.logStream.toString());
+		assertEquals(format("[ERROR] Lookup for artifact [org.fitnesse:fitnesse] failed%n"), helper.logStream.toString());
 	    
 	    helper.classRealmAssertions(0);
 	}
@@ -295,9 +297,9 @@ public class CalcWikiFormatClasspathTest {
 		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
 		assertEquals(format(
 		    USING_PLUGIN_CONFIG +
-		    "[WARNING] Could not resolve artifact: [g1:a2:jar:1.0.0:compile]%n" +
-        	"[WARNING] Could not resolve artifact: [g3:a2:jar:1.0.0:compile]%n" +
-			"[WARNING] Could not resolve artifact: [g3:a5:jar:1.0.0:compile]%n"), helper.logStream.toString());
+		    "[ERROR] Could not resolve artifact: [g1:a2:jar:1.0.0:compile]%n" +
+        	"[ERROR] Could not resolve artifact: [g3:a2:jar:1.0.0:compile]%n" +
+			"[ERROR] Could not resolve artifact: [g3:a5:jar:1.0.0:compile]%n"), helper.logStream.toString());
 
 		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));
@@ -457,6 +459,31 @@ public class CalcWikiFormatClasspathTest {
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), any(Artifact.class));
 	    
 	    helper.classRealmAssertions(12);
+	}
+	
+	@Test
+	public void testWhitespaceHandling() throws MojoExecutionException {
+		// Save the real os.name
+		String os = System.getProperty("os.name");
+		System.setProperty("os.name", "linux");
+		
+		String warning1 = "[WARNING] THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]%n";
+		String warning2 = "[WARNING] FitNesse classpath may not function correctly in wiki mode. Attempting relative path workaround%n";
+		String whitespace = "/tmp/white space test/";
+		Build build = helper.mojo.project.getBuild();
+		build.setOutputDirectory(whitespace + build.getOutputDirectory());
+		build.setTestOutputDirectory(whitespace + build.getTestOutputDirectory());
+		helper.mojo.project.setFile(new File(whitespace, "pom.xml"));
+		
+		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
+		assertEquals(format(warning1 + warning2 + warning1 + warning2,
+				build.getTestOutputDirectory(), build.getOutputDirectory()),
+				helper.logStream.toString());
+	    
+	    helper.classRealmAssertions();
+	    
+		// Restore the real os.name (to prevent side-effects on other tests)
+		System.setProperty("os.name", os);
 	}
 	
 	private Dependency createDependecy(String groupId, String artifactId) {

@@ -1,9 +1,8 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
-import static uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper.isBlank;
-
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -11,13 +10,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.BuildPluginManager;
@@ -25,29 +24,13 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
+import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
 
 public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.AbstractMojo {
     
-    /**
-     * @component
-     * @readonly
-     * @required
-     */
-    protected PlexusContainer container;
-
-    /**
-     * The Maven Session Object
-     *
-     * @parameter property="session"
-     * @readonly
-     * @required
-     */
-    protected MavenSession session;
-
     /**
      * The Maven BuildPluginManager Object
      *
@@ -231,7 +214,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
     protected void setSystemProperty(final String key, final String value) {
-        if(!isBlank(key) && !isBlank(value)) {
+        if(!Utils.isBlank(key) && !Utils.isBlank(value)) {
             getLog().info(String.format("Setting FitNesse variable [%s] to [%s]", key, value));
             System.setProperty(key, value);
         }
@@ -289,14 +272,24 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
 	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) throws MojoExecutionException {
 		setupLocalTestClasspath(realm, wikiFormatClasspath,
-			this.project.getBuild().getTestOutputDirectory(),
-			this.project.getBuild().getOutputDirectory()
+			handleWhitespace(this.project.getBuild().getTestOutputDirectory()),
+			handleWhitespace(this.project.getBuild().getOutputDirectory())
 		);
     }
+	
+	private String handleWhitespace(final String directory) {
+		if(directory.contains(" ") && !Utils.isWindows()) {
+            getLog().warn(String.format("THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]", directory));
+            getLog().warn("FitNesse classpath may not function correctly in wiki mode. Attempting relative path workaround");
+            final String basedir = this.project.getBasedir().toString();
+            return "." + StringUtils.substringAfter(directory, basedir);
+		}
+		return directory;
+	}
 
 	private void setupLocalTestClasspath(final ClassRealm realm,
 			final StringBuilder wikiFormatClasspath,
-			final String... testClasspathElements) throws MojoExecutionException {
+			final String... testClasspathElements) {
 
 		for(final String element : testClasspathElements) {
             getLog().debug(String.format("Adding element to FitNesse classpath [%s]", element));
@@ -307,7 +300,9 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 	
 	private void addToRealm(final ClassRealm realm, final File file) {
 	    try {
-			realm.addURL(file.toURI().toURL());
+			final URL url = file.toURI().toURL();
+            getLog().debug(String.format("Adding URL to ClassRealm [%s]", url));
+			realm.addURL(url);
 		} catch (final MalformedURLException e) {
             getLog().error(e);
 		}
@@ -316,7 +311,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     private Set<Artifact> resolveDependencyKey(final String key, final Map<String, Artifact> artifactMap) {
        	final Artifact artifact = artifactMap.get(key);
        	if(artifact == null) {
-            getLog().warn(String.format("Lookup for artifact [%s] failed", key));
+            getLog().error(String.format("Lookup for artifact [%s] failed", key));
             return Collections.emptySet();
        	}
         return resolveArtifactTransitively(artifact);
@@ -332,7 +327,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 		final ArtifactResolutionResult result = this.resolver.resolve(request);
         if(!result.isSuccess()) {
             for(Artifact missing : result.getMissingArtifacts()) {
-    			getLog().warn(String.format("Could not resolve artifact: [%s]", missing));
+    			getLog().error(String.format("Could not resolve artifact: [%s]", missing));
         	}
         	if(result.hasExceptions() && getLog().isDebugEnabled()) {
             	for(Exception exception : result.getExceptions()) {

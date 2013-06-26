@@ -50,6 +50,8 @@ public class AbstractFitNesseMojoTestHelper {
     ClassRealm realm;
     
     ByteArrayOutputStream logStream;
+    
+    boolean executeCalled = false;
 
     AbstractFitNesseMojoTestHelper() {
 		artifactHandler = mock(ArtifactHandler.class);
@@ -75,7 +77,9 @@ public class AbstractFitNesseMojoTestHelper {
         
 		mojo = new AbstractFitNesseMojo() {
 			@Override
-			protected void executeInternal() { }
+			protected void executeInternal() {
+				executeCalled = true;
+			}
 		};
 		mojo.project = new MavenProject();
 		mojo.resolver = this.artifactResolver;
@@ -178,7 +182,7 @@ public class AbstractFitNesseMojoTestHelper {
 	
 	void classRealmAssertions(int artifactCount) {
 		verify(realm, times(2 + artifactCount)).addURL(any(URL.class));
-		verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/test-classes/")));
+	    verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/test-classes/")));
 		verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/classes/")));
 		verify(realm, times(artifactCount)).addURL(argThat(new UrlEndsWith("/target/test-classes/dummy.jar")));
 	}
