@@ -6,18 +6,31 @@
 	</bannerLeft>
 
 	<poweredBy>
-		<logo name="FitNesse" href="http://fitnesse.org/"
-			img="http://fitnesse.org/files/images/FitNesseLogo.gif" />
-		<logo name="Apache Maven" href="http://maven.apache.org/"
-			img="http://maven.apache.org/images/logos/maven-feather.png" />
+		<logo name="FitNesse" href="http://fitnesse.org/" img="http://fitnesse.org/files/images/FitNesseLogo.gif" />
+		<logo name="Apache Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-feather.png" />
 	</poweredBy>
 
 	<body>
+		<head>
+			<style type="text/css" media="all">
+			<![CDATA[
+			tt, code { font-size: large; }
+			]]>
+			</style>
+		</head>
+
 		<menu name="Overview">
 			<item name="Introduction" href="../fitnesse-launcher-maven-plugin/index.html" />
 			<item name="Goals" href="../fitnesse-launcher-maven-plugin/plugin-info.html" />
 			<item name="Usage" href="../fitnesse-launcher-maven-plugin/usage.html" />
 			<item name="FAQ" href="../fitnesse-launcher-maven-plugin/faq.html" />
+		</menu>
+
+		<menu name="Examples">
+			<item name="Example Java Project" href="index.html"/>
+			<item name="Example Spring Project" href="../fitnesse-launcher-spring-example/index.html"/>
+			<item name="Example SQL Project" href="../fitnesse-launcher-sql-example/index.html"/>
+			<item name="Example Webapp Project" href="../fitnesse-launcher-webapp-example/index.html"/>
 		</menu>
 
 		<menu ref="reports" />

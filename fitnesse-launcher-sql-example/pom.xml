@@ -10,7 +10,7 @@
 	<artifactId>fitnesse-launcher-sql-example</artifactId>
 	<packaging>jar</packaging>
 
-	<name>FitNesse Launcher Example SQL Project</name>
+	<name>Example SQL Project</name>
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in an SQL project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SqlExample</url>
 
@@ -192,6 +192,45 @@
 						<version>1.1.2.2</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<linkJavadoc>true</linkJavadoc>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.9</version>
+							<configuration>
+								<quiet>true</quiet>
+								<use>false</use>
+								<show>package</show>
+								<includeDependencySources>false</includeDependencySources>
+								<name>Example SQL Project JavaDocs</name>
+								<description>JavaDoc API documentation for FitNesse Launcher Example SQL Project</description>
+								<links>
+									<link>http://java.sun.com/javase/6/docs/api/</link>
+								</links>
+							</configuration>
+						</plugin>
+						<!--
+						<plugin>
+							<groupId>uk.co.javahelp.fitnesse</groupId>
+							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+        						<version>${project.version}</version>
+						</plugin>
+						-->
+					</reportPlugins>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
