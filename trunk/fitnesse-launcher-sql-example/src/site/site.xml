@@ -11,23 +11,25 @@
 	</poweredBy>
 
 	<body>
+		<head>
+			<style type="text/css" media="all">
+			<![CDATA[
+			tt, code { font-size: large; }
+			]]>
+			</style>
+		</head>
+
 		<menu name="Overview">
-			<item name="Introduction" href="index.html" />
-			<item name="Goals" href="plugin-info.html" />
-			<item name="Usage" href="usage.html" >
-				<item name="Getting Started" href="started.html" />
-				<item name="Configuration" href="config.html" />
-				<item name="Running FitNesse" href="running.html" />
-				<item name="Use of Profiles" href="profiles.html" />
-				<item name="Filtering Test Suites" href="filtering.html" />
-			</item>
-			<item name="FAQ" href="faq.html" />
+			<item name="Introduction" href="../fitnesse-launcher-maven-plugin/index.html" />
+			<item name="Goals" href="../fitnesse-launcher-maven-plugin/plugin-info.html" />
+			<item name="Usage" href="../fitnesse-launcher-maven-plugin/usage.html" />
+			<item name="FAQ" href="../fitnesse-launcher-maven-plugin/faq.html" />
 		</menu>
 
 		<menu name="Examples">
 			<item name="Example Java Project" href="../fitnesse-launcher-java-example/index.html"/>
 			<item name="Example Spring Project" href="../fitnesse-launcher-spring-example/index.html"/>
-			<item name="Example SQL Project" href="../fitnesse-launcher-sql-example/index.html"/>
+			<item name="Example SQL Project" href="index.html"/>
 			<item name="Example Webapp Project" href="../fitnesse-launcher-webapp-example/index.html"/>
 		</menu>
 

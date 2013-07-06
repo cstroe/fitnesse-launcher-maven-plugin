@@ -10,7 +10,7 @@
 	<artifactId>fitnesse-launcher-webapp-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>FitNesse Launcher Example Webapp Project</name>
+	<name>Example Webapp Project</name>
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in a webapp project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample</url>
 
@@ -47,6 +47,21 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<reportPlugins>
+						<!--
+						<plugin>
+							<groupId>uk.co.javahelp.fitnesse</groupId>
+							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+        						<version>${project.version}</version>
+						</plugin>
+						-->
+					</reportPlugins>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -54,7 +69,7 @@
 		<profile>
 			<id>headless</id>
 			<!-- 
-                This profile is for use on a server or any computer without a display.
+				This profile is for use on a server or any computer without a display.
 				It launches Xvfb (X-Server Virtual Frame Buffer) which must be installed first.
 				The intent of this profile is to enable a Continuous Integration server to run the tests. 
 			 -->
@@ -83,7 +98,7 @@
 		<profile>
 			<id>wiki</id>
 			<!-- 
-                This profile is for use when writing tests using the FitNesse wiki.
+                		This profile is for use when writing tests using the FitNesse wiki.
 				Simply run 'mvn verify -P wiki' and use a browser to visit http://localhost:9123/WebappExample
 			 -->
 			<build>

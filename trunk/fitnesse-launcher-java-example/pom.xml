@@ -11,7 +11,7 @@
 	<artifactId>fitnesse-launcher-java-example</artifactId>
 	<packaging>jar</packaging>
 
-	<name>FitNesse Launcher Example Java Project</name>
+	<name>Example Java Project</name>
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in a java project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/JavaExample</url>
 
@@ -50,18 +50,21 @@
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
 					<createSymLink>true</createSymLink>
+					<!-- These 3 are mutually exclusive; choose one. -->
 					<suite>JavaExample</suite>
 					<!-- 
 					<suite>JavaExample.SlimTest</suite>
 					<test>JavaExample.SlimTest.SlimDecisionTable</test>
+					 -->
+					<!-- 
 					<suiteFilter>address,division</suiteFilter>
 					<excludeSuiteFilter>division,decision</excludeSuiteFilter>
 					 -->
 					<!-- Since version 1.3.0 -->
-    				<useProjectDependencies>
-    				    <scope>test</scope>
-    				    <scope>runtime</scope>
-    				</useProjectDependencies>
+    					<useProjectDependencies>
+    				    		<scope>test</scope>
+    				    		<scope>runtime</scope>
+    					</useProjectDependencies>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -70,10 +73,36 @@
 				<configuration>
 					<reportPlugins>
 						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<linkJavadoc>true</linkJavadoc>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.9</version>
+							<configuration>
+								<quiet>true</quiet>
+								<use>false</use>
+								<show>package</show>
+								<includeDependencySources>false</includeDependencySources>
+								<name>Example Java Project JavaDocs</name>
+								<description>JavaDoc API documentation for FitNesse Launcher Example Java Project</description>
+								<links>
+									<link>http://java.sun.com/javase/6/docs/api/</link>
+								</links>
+							</configuration>
+						</plugin>
+						<!--
+						<plugin>
 							<groupId>uk.co.javahelp.fitnesse</groupId>
 							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-        					<version>${project.version}</version>
+        						<version>${project.version}</version>
 						</plugin>
+						-->
 					</reportPlugins>
 				</configuration>
 			</plugin>
@@ -84,7 +113,7 @@
 		<profile>
 			<id>wiki</id>
 			<!-- 
-                This profile is for use when writing tests using the FitNesse wiki.
+                		This profile is for use when writing tests using the FitNesse wiki.
 				Simply run 'mvn verify -P wiki' and use a browser to visit http://localhost:9123/JavaExample
 			 -->
 			<build>
@@ -108,7 +137,7 @@
 		<profile>
 			<id>auto</id>
 			<!-- 
-                This profile will boot FitNesse to automatically run the configured test suite. Simply run 'mvn verify -P auto'
+                		This profile will boot FitNesse to automatically run the configured test suite. Simply run 'mvn verify -P auto'
 			 -->
 			<build>
 				<plugins>

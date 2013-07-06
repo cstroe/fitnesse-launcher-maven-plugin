@@ -13,7 +13,7 @@ FitNesse Launcher Plugin
 
   We already have a number of Maven plugins for FitNesse,
   including {{{http://mojo.codehaus.org/fitnesse-maven-plugin/}<<<fitnesse-maven-plugin>>>}},
-  {{{http://fitnesse.info/trinidad}<<<maven-trinidad-plugin>>>}} and others.
+  {{{http://fitnesse.org/FitNesse.UserGuide.RunningFromMaven}<<<maven-trinidad-plugin>>>}} and others.
   
   The author of FitNesse Launcher Plugin found these plugins
   difficult or awkward to configure in an environment agnostic fashion suitable for team development.
@@ -30,11 +30,15 @@ FitNesse Launcher Plugin
   A particularly inspired idea is to use a Maven plugin which makes Maven Dependencies available to FitNesse as the configured classpath.
   This has the advantages of:
   
-    * only needing project dependencies to be configured in a single location: the <<<pom.xml>>>
+    *
     
-    * allowing those dependencies to be configured in an environment agnostic way.
+      only needing project dependencies to be configured in a single location: the <<<pom.xml>>>
     
-  Two plugins exist which do this: {{{http://source.valtech.com/maven-sites/maven-fitnesse-cpgen-plugin/}<<<maven-fitnesse-cpgen-plugin>>>}}
+    *
+    
+      allowing those dependencies to be configured in an environment agnostic way.
+    
+  Two plugins exist which do this: {{{http://sourceforge.net/projects/mvn-fit-cpgen/}<<<maven-fitnesse-cpgen-plugin>>>}}
   and {{{https://github.com/lvonk/fitnesse-maven-classpath}<<<fitnesse-maven-classpath>>>}}.
   The author of FitNesse Launcher Plugin was happily using <<<fitnesse-maven-classpath>>> with {{{http://xebia.github.com/Xebium/}Xebium}}
   (a {{{http://fitnesse.org/}FitNesse}} / {{{http://seleniumhq.org/}Selenium}} bridge)
@@ -42,11 +46,17 @@ FitNesse Launcher Plugin
      
   FitNesse Launcher Plugin aims to solve all of these problems and make it easy to:
   
-    * Configure FitNesse for use in an environment agnostic way, using Maven properties and dependencies.
+    *
     
-    * Write FitNesse tests using FitNesse as a wiki, and have the tests located with the project source, with minimal clutter from other FitNesse server files.
+      Configure FitNesse for use in an environment agnostic way, using Maven properties and dependencies.
     
-    * Run those same FitNesse tests automatically during Maven's <<<integration-test>>> phase, with results in JUnit XML format and HTML reports available.
+    *
+    
+      Write FitNesse tests using FitNesse as a wiki, and have the tests located with the project source, with minimal clutter from other FitNesse server files.
+    
+    *
+
+      Run those same FitNesse tests automatically during Maven's <<<integration-test>>> phase, with results in JUnit XML format and HTML reports available.
 
 * Goals Overview
 
@@ -71,7 +81,7 @@ FitNesse Launcher Plugin
   General instructions on how to use the Plugin Name can be found on the {{{./usage.html}usage page}}. Some more
   specific use cases are described in the examples given below. Last but not least, users occasionally contribute
   additional examples, tips or errata to the
-  {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/w/list}plugin's wiki page}}.
+  {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/w/list}plugin's wiki pages}}.
 
   In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}} and feel
   free to contact the {{{./mail-lists.html}user mailing list}}. The posts to the mailing list are archived and could
@@ -91,11 +101,11 @@ FitNesse Launcher Plugin
   To provide you with better understanding of some usages of the FitNesse Launcher Plugin,
   you can take a look into the following examples:
 
-  * {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/JavaExample}Example Java Project}}
+  * {{{../fitnesse-launcher-java-example/index.html}Example Java Project}}
   
-  * {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SpringExample}Example Spring Project}}
+  * {{{../fitnesse-launcher-spring-example/index.html}Example Spring Project}}
   
-  * {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SqlExample}Example SQL Project}}
+  * {{{../fitnesse-launcher-sql-example/index.html}Example SQL Project}}
   
-  * {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample}Example Webapp Project}}
-      
+  * {{{../fitnesse-launcher-webapp-example/index.html}Example Webapp Project}}
+  

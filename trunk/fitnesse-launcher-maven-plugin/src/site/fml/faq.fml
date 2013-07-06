@@ -45,7 +45,35 @@ mvn fitnesse:set-up fitnesse:wiki
     <faq id="properties">
       <question>What FitNesse variables get exported?</question>
       <answer>
-          <p>Please see <a href="usage.html#FitNesse_Variables">Usage documentation</a></p>
+          <p>Please see Usage documentation on <a href="config.html#FitNesse_Variables">FitNesse Variables</a>.</p>
+      </answer>
+    </faq>
+    <faq id="whitespace">
+      <question>What if I have whitespace in the Current Working Directory path?</question>
+      <answer>
+	      <p>This <a href="https://code.google.com/p/fitnesse-launcher-maven-plugin/issues/detail?id=11">project issue</a> was raised with regard to whitespace in the Current Working Directory path.</p>
+	      <p>When tests are run in 'auto mode', whitespace is not an issue as the classpath for FitNesse is handled using Maven's internal 'ClassRealm' mechanism.</p>
+	      <p>When tests are tun in 'wiki mode', two directories always get added to the FitNesse classpath:</p>
+		      <ol>
+			      <li><pre>${project.build.directory}/test-classes</pre></li>
+			      <li><pre>${project.build.directory}/classes</pre></li>
+		      </ol>
+	      <p>
+		      Hence, if there is whitespace in the project base directory, then whitespace will be in the FitNesse classpath.
+		      FitNesse automatically detects this when wiki tests are run and adds quotes (<code>"</code>) around classpath elements which have whitespace.
+	      </p>
+	      <p>
+		      This appears to be sufficient for Windows operating systems to cope &#8212; the tests can be expected to work.
+		      On all other operating systems this quoting is not sufficient and the tests can be expected to error.
+	      </p>
+	      <p>
+		      On non-Windows operating systems <strong>FitNesse Launcher</strong> will detect and attempt to compensate for this by resolving the 2 classpath elements above as relative paths,
+		      which should eliminate whitespace in the classpath if the Current Working Directory is also the project base dircetory.
+		      (ie. <code>${project.build.directory}</code> is resolved to <code>./target</code>)
+	      </p>
+	      <p>
+		      See this <a href="http://stackoverflow.com/questions/17287166/what-is-the-correct-escaping-or-quoting-of-whitespace-in-a-classpath-path-ele">Stackoverflow question</a> for more detail, and <a href="https://github.com/unclebob/fitnesse/issues/278">this issue</a> raised with <a href="https://github.com/unclebob">Uncle Bob</a>.
+	      </p>
       </answer>
     </faq>
   </part>

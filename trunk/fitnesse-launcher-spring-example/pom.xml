@@ -10,7 +10,7 @@
 	<artifactId>fitnesse-launcher-spring-example</artifactId>
 	<packaging>jar</packaging>
 
-	<name>FitNesse Launcher Example Spring Framework Project</name>
+	<name>Example Spring Framework Project</name>
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in a Spring Framework project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/SpringExample</url>
 
@@ -54,6 +54,45 @@
 						<version>1.7.2</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<linkJavadoc>true</linkJavadoc>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.9</version>
+							<configuration>
+								<quiet>true</quiet>
+								<use>false</use>
+								<show>package</show>
+								<includeDependencySources>false</includeDependencySources>
+								<name>Example Spring Project JavaDocs</name>
+								<description>JavaDoc API documentation for FitNesse Launcher Example Spring Project</description>
+								<links>
+									<link>http://java.sun.com/javase/6/docs/api/</link>
+								</links>
+							</configuration>
+						</plugin>
+						<!--
+						<plugin>
+							<groupId>uk.co.javahelp.fitnesse</groupId>
+							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+        						<version>${project.version}</version>
+						</plugin>
+						-->
+					</reportPlugins>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

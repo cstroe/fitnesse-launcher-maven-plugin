@@ -16,7 +16,7 @@
 	    Allows configuration of FitNesse's classpath through plugin dependencies,
 	    and injects all Maven project properties as FitNesse variables,
 	    ( which can be overridden from the command line using '-D' ).
-    </description>
+	</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin</url>
 	<inceptionYear>2012</inceptionYear>
 
@@ -52,6 +52,16 @@
 		<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/list</url>
 	</issueManagement>
 
+	<mailingLists>
+		<mailingList>
+			<name>FitNesse Launcher on Google Groups</name>
+			<subscribe>fitnesse-launcher-maven-plugin+subscribe@googlegroups.com</subscribe>
+			<unsubscribe>fitnesse-launcher-maven-plugin+unsubscribe@googlegroups.com</unsubscribe>
+			<post>fitnesse-launcher-maven-plugin@googlegroups.com</post>
+			<archive>http://groups.google.com/group/fitnesse-launcher-maven-plugin</archive>
+		</mailingList>
+	</mailingLists>
+
 	<prerequisites>
 		<maven>3.0.1</maven>
 	</prerequisites>
@@ -62,6 +72,8 @@
 		<maven.version>3.0.5</maven.version>
 		<failsafe.version>2.12.4</failsafe.version>
 		<jacoco.version>0.6.0.201210061924</jacoco.version>
+		<!-- For use by Site filtering (can't handle 'dot' notation) -->
+		<projectVersion>${project.version}</projectVersion>
 	</properties>
 
 	<modules>
@@ -158,6 +170,20 @@
    					<relativizeDecorationLinks>false</relativizeDecorationLinks>
 				</configuration>
 			</plugin>
+			<plugin> 
+				<groupId>org.tinyjee.dim</groupId> 
+				<artifactId>doxia-include-macro</artifactId> 
+				<version>1.1</version> 
+				<executions> 
+					<execution> 
+						<id>initialize-doxia-include-macro</id> 
+						<phase>pre-site</phase> 
+						<goals> 
+							<goal>initialize</goal> 
+						</goals> 
+					</execution> 
+				</executions> 
+			</plugin> 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.3</version>
