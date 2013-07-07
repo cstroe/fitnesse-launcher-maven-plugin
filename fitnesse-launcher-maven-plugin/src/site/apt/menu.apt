@@ -7,6 +7,8 @@
 
   * {{{./config.html#Plugin_Configuration}Plugin Configuration}}
 
+   * {{{./config.html#CreateSymLink_Option}CreateSymLink Option}}
+
   * {{{./config.html#Classpath_Dependencies}Classpath Dependencies}}
 
    * {{{./config.html#Project_Scope_Dependencies}Project Scope Dependencies}}

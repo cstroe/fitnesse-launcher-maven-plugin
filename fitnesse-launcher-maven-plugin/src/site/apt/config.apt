@@ -24,7 +24,7 @@ Configuration
                 <groupId>uk.co.javahelp.fitnesse</groupId>
                 <artifactId>fitnesse-launcher-maven-plugin</artifactId>
                 <configuration>
-                    <!-- These next 7 are the default values -->
+                    <!-- These next 8 are the default values -->
                     <port>9123</port>
                     <workingDir>${project.build.directory}/fitnesse</workingDir>
                     <root>FitNesseRoot</root>
@@ -32,17 +32,6 @@ Configuration
                     <reportsDir>${workingDir}/reports</reportsDir>
                     <resultsDir>${workingDir}/results</resultsDir>
                     <summaryFile>${workingDir}/results/failsafe-summary.xml</summaryFile>
-                    
-                    <!--
-                        Only your project specific FitNesse tests need go under src/test/fitnesse.
-                        By setting 'createSymLink' to 'true', fitnesse-launcher-maven-plugin will
-                        create a FitNesse SymLink directly from its working directory to your test suite
-                        under src/test/fitnesse. This is most useful when developing tests in 'wiki' mode,
-                        as then you can directly scm commit your changes to the wiki test pages.
-                    
-                        If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse
-                        or use some other mechanism, let 'createSymLink' be 'false'.
-                    -->
                     <createSymLink>true</createSymLink>
                     
                     <!-- Only configure 1 of the following 3 (See Advised Project Directory Structure) -->
@@ -58,6 +47,34 @@ Configuration
 </project>
 +-----+
 
+** CreateSymLink Option
+ 
+  *
+
+    Only your project specific FitNesse tests need go under <<<src/test/fitnesse>>>.
+ 
+  *
+
+    By setting <<<createSymLink>>> to <<<true>>>, the plugin will
+    create a {{{http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks}FitNesse SymLink}}
+    directly from its working directory to your test suite under <<<src/test/fitnesse>>>.
+ 
+  *
+
+    This is most useful when developing tests in 'wiki' mode,
+    as then you can directly scm commit your changes to the wiki test pages,
+    without having to also commit FitNesse server files,
+    or having to <<<svn:ignore>>> the <<<ErrorLogs>>> directory etc.
+ 
+  *
+
+    <<This is the default.>>
+ 
+  *
+
+    If you prefer to copy-resources from <<<src/test/fitnesse>>> into <<</target/fitnesse>>>
+    or use some other mechanism, set <<<createSymLink>>> to <<<false>>>.
+                    
 * Classpath Dependencies
   
 ** Project Scope Dependencies

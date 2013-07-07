@@ -49,7 +49,6 @@
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
-					<createSymLink>true</createSymLink>
 					<!-- These 3 are mutually exclusive; choose one. -->
 					<suite>JavaExample</suite>
 					<!-- 
@@ -61,10 +60,10 @@
 					<excludeSuiteFilter>division,decision</excludeSuiteFilter>
 					 -->
 					<!-- Since version 1.3.0 -->
-    					<useProjectDependencies>
-    				    		<scope>test</scope>
-    				    		<scope>runtime</scope>
-    					</useProjectDependencies>
+   					<useProjectDependencies>
+			    		<scope>test</scope>
+			    		<scope>runtime</scope>
+   					</useProjectDependencies>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -101,7 +100,7 @@
 						<plugin>
 							<groupId>uk.co.javahelp.fitnesse</groupId>
 							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-        						<version>${project.version}</version>
+       						<version>${project.version}</version>
 						</plugin>
 						-->
 					</reportPlugins>
@@ -114,7 +113,7 @@
 		<profile>
 			<id>wiki</id>
 			<!-- 
-                		This profile is for use when writing tests using the FitNesse wiki.
+           		This profile is for use when writing tests using the FitNesse wiki.
 				Simply run 'mvn verify -P wiki' and use a browser to visit http://localhost:9123/JavaExample
 			 -->
 			<build>
@@ -138,7 +137,7 @@
 		<profile>
 			<id>auto</id>
 			<!-- 
-                		This profile will boot FitNesse to automatically run the configured test suite. Simply run 'mvn verify -P auto'
+           		This profile will boot FitNesse to automatically run the configured test suite. Simply run 'mvn verify -P auto'
 			 -->
 			<build>
 				<plugins>

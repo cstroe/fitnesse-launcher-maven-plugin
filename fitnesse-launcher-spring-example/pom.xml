@@ -40,7 +40,6 @@
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
-					<createSymLink>true</createSymLink>
 					<suite>SpringExample</suite>
 					<!-- Since version 1.3.0 -->
     				<useProjectDependencies>
@@ -89,7 +88,7 @@
 						<plugin>
 							<groupId>uk.co.javahelp.fitnesse</groupId>
 							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-        						<version>${project.version}</version>
+       						<version>${project.version}</version>
 						</plugin>
 						-->
 					</reportPlugins>
