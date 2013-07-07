@@ -117,7 +117,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse,
      * let 'createSymLink' be 'false'.
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
-     * @parameter property="fitnesse.createSymLink"
+     * @parameter property="fitnesse.createSymLink" default-value="true"
      */
     protected boolean createSymLink;
 
