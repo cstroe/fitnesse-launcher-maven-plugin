@@ -126,6 +126,7 @@
 					<quiet>true</quiet>
 					<use>false</use>
 					<show>private</show>
+					<stylesheetfile>${project.parent.basedir}/src/site/javadoc/stylesheet.css</stylesheetfile>
 					<includeDependencySources>false</includeDependencySources>
 					<links>
 						<link>http://java.sun.com/javase/6/docs/api/</link>
