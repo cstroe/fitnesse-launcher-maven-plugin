@@ -33,7 +33,7 @@ import org.codehaus.plexus.logging.Logger;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
-public class AbstractFitNesseMojoTestHelper {
+public class FitNesseMojoTestHelper {
 
 	AbstractFitNesseMojo mojo;
 	
@@ -53,7 +53,7 @@ public class AbstractFitNesseMojoTestHelper {
     
     boolean executeCalled = false;
 
-    AbstractFitNesseMojoTestHelper() {
+    FitNesseMojoTestHelper() {
 		artifactHandler = mock(ArtifactHandler.class);
 		artifactResolver = mock(ArtifactResolver.class);
 		realm = mock(ClassRealm.class);

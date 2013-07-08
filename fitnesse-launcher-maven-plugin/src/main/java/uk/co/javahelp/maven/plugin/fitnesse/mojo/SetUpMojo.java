@@ -21,7 +21,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 public class SetUpMojo extends AbstractSetupsMojo {
     
 	@Override
-    public void execute() throws MojoExecutionException {
+    public final void execute() throws MojoExecutionException {
 		clean();
 		unpack();
 		move();
@@ -63,7 +63,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * }
 	 * </pre>
 	 */
-    void clean() throws MojoExecutionException {
+    final void clean() throws MojoExecutionException {
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-clean-plugin"),
 		    goal("clean"),
@@ -115,7 +115,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * }
 	 * </pre>
      */
-    void unpack() throws MojoExecutionException {
+    final void unpack() throws MojoExecutionException {
        	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-dependency-plugin"),
@@ -159,7 +159,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * }
 	 * </pre>
 	 */
-    void move() throws MojoExecutionException {
+    final void move() throws MojoExecutionException {
         final Xpp3Dom config = configuration(
         	element("target",
             	element("move")));

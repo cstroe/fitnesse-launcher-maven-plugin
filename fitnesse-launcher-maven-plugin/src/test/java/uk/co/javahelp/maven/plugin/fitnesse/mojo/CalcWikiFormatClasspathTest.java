@@ -36,11 +36,11 @@ public class CalcWikiFormatClasspathTest {
 	
 	private static final String USING_PLUGIN_CONFIG = format("[INFO] Using dependencies specified in plugin config%n");
 
-	private AbstractFitNesseMojoTestHelper helper;
+	private FitNesseMojoTestHelper helper;
 	
 	@Before
 	public void setUp() {
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	}
 	
 	@Test
@@ -391,24 +391,24 @@ public class CalcWikiFormatClasspathTest {
 	@Test
 	public void testProjectDependencyScopes() throws MojoExecutionException {
 	    assertProjectDependencyScopes(4, "compile");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(4, "test");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(4, "runtime");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(4, "provided");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(4, "system");
 	    
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(7, "compile", "test");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(10, "compile", "test", "runtime");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(10, "compile", "runtime", "system");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(13, "compile", "test", "runtime", "system");
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	}
 	
 	private void assertProjectDependencyScopes(int artifactCount, String... scopes) throws MojoExecutionException {

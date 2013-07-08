@@ -22,8 +22,12 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  */
 public class VerifyMojo extends RunTestsMojo {
 
+	public VerifyMojo() {
+		super(false);
+	}
+
 	@Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public final void execute() throws MojoExecutionException, MojoFailureException {
         final FailsafeSummary summary = readSummary();
         final int result = summary.getResult();
         SurefireHelper.reportExecution(this, result, getLog());
@@ -43,10 +47,5 @@ public class VerifyMojo extends RunTestsMojo {
         } finally {
             IOUtil.close(reader);
         }
-    }
-
-    @Override
-    public boolean isTestFailureIgnore() {
-        return false;
     }
 }

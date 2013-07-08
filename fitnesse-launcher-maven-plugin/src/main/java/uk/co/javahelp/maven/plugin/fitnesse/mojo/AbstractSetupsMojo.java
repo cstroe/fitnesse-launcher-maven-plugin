@@ -44,7 +44,7 @@ public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.Abstrac
      */
     protected String workingDir;
     
-    protected Plugin plugin(final String key) {
+    protected final Plugin plugin(final String key) {
        	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);
         final Plugin plugin = new Plugin();
         plugin.setGroupId(artifact.getGroupId());

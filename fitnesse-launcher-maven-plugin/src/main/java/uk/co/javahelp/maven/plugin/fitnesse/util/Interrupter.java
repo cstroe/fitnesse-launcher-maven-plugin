@@ -6,13 +6,13 @@ public class Interrupter extends Thread {
 	
 	private final long howLongToWaitBeforeInterrupting;
 		
-	public Interrupter(Thread threadToInterrupt, long howLongToWaitBeforeInterrupting) {
+	public Interrupter(final Thread threadToInterrupt, final long howLongToWaitBeforeInterrupting) {
 		this.threadToInterrupt = threadToInterrupt;
 		this.howLongToWaitBeforeInterrupting = howLongToWaitBeforeInterrupting;
 	}
 
 	@Override
-	public void run() {
+	public final void run() {
 		if(howLongToWaitBeforeInterrupting > 0L) {
     		try {
     			Thread.sleep(howLongToWaitBeforeInterrupting);

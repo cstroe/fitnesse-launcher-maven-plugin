@@ -21,6 +21,8 @@ public class FitNesseHelper {
 
     private static final String UTF8 = "UTF-8";
     
+    private static final long SHUTDOWN_WAIT_MS = 50;
+    
     private final Log log;
 
     public FitNesseHelper(final Log log) {
@@ -51,8 +53,9 @@ public class FitNesseHelper {
         arguments.setPort(port);
         arguments.setRootPath(workingDir);
         arguments.setRootDirectory(root);
-        if(logDir != null && !logDir.trim().equals(""))
+        if(logDir != null && !logDir.trim().equals("")) {
             arguments.setLogDirectory(logDir);
+        }
         FitNesseMain.launchFitNesse(arguments);
     }
 
@@ -60,7 +63,7 @@ public class FitNesseHelper {
         try {
 			Shutdown.main(new String[]{"-p", port});
 			// Pause to give it a chance to shutdown
-    		Thread.sleep(50L);
+    		Thread.sleep(SHUTDOWN_WAIT_MS);
 		} catch (ConnectException e) {
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
