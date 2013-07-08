@@ -24,6 +24,7 @@ import java.io.PrintStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.maven.model.Build;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -71,6 +72,8 @@ public class RunTestsMojoTest {
 		mojo.summaryFile = new File(mojo.resultsDir, "failsafe-summary.xml");
 		mojo.project = new MavenProject();
 		mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
+		mojo.project.setBuild(new Build());
+		mojo.project.getBuild().setTestOutputDirectory("test_out");
 		
 		logStream = new ByteArrayOutputStream();
 		mojo.setLog(new DefaultLog(new PrintStreamLogger(
@@ -226,10 +229,10 @@ public class RunTestsMojoTest {
 		assertTrue(mojo.isTestFailureIgnore());
 		
 		mojo.setBasedir(new File(""));
-		assertNull(mojo.getBasedir());
+		assertEquals(mojo.project.getBasedir(), mojo.getBasedir());
 		
 		mojo.setTestClassesDirectory(new File(""));
-		assertNull(mojo.getTestClassesDirectory());
+		assertEquals(new File("test_out"), mojo.getTestClassesDirectory());
 		
 		File file = mojo.reportsDir;
 		mojo.setReportsDirectory(null);

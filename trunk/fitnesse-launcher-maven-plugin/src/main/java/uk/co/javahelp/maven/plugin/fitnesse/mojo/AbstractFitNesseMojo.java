@@ -19,7 +19,6 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -30,15 +29,6 @@ import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
 
 public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.AbstractMojo {
-    
-    /**
-     * The Maven BuildPluginManager Object
-     *
-     * @component
-     * @readonly
-     * @required
-     */
-    protected BuildPluginManager pluginManager;
     
     /**
      * Used to look up Artifacts in the remote repository.
@@ -190,7 +180,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
     private static final String LOG_LINE = "------------------------------------------------------------------------";
         
-    protected void exportProperties() {
+    protected final void exportProperties() {
         final Properties projectProperties = this.project.getProperties();
         getLog().info(LOG_LINE);
         final String mavenClasspath = calcWikiFormatClasspath();
@@ -213,14 +203,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         getLog().info(LOG_LINE);
     }
 
-    protected void setSystemProperty(final String key, final String value) {
+    protected final void setSystemProperty(final String key, final String value) {
         if(!Utils.isBlank(key) && !Utils.isBlank(value)) {
             getLog().info(String.format("Setting FitNesse variable [%s] to [%s]", key, value));
             System.setProperty(key, value);
         }
     }
 
-    protected String calcWikiFormatClasspath() {
+    protected final String calcWikiFormatClasspath() {
         final Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         
    		Map<String, Artifact> dependencyArtifactMap = this.pluginDescriptor.getArtifactMap(); 
@@ -271,10 +261,8 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
 	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) {
-		setupLocalTestClasspath(realm, wikiFormatClasspath,
-			handleWhitespace(this.project.getBuild().getTestOutputDirectory()),
-			handleWhitespace(this.project.getBuild().getOutputDirectory())
-		);
+		setupLocalTestClasspath(realm, wikiFormatClasspath, handleWhitespace(this.project.getBuild().getTestOutputDirectory()));
+		setupLocalTestClasspath(realm, wikiFormatClasspath, handleWhitespace(this.project.getBuild().getOutputDirectory()));
     }
 	
 	private String handleWhitespace(final String directory) {
@@ -294,13 +282,11 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
 	private void setupLocalTestClasspath(final ClassRealm realm,
 			final StringBuilder wikiFormatClasspath,
-			final String... testClasspathElements) {
+			final String testClasspathElement) {
 
-		for(final String element : testClasspathElements) {
-            getLog().debug(String.format("Adding element to FitNesse classpath [%s]", element));
-			this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, element);
-	        addToRealm(realm,  new File(element));
-		}
+        getLog().debug(String.format("Adding element to FitNesse classpath [%s]", testClasspathElement));
+		this.fitNesseHelper.formatAndAppendClasspath(wikiFormatClasspath, testClasspathElement);
+        addToRealm(realm,  new File(testClasspathElement));
 	}
 	
 	private void addToRealm(final ClassRealm realm, final File file) {

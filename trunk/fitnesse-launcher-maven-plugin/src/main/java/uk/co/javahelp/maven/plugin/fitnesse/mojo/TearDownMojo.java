@@ -46,7 +46,7 @@ public class TearDownMojo extends AbstractSetupsMojo {
 	 * </pre>
 	 */
 	@Override
-	public void execute() throws MojoExecutionException {
+	public final void execute() throws MojoExecutionException {
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-clean-plugin"),
 			goal("clean"),

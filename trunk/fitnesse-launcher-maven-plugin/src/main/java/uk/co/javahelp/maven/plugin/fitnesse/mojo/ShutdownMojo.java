@@ -17,7 +17,7 @@ public class ShutdownMojo extends org.apache.maven.plugin.AbstractMojo {
     private String port = Integer.toString(Arguments.DEFAULT_COMMAND_PORT);
 
 	@Override
-    public void execute() {
+    public final void execute() {
        	new FitNesseHelper(getLog()).shutdownFitNesseServer(port);
        	getLog().info("FitNesse wiki server is shutdown.");
     }

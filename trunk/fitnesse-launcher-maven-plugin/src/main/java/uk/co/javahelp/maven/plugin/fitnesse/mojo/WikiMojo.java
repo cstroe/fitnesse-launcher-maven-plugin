@@ -33,7 +33,7 @@ public class WikiMojo extends AbstractFitNesseMojo {
 	 * as Maven calls System.exit() once it's business is done.
 	 */
 	@Override
-    public void executeInternal() throws MojoExecutionException, MojoFailureException {
+    protected final void executeInternal() throws MojoExecutionException, MojoFailureException {
     	final String portString = this.port.toString();
         try {
         	Runtime.getRuntime().addShutdownHook(new Interrupter(Thread.currentThread(), 0L));
@@ -57,7 +57,7 @@ public class WikiMojo extends AbstractFitNesseMojo {
     }
     
     private Thread findFitNesseServerThread() {
-    	Thread[] activeThreads = findActiveThreads(3);
+    	final Thread[] activeThreads = findActiveThreads(3);
     	for( int i = activeThreads.length - 1 ; i >= 0 ; i-- ) {
     		final StackTraceElement[] trace = activeThreads[i].getStackTrace();
             for( int j = trace.length - 1 ; j >= 0 ; j-- ) {
@@ -70,11 +70,11 @@ public class WikiMojo extends AbstractFitNesseMojo {
     	return null;
     }
     
-    private Thread[] findActiveThreads(int arraySize) {
-    	Thread[] activeThreads = new Thread[arraySize];
-    	int threadsFound = Thread.currentThread().getThreadGroup().enumerate(activeThreads, false);
+    private Thread[] findActiveThreads(final int arraySize) {
+    	final Thread[] activeThreads = new Thread[arraySize];
+    	final int threadsFound = Thread.currentThread().getThreadGroup().enumerate(activeThreads, false);
     	if(threadsFound < arraySize) {
-        	Thread[] foundThreads = new Thread[threadsFound];
+        	final Thread[] foundThreads = new Thread[threadsFound];
         	System.arraycopy(activeThreads, 0, foundThreads, 0, threadsFound);
         	return foundThreads;
     	} 

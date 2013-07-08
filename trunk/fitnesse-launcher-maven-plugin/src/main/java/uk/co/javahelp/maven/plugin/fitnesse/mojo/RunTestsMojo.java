@@ -32,9 +32,19 @@ import fitnesse.responders.run.TestSummary;
  * @see fitnesse.junit.TestHelper
  */
 public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReportParameters {
+	
+    private final boolean testFailureIgnore;
+
+	public RunTestsMojo() {
+		this(true);
+	}
+
+	protected RunTestsMojo(final boolean testFailureIgnore) {
+		this.testFailureIgnore = testFailureIgnore;
+	}
 
 	@Override
-    public void executeInternal() throws MojoExecutionException, MojoFailureException {
+    protected final void executeInternal() throws MojoExecutionException, MojoFailureException {
 
 		if (this.createSymLink) {
 			createSymLink();
@@ -106,78 +116,71 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 	// ------------------------------------------------------------------------
 
 	@Override
-	public boolean isSkipTests() {
+	public final boolean isSkipTests() {
 		return false;
 	}
 
 	@Override
-    public void setSkipTests(boolean skipTests) {}
+    public void setSkipTests(final boolean unused) {}
 
 	@Override
-	public boolean isSkipExec() {
+	public final boolean isSkipExec() {
 		return false;
 	}
 
 	@Override
-    public void setSkipExec(boolean skipExec) {}
+    public void setSkipExec(final boolean unused) {}
 
 	@Override
-	public boolean isSkip() {
+	public final boolean isSkip() {
 		return false;
 	}
 
 	@Override
-    public void setSkip(boolean skip) {}
+    public void setSkip(final boolean unused) {}
 
 	@Override
-	public boolean isTestFailureIgnore() {
-		return true;
+	public final boolean isTestFailureIgnore() {
+		return this.testFailureIgnore;
 	}
 
 	@Override
-    public void setTestFailureIgnore(boolean testFailureIgnore) {}
+    public void setTestFailureIgnore(final boolean unused) {}
 
 	@Override
-	public File getBasedir() {
-		// TODO Auto-generated method stub
-		return null;
+	public final File getBasedir() {
+		return this.project.getBasedir();
 	}
 
 	@Override
-	public void setBasedir(File basedir) {
-		// TODO Auto-generated method stub
-
+	public void setBasedir(final File unused) {
 	}
 
 	@Override
-	public File getTestClassesDirectory() {
-		// TODO Auto-generated method stub
-		return null;
+	public final File getTestClassesDirectory() {
+		return new File(this.project.getBuild().getTestOutputDirectory());
 	}
 
 	@Override
-	public void setTestClassesDirectory(File testClassesDirectory) {
-		// TODO Auto-generated method stub
-
-	}
+	public final void setTestClassesDirectory(final File unused) {}
 
 	@Override
-	public File getReportsDirectory() {
+	public final File getReportsDirectory() {
 		return this.reportsDir;
 	}
 
 	@Override
-	public void setReportsDirectory(File reportsDirectory) {
+	public final void setReportsDirectory(final File reportsDirectory) {
 		this.reportsDir = reportsDirectory;
 	}
 
 	@Override
-	public Boolean getFailIfNoTests() {
+	public final Boolean getFailIfNoTests() {
 		return this.failIfNoTests;
 	}
 
 	@Override
-	public void setFailIfNoTests(final Boolean failIfNoTests) {
+	public final void setFailIfNoTests(final Boolean failIfNoTests) {
 		this.failIfNoTests = failIfNoTests;
 	}
 }

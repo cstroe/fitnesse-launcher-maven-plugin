@@ -13,56 +13,56 @@ public class DelegatingResultsListener implements ResultsListener {
 
     private final ResultsListener[] delegates;
 
-    public DelegatingResultsListener(ResultsListener... delegates) {
+    public DelegatingResultsListener(final ResultsListener... delegates) {
         this.delegates = delegates;
     }
 
-    public void allTestingComplete(TimeMeasurement totalTimeMeasurement)
+    public final void allTestingComplete(final TimeMeasurement totalTimeMeasurement)
             throws IOException {
         for(ResultsListener delegate : this.delegates) {
             delegate.allTestingComplete(totalTimeMeasurement);
         }
     }
 
-    public void setExecutionLogAndTrackingId(String stopResponderId, CompositeExecutionLog log) {
+    public final void setExecutionLogAndTrackingId(final String stopResponderId, final CompositeExecutionLog log) {
         for(ResultsListener delegate : this.delegates) {
             delegate.setExecutionLogAndTrackingId(stopResponderId, log);
         }
     }
 
-    public void announceNumberTestsToRun(int testsToRun) {
+    public final void announceNumberTestsToRun(final int testsToRun) {
         for(ResultsListener delegate : this.delegates) {
             delegate.announceNumberTestsToRun(testsToRun);
         }
     }
 
-    public void testSystemStarted(TestSystem testSystem, String testSystemName, String testRunner) {
+    public final void testSystemStarted(final TestSystem testSystem, final String testSystemName, final String testRunner) {
         for(ResultsListener delegate : this.delegates) {
             delegate.testSystemStarted(testSystem, testSystemName, testRunner);
         }
     }
 
-    public void newTestStarted(TestPage test, TimeMeasurement timeMeasurement)
+    public final void newTestStarted(final TestPage test, final TimeMeasurement timeMeasurement)
             throws IOException {
         for(ResultsListener delegate : this.delegates) {
             delegate.newTestStarted(test, timeMeasurement);
         }
     }
 
-    public void testOutputChunk(String output) throws IOException {
+    public final void testOutputChunk(final String output) throws IOException {
         for(ResultsListener delegate : this.delegates) {
             delegate.testOutputChunk(output);
         }
     }
 
-    public void testComplete(TestPage test, TestSummary testSummary, TimeMeasurement timeMeasurement)
+    public final void testComplete(final TestPage test, final TestSummary testSummary, final TimeMeasurement timeMeasurement)
             throws IOException {
         for(ResultsListener delegate : this.delegates) {
             delegate.testComplete(test, testSummary, timeMeasurement);
         }
     }
 
-    public void errorOccured() {
+    public final void errorOccured() {
         for(ResultsListener delegate : this.delegates) {
             delegate.errorOccured();
         }

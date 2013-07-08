@@ -14,11 +14,11 @@ import org.junit.Test;
 
 public class FitNesseMojoTest {
 	
-	private AbstractFitNesseMojoTestHelper helper;
+	private FitNesseMojoTestHelper helper;
 	
 	@Before
 	public void setUp() {
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 	}
 	
 	@Test

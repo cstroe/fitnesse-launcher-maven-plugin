@@ -14,14 +14,14 @@ import org.mockito.stubbing.Answer;
 
 public class ExportPropertiesTest {
 	
-	private AbstractFitNesseMojoTestHelper helper;
+	private FitNesseMojoTestHelper helper;
 
 	@Before
 	public void setUp() {
 		System.clearProperty("username");
 		System.clearProperty("password");
 		
-		helper = new AbstractFitNesseMojoTestHelper();
+		helper = new FitNesseMojoTestHelper();
 		
 		when(helper.mojo.fitNesseHelper.formatAndAppendClasspathArtifact(
 			any(StringBuilder.class), eq(helper.fitnesseArtifact)))

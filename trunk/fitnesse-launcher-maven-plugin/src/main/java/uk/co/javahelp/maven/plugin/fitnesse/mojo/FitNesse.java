@@ -1,10 +1,10 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
-final class FitNesse {
+interface FitNesse {
 	
-	static final String groupId = "org.fitnesse";
+	String groupId = "org.fitnesse";
 
-	static final String artifactId = "fitnesse";
+	String artifactId = "fitnesse";
 	
-	static final String artifactKey = groupId + ":" + artifactId;
+	String artifactKey = groupId + ":" + artifactId;
 }
