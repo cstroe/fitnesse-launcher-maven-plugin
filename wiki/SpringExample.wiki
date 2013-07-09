@@ -1,4 +1,6 @@
-#summary An example Spring Framework Project
+#summary Example Spring Framework Project
 #labels Featured
+
+= [http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-launcher-spring-example/index.html Maven Generated Documentation] =
 
 <wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/spring-example.xml" width="100%" height="800" />
