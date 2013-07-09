@@ -5,18 +5,21 @@
       <question>I ran '<code>mvn fitnesse:help</code>', but I got the help for <code>org.codehaus.mojo:fitnesse-maven-plugin</code> instead. What gives?</question>
       <answer>
 <p><code>org.codehaus.mojo:fitnesse-maven-plugin</code> is the default plugin for the goal prefix '<code>fitnesse</code>'.</p>
-<p>In order to use the goal prefix '<code>fitnesse</code>' with <strong>FitNesse Launcher</strong>, either:
-</p>
+<ul>
+<li>Either use '<code>mvn fitnesse-launcher:help</code>',</li>
+<li>Or in order to use the goal prefix '<code>fitnesse</code>' with <strong>FitNesse Launcher</strong>, either:
 <ul>
 <li>The plugin needs to be configured in your <code>pom.xml</code>,</li>
 <li>Or '<code>pluginGroups</code>' needs to be configured in your <code>settings.xml</code>:
-</li>
-</ul>
 <pre>
   &lt;pluginGroups&gt;
     &lt;pluginGroup>uk.co.javahelp.fitnesse&lt;/pluginGroup&gt;
   &lt;/pluginGroups&gt;
 </pre>
+</li>
+</ul>
+</li>
+</ul>
       </answer>
     </faq>
     <faq id="shutdown">
