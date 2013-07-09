@@ -1,19 +1,4 @@
 #summary An example SQL Project
 #labels Featured
 
-== An example SQL Project ==
-
-=== A project configuration (pom.xml, etc) for using fitnesse-launcher-maven-plugin to execute `FitNesse` integration tests for a simple SQL project ===
-
-  # [http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-sql-example-1.2.1-src.zip Download the example SQL project] ([http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher-sql-example-1.2.1/ Browse the source here])
-  # Run `FitNesse` as a wiki server using:
-{{{
-mvn clean verify -P wiki
-}}}
-  # Visit `http://localhost:9123/SqlExample` and explore!
-  # Run `FitNesse` as automated integration tests using:
-{{{
-mvn clean verify -P auto
-}}}
-  # The JUnit XML results can be found at target/fitnesse/results
-  # The `FitNesse` HTML reports can be found at target/fitnesse/reports
+<wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/java-example.xml" width="100%" height="800" />
