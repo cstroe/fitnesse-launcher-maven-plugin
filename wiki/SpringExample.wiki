@@ -1,4 +1,4 @@
 #summary An example Spring Framework Project
 #labels Featured
 
-<wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/spring-example.xml" width="100%" height="1000" />
+<wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/spring-example.xml" width="100%" height="800" />
