@@ -17,3 +17,6 @@ mvn clean verify -P auto
 }}}
   # The JUnit XML results can be found at target/fitnesse/results
   # The `FitNesse` HTML reports can be found at target/fitnesse/reports
+
+
+<wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/java-example.xml" width="100%" height="600" />
