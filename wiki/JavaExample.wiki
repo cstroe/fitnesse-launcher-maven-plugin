@@ -1,4 +1,4 @@
-#summary An example Java Project
+#summary [http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-launcher-java-example/index.html Example Java Project]
 #labels Featured
 
 <wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/java-example.xml" width="100%" height="800" />
