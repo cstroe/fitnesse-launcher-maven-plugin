@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VerifyMojo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Maven Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.mojo</a> &gt; <span class="el_source">VerifyMojo.java</span></div><h1>VerifyMojo.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.mojo;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.surefire.SurefireHelper;
+import org.apache.maven.surefire.failsafe.model.FailsafeSummary;
+import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Reader;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+/**
+ * Goal that provides summary report on FitNesse tests run with 'run-tests' goal.
+ * Intended to be bound to the 'verify' phase.
+ * Will fail the build if there are test failures.
+ *
+ * @goal verify
+ * @phase verify
+ */
+public class VerifyMojo extends RunTestsMojo {
+
+	public VerifyMojo() {
+<span class="fc" id="L26">		super(false);</span>
+<span class="fc" id="L27">	}</span>
+
+	@Override
+    public final void execute() throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L31">        final FailsafeSummary summary = readSummary();</span>
+<span class="fc" id="L32">        final int result = summary.getResult();</span>
+<span class="fc" id="L33">        SurefireHelper.reportExecution(this, result, getLog());</span>
+<span class="fc" id="L34">    }</span>
+
+    private FailsafeSummary readSummary() throws MojoExecutionException {
+
+<span class="fc" id="L38">        Reader reader = null;</span>
+        try {
+<span class="fc" id="L40">            reader = new FileReader(this.summaryFile);</span>
+<span class="fc" id="L41">            final FailsafeSummaryXpp3Reader xpp3Reader = new FailsafeSummaryXpp3Reader();</span>
+<span class="fc" id="L42">            return xpp3Reader.read(reader);</span>
+<span class="fc" id="L43">        } catch (IOException e) {</span>
+<span class="fc" id="L44">            throw new MojoExecutionException(e.getMessage(), e);</span>
+<span class="fc" id="L45">        } catch (XmlPullParserException e) {</span>
+<span class="fc" id="L46">            throw new MojoExecutionException(e.getMessage(), e);</span>
+        } finally {
+<span class="fc" id="L48">            IOUtil.close(reader);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

@@ -1,0 +1,4 @@
+uk.co.javahelp.maven.plugin.fitnesse.mojo
+uk.co.javahelp.maven.plugin.fitnesse.reporting
+uk.co.javahelp.maven.plugin.fitnesse.responders.run
+uk.co.javahelp.maven.plugin.fitnesse.util

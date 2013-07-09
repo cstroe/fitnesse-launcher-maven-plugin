@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Utils.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Maven Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.util</a> &gt; <span class="el_source">Utils.java</span></div><h1>Utils.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.util;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public final class Utils {
+
+<span class="fc" id="L11">	private Utils() { }</span>
+
+    public static boolean isBlank(final String string) {
+<span class="fc bfc" id="L14" title="All 4 branches covered.">        return string == null || string.trim().equals(&quot;&quot;);</span>
+    }
+    
+    public static boolean isWindows() {
+<span class="fc" id="L18">        return System.getProperty(&quot;os.name&quot;, &quot;unknown&quot;).toLowerCase().startsWith(&quot;windows&quot;);</span>
+    }
+    
+    public static boolean whitespaceSituation(final String path) {
+<span class="fc bfc" id="L22" title="All 4 branches covered.">		return (path.contains(&quot; &quot;) &amp;&amp; !isWindows());</span>
+    }
+    
+    public static String whitespaceWarning(final String path, final String comment) {
+<span class="fc" id="L26">        return String.format(&quot;THERE IS WHITESPACE IN CLASSPATH ELEMENT [%s]%n%s&quot;, path, comment);</span>
+    }
+    
+    public static String getRelativePath(final File from, final File to) throws IOException {
+<span class="fc" id="L30">    	final String canonicalFrom = from.getCanonicalPath();</span>
+<span class="fc" id="L31">    	final String canonicalTo = to.getCanonicalPath();</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">    	if(canonicalFrom.equals(canonicalTo)) {</span>
+<span class="fc" id="L33">    		return &quot;.&quot;;</span>
+    	}
+<span class="fc" id="L35">    	final String[] partsFrom = canonicalFrom.split(&quot;/&quot;);</span>
+<span class="fc" id="L36">    	final String[] partsTo = canonicalTo.split(&quot;/&quot;);</span>
+<span class="fc bfc" id="L37" title="All 4 branches covered.">    	if(partsFrom.length == 0 || partsTo.length == 0) {</span>
+<span class="fc" id="L38">    		return canonicalTo;</span>
+    	}
+<span class="fc" id="L40">    	final List&lt;String&gt; listFrom = new ArrayList&lt;String&gt;(Arrays.asList(partsFrom));</span>
+<span class="fc" id="L41">    	final List&lt;String&gt; listTo = new ArrayList&lt;String&gt;(Arrays.asList(partsTo));</span>
+    	
+<span class="fc" id="L43">    	boolean same = true;</span>
+<span class="fc" id="L44">    	int i = 0;</span>
+<span class="fc bfc" id="L45" title="All 6 branches covered.">    	while(same &amp;&amp; i &lt; partsFrom.length &amp;&amp; i &lt; partsTo.length) {</span>
+<span class="fc" id="L46">    		same = partsFrom[i].equals(partsTo[i]);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">    		if(same) {</span>
+<span class="fc" id="L48">    			listFrom.remove(0);</span>
+<span class="fc" id="L49">    			listTo.remove(0);</span>
+<span class="fc" id="L50">    			i++;</span>
+    		}
+    	}
+    	
+<span class="fc" id="L54">    	final StringBuilder relativePath = new StringBuilder();</span>
+<span class="fc" id="L55">    	final int fromSize = listFrom.size();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">    	if(fromSize == partsFrom.length - 1) {</span>
+<span class="fc" id="L57">       	    relativePath.append(&quot;/&quot;);</span>
+    	} else {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">    	    for(int j = 0 ; j &lt; fromSize ; j++ ) {</span>
+<span class="fc" id="L60">        		relativePath.append(&quot;../&quot;);</span>
+    		}
+    	}
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    	for(final String part : listTo) {</span>
+<span class="fc" id="L64">        	relativePath.append(part);</span>
+<span class="fc" id="L65">        	relativePath.append(&quot;/&quot;);</span>
+<span class="fc" id="L66">    	}</span>
+<span class="fc" id="L67">    	relativePath.deleteCharAt(relativePath.length() - 1);</span>
+<span class="fc" id="L68">    	return relativePath.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>
