@@ -7,7 +7,7 @@
 
 Example Webapp Project
 
- [[1]] {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-webapp-example-${projectVersion}-src.zip}Download the example webapp project}} or {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher${projectVersion}/fitnesse-launcher-webapp-example-${projectVersion}/}browse the source here}}
+ [[1]] {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-webapp-example-${projectVersion}-src.zip}Download the example webapp project}} or {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher-${projectVersion}/fitnesse-launcher-webapp-example/}browse the source here}}
 
  [[1]] Run FitNesse as a wiki server using:
 

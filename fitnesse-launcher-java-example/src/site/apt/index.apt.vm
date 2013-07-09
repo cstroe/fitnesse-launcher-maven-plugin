@@ -7,7 +7,7 @@
 
 Example Java Project
 
- [[1]] {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-java-example-${projectVersion}-src.zip}Download the example java project}} or {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher${projectVersion}/fitnesse-launcher-java-example/}browse the source here}}
+ [[1]] {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-java-example-${projectVersion}-src.zip}Download the example java project}} or {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher-${projectVersion}/fitnesse-launcher-java-example/}browse the source here}}
 
  [[1]] Run FitNesse as a wiki server using:
 
