@@ -1,4 +1,6 @@
-#summary An example SQL Project
+#summary Example SQL Project
 #labels Featured
+
+= [http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-launcher-sql-example/index.html Maven Generated Documentation] =
 
 <wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/java-example.xml" width="100%" height="800" />
