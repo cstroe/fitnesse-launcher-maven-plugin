@@ -1,4 +1,6 @@
-#summary An example Webapp Project
+#summary Example Webapp Project
 #labels Featured
+
+= [http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-launcher-webapp-example/index.html Maven Generated Documentation] =
 
 <wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/webapp-example.xml" width="100%" height="1000" />
