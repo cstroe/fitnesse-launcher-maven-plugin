@@ -2,4 +2,4 @@
 <Module>
   <ModulePrefs title="Example Spring Project" />
   <Content type="html" href="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-launcher-spring-example/index.html"/>
-</Module>​
+</Module>
