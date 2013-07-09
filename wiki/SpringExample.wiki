@@ -1,19 +1,4 @@
 #summary An example Spring Framework Project
 #labels Featured
 
-== An example Spring Framework Project ==
-
-=== A project configuration (pom.xml, etc) for using fitnesse-launcher-maven-plugin to execute `FitNesse` integration tests for a simple Spring Framework project ===
-
-  # [http://code.google.com/p/fitnesse-launcher-maven-plugin/downloads/detail?name=fitnesse-launcher-spring-example-1.2.1-src.zip Download the example spring project] ([http://code.google.com/p/fitnesse-launcher-maven-plugin/source/browse/tags/fitnesse-launcher-spring-example-1.2.1/ Browse the source here])
-  # Run `FitNesse` as a wiki server using:
-{{{
-mvn clean verify -P wiki
-}}}
-  # Visit `http://localhost:9123/SpringExample` and explore!
-  # Run `FitNesse` as automated integration tests using:
-{{{
-mvn clean verify -P auto
-}}}
-  # The JUnit XML results can be found at target/fitnesse/results
-  # The `FitNesse` HTML reports can be found at target/fitnesse/reports
+<wiki:gadget url="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/gadgets/spring-example.xml" width="100%" height="600" />
