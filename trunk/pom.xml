@@ -62,7 +62,7 @@
 	</mailingLists>
 
 	<prerequisites>
-		<maven>3.0.1</maven>
+		<maven>3.0.5</maven>
 	</prerequisites>
 
 	<properties>
@@ -130,8 +130,8 @@
 					<links>
 						<link>http://java.sun.com/javase/6/docs/api/</link>
 						<link>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.5/maven-plugin-api/apidocs/</link>
-						<link>http://maven.apache.org/ref/3.0.5/maven-artifact/apidocs/</link>
+						<link>http://maven.apache.org/ref/${maven.version}/maven-plugin-api/apidocs/</link>
+						<link>http://maven.apache.org/ref/${maven.version}/maven-artifact/apidocs/</link>
 						<link>http://maven.apache.org/surefire/maven-surefire-common/apidocs/</link>
 						<link>http://plexus.codehaus.org/plexus-containers/plexus-container-default-1.0-alpha-9-stable/apidocs/</link>
 					</links>
