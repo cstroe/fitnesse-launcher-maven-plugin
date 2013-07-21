@@ -9,7 +9,7 @@ import java.util.List;
  * Released under the terms of the GNU General Public License version 2
  * 
  * @author Anubhava Srivastava
- * @see http://anubhava.wordpress.com/
+ * @see "http://anubhava.wordpress.com/"
  */
 public class Address {
    public static class Name {
