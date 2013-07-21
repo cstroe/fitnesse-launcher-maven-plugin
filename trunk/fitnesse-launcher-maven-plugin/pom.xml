@@ -136,6 +136,7 @@
 				<version>3.1</version>
 				<configuration>
 					<goalPrefix>fitnesse</goalPrefix>
+					<helpPackageName>uk.co.javahelp.maven.plugin.fitnesse.mojo</helpPackageName>
 				</configuration>
 				<executions>
 					<execution>
