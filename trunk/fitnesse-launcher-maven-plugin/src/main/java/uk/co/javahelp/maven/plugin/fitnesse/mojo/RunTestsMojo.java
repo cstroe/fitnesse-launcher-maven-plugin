@@ -20,7 +20,7 @@ import fitnesse.junit.JUnitXMLTestListener;
 import fitnesse.junit.PrintTestListener;
 import fitnesse.junit.TestHelper;
 import fitnesse.responders.run.ResultsListener;
-import fitnesse.responders.run.TestSummary;
+import fitnesse.testsystems.TestSummary;
 
 /**
  * Goal that runs FitNesse tests using fitnesse.junit.TestHelper.
