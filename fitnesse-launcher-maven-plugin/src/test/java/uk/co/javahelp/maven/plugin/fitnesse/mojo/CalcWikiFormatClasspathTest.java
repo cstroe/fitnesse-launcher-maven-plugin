@@ -69,7 +69,7 @@ public class CalcWikiFormatClasspathTest {
         helper.fitnesseArtifact.setFile(null);
 		
 		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
-		assertEquals(format("[WARNING] File for artifact [org.fitnesse:fitnesse:jar:20121220:compile] is not found%n"), helper.logStream.toString());
+		assertEquals(format("[WARNING] File for artifact [org.fitnesse:fitnesse:jar:20130530:compile] is not found%n"), helper.logStream.toString());
 	    
 	    helper.classRealmAssertions(0);
 	}

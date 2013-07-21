@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import util.TimeMeasurement;
-import fitnesse.responders.run.CompositeExecutionLog;
 import fitnesse.responders.run.ResultsListener;
-import fitnesse.responders.run.TestPage;
-import fitnesse.responders.run.TestSummary;
-import fitnesse.responders.run.TestSystem;
+import fitnesse.testsystems.CompositeExecutionLog;
+import fitnesse.testsystems.TestPage;
+import fitnesse.testsystems.TestSummary;
+import fitnesse.testsystems.TestSystem;
 import fitnesse.wiki.WikiPageDummy;
 
 public class DelegatingResultsListenerTest {

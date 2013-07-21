@@ -48,8 +48,9 @@ public class WikiMojoTest {
 	public void setUp() {
 		fitNesseHelper = mock(FitNesseHelper.class);
 		
-		FitNesseContext context = new FitNesseContext();
-		context.port = PORT;
+		FitNesseContext.Builder contextBuilder = new FitNesseContext.Builder();
+		contextBuilder.port = PORT;
+		FitNesseContext context = contextBuilder.createFitNesseContext();
 		fitNesse = new FitNesse(context);
 		fitNesse.start();
 		

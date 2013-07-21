@@ -123,7 +123,7 @@ public class FitNesseHelperTest {
 	public void testFormatAndAppendClasspathArtifact() {
         String jarPath = new File(getClass().getResource("/dummy.jar").getPath()).getPath();
         Artifact artifact = new DefaultArtifact(
-            "org.fitnesse", "fitnesse", "20121220", "compile", "jar", null, artifactHandler);
+            "org.fitnesse", "fitnesse", "20130530", "compile", "jar", null, artifactHandler);
         artifact.setFile(new File(jarPath));
         
 		StringBuilder sb = new StringBuilder();

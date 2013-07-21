@@ -62,7 +62,7 @@ public class FitNesseMojoTestHelper {
         	getClass().getPackage().getName(), getClass().getSimpleName(), "version", "scope", "type", "classifier", artifactHandler);
         
         this.fitnesseArtifact = new DefaultArtifact(
-            "org.fitnesse", "fitnesse", "20121220", "compile", "jar", null, artifactHandler);
+            "org.fitnesse", "fitnesse", "20130530", "compile", "jar", null, artifactHandler);
         this.fitnesseArtifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         
 		when(artifactResolver.resolve(argThat(new ResolutionRequestForArtifact(fitnesseArtifact))))
