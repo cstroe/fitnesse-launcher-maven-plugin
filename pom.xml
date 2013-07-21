@@ -191,6 +191,7 @@
 					<descriptorRefs>
 						<descriptorRef>src</descriptorRef>
 					</descriptorRefs>
+					<tarLongFileMode>gnu</tarLongFileMode>
 				</configuration>
 				<executions>
 					<execution>
