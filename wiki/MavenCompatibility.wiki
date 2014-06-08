@@ -18,17 +18,19 @@ This matrix was deduced through simple trial and error.
 
  * The use of JSR330 in the core for extensions and in Maven plugins. You can read more about it in the Maven and JSR330 document.
   * If you want to use JSR-330, you must understand that your code won't be compatible with Maven 2 or 3.0.x but only with Maven 3.1.0+: even if JSR-330 is available in core since Maven 3.0-beta-3, it was made available to plugins and extensions only in Maven 3.1.0 (see MNG-5343 for more details).
+  * *`FitNesse` Launcher continues to use Plexus.*
 
  * The use of SLF4J in the core for logging. You can read more about it in the Maven and SLF4J document.
   * Maven 2.x and 3.0.x use Plexus logging API with basic Maven implementation writing to stdout.
   * The standard Maven distribution, from Maven 3.1.0 onward, uses the SLF4J API for logging combined with the SLF4J Simple implementation. Future versions may use a more advanced implementation, but we chose to start simple.
-  * *(`FitNesse` Launcher continues to use Plexus.)*
+  * *`FitNesse` Launcher is unaffected.*
 
  * The switch in the core from Sonatype Aether to Eclipse Aether.
-  * The significant change in Eclipse Aether with respect to API changes and package relocation will likely cause issues with plugins that directly depend on Aether. *(`FitNesse` Launcher does depend directly upon Aether.)*
-  * In practical terms, package change in source code amounts to:
+  * The significant change in Eclipse Aether with respect to API changes and package relocation will likely cause issues with plugins that directly depend on Aether.
+  * *`FitNesse` Launcher does depend directly upon Aether.*
+  * In practical terms, package changes in source code amount to:
    * `org.sonatype.aether` (3.0.x)
    * `org.eclipse.aether`  (3.1.x)
 
 
-== See [http://maven.apache.org/release-notes-3.x.html#Maven_3.1.0-alpha-1_Release_Notes Release Notes - Maven 3.x] ==
+== See [http://maven.apache.org/release-notes-3.x.html#Major_Changes Release Notes - Maven 3.x] ==
