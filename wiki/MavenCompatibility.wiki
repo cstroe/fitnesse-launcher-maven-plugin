@@ -1,0 +1,34 @@
+#summary Info About Plugin Compatibility
+#labels Featured
+
+= `FitNesse` Launcher Plugin Compatibility<br>With Different Versions Of Maven =
+
+This matrix was deduced through simple trial and error.
+
+|| ||||Plugin Source Uses Maven Components||
+||Build The Plugin With|| *3.0.5 (Plugin Version 1.3.x)* || *3.1.1 (Plugin Version 1.4.x)* ||
+||Maven 3.0.5||OK||OK||
+||Maven 3.1.1||OK||OK||
+||Run The Plugin With<br>(Build A Project With)||-||-||
+||Maven 3.0.5||OK||OK||
+||Maven 3.1.1|| *NO* ||OK||
+
+
+= Major Changes<br>Maven 3.0.x --> 3.1.x = 
+
+ * The use of JSR330 in the core for extensions and in Maven plugins. You can read more about it in the Maven and JSR330 document.
+  * If you want to use JSR-330, you must understand that your code won't be compatible with Maven 2 or 3.0.x but only with Maven 3.1.0+: even if JSR-330 is available in core since Maven 3.0-beta-3, it was made available to plugins and extensions only in Maven 3.1.0 (see MNG-5343 for more details).
+
+ * The use of SLF4J in the core for logging. You can read more about it in the Maven and SLF4J document.
+  * Maven 2.x and 3.0.x use Plexus logging API with basic Maven implementation writing to stdout.
+  * The standard Maven distribution, from Maven 3.1.0 onward, uses the SLF4J API for logging combined with the SLF4J Simple implementation. Future versions may use a more advanced implementation, but we chose to start simple.
+  * *(`FitNesse` Launcher continues to use Plexus.)*
+
+ * The switch in the core from Sonatype Aether to Eclipse Aether.
+  * The significant change in Eclipse Aether with respect to API changes and package relocation will likely cause issues with plugins that directly depend on Aether. *(`FitNesse` Launcher does depend directly upon Aether.)*
+  * In practical terms, package change in source code amounts to:
+   * `org.sonatype.aether` (3.0.x)
+   * `org.eclipse.aether`  (3.1.x)
+
+
+== See [http://maven.apache.org/release-notes-3.x.html#Maven_3.1.0-alpha-1_Release_Notes Release Notes - Maven 3.x] ==
