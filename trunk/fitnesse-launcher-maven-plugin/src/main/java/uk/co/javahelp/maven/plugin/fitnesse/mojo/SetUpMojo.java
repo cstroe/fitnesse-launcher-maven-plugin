@@ -167,6 +167,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
         move.setAttribute("file", this.workingDir + "/Resources/FitNesseRoot");
 		move.setAttribute("todir", this.workingDir);
 		move.setAttribute("failonerror", "false");
+		move.setAttribute("overwrite", "false");
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-antrun-plugin"),
 		    goal("run"),
