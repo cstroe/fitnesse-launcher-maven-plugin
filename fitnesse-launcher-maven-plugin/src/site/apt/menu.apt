@@ -3,6 +3,8 @@
 
   * {{{./started.html#Advised_Project_Directory_Structure}Advised Project Directory Structure}}
 
+  * {{{./started.html#FitNesse_Resources_Default_Handling}FitNesse Resources, Default Handling}}
+
  * {{{./config.html}Configuration}}
 
   * {{{./config.html#Plugin_Configuration}Plugin Configuration}}
@@ -12,6 +14,8 @@
   * {{{./config.html#Classpath_Dependencies}Classpath Dependencies}}
 
    * {{{./config.html#Project_Scope_Dependencies}Project Scope Dependencies}}
+
+   * {{{./config.html#Optional_Transitive_Dependencies}Optional Transitive Dependencies}}
 
    * {{{./config.html#Individually_Specified_Dependencies}Individually Specified Dependencies}}
 
