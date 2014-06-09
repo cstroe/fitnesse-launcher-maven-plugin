@@ -25,6 +25,7 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
+import uk.co.javahelp.maven.plugin.artifact.resolver.OptionalArtifactFilter;
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
 
@@ -313,6 +314,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
             .setArtifact( artifact )
 			.setResolveRoot( true )
 			.setResolveTransitively( true )
+			.setCollectionFilter(OptionalArtifactFilter.INSTANCE)
 			.setRemoteRepositories( this.remoteArtifactRepositories )
 			.setLocalRepository( this.localRepository );
 		final ArtifactResolutionResult result = this.resolver.resolve(request);
