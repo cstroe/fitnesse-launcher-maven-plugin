@@ -14,14 +14,18 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -30,7 +34,10 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.logging.Logger;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import uk.co.javahelp.maven.plugin.artifact.resolver.OptionalArtifactFilter;
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 public class FitNesseMojoTestHelper {
@@ -120,17 +127,36 @@ public class FitNesseMojoTestHelper {
         addDependency("sg1", "sa2", Artifact.SCOPE_SYSTEM);
         addDependency("sg2", "sa3", Artifact.SCOPE_SYSTEM);
 		
+        addDependency("og1", "oa1", Artifact.SCOPE_COMPILE, true);
+        addDependency("og1", "oa2", Artifact.SCOPE_COMPILE, true);
+        addDependency("og2", "oa3", Artifact.SCOPE_COMPILE, true);
+		
 		logStream = new ByteArrayOutputStream();
 		mojo.setLog(new DefaultLog(new PrintStreamLogger(
 			Logger.LEVEL_INFO, "test", new PrintStream(logStream))));
 	}
     
     private void addDependency(String groupId, String artifactId, String scope) {
-        Artifact artifact = createArtifact(groupId, artifactId);
+        addDependency(groupId, artifactId, scope, false);
+	}
+    
+    private void addDependency(String groupId, String artifactId, String scope, boolean optional) {
+        final Artifact artifact = createArtifact(groupId, artifactId);
+        artifact.setOptional(optional);
 		mojo.project.getDependencies().add(createDependecy(groupId, artifactId, scope));
 		mojo.project.getDependencyArtifacts().add(artifact);
-		when(artifactResolver.resolve(argThat(new ResolutionRequestForArtifact(artifact))))
-		    .thenReturn(createArtifactResolutionResult(artifact));
+		final ResolutionRequestForArtifact requestMatcher = new ResolutionRequestForArtifact(artifact);
+		when(artifactResolver.resolve(argThat(requestMatcher))).thenAnswer(new Answer<ArtifactResolutionResult>() {
+			@Override
+			public ArtifactResolutionResult answer(InvocationOnMock invocation) throws Throwable {
+				ArtifactResolutionRequest request = (ArtifactResolutionRequest)invocation.getArguments()[0];
+		        if(requestMatcher.matches(request)) {
+                    return createArtifactResolutionResult(artifact, request.getCollectionFilter());
+		        }
+		        // Should never happen?
+				return null;
+			}
+		});
     }
 	
 	Dependency createDependecy(String groupId, String artifactId, String scope) {
@@ -149,25 +175,44 @@ public class FitNesseMojoTestHelper {
 	}
 	
 	ArtifactResolutionResult createArtifactResolutionResult(Artifact artifact) {
-	    return createArtifactResolutionResult(Collections.singleton(artifact));
+	    return createArtifactResolutionResult(Collections.singleton(artifact), (ArtifactFilter) null);
+	}
+	
+	ArtifactResolutionResult createArtifactResolutionResult(Artifact artifact, ArtifactFilter filter) {
+	    return createArtifactResolutionResult(Collections.singleton(artifact), filter);
 	}
 	
 	ArtifactResolutionResult createArtifactResolutionResult(Collection<Artifact> artifacts) {
-	    return createArtifactResolutionResult(artifacts, null, null);
+	    return createArtifactResolutionResult(artifacts, null, null, null);
+	}
+	
+	ArtifactResolutionResult createArtifactResolutionResult(Collection<Artifact> artifacts, ArtifactFilter filter) {
+	    return createArtifactResolutionResult(artifacts, null, null, filter);
 	}
 	
 	ArtifactResolutionResult createArtifactResolutionResult(Collection<Artifact> artifacts, List<Artifact> missingArtifacts) {
-	    return createArtifactResolutionResult(artifacts, missingArtifacts, null);
+	    return createArtifactResolutionResult(artifacts, missingArtifacts, null, null);
 	}
 	
 	ArtifactResolutionResult createArtifactResolutionResult(Collection<Artifact> artifacts, ArtifactResolutionException exception) {
-	    return createArtifactResolutionResult(artifacts, null, exception);
+	    return createArtifactResolutionResult(artifacts, null, exception, null);
 	}
 	
 	private ArtifactResolutionResult createArtifactResolutionResult(
-			Collection<Artifact> artifacts, List<Artifact> missingArtifacts, ArtifactResolutionException exception) {
+			Collection<Artifact> artifacts, List<Artifact> missingArtifacts,
+			ArtifactResolutionException exception, ArtifactFilter filter) {
 		ArtifactResolutionResult result = new ArtifactResolutionResult();
-		result.setArtifacts(new HashSet<Artifact>(artifacts));
+		Set<Artifact> strippedArtifacts = new HashSet<Artifact>(artifacts);
+		if(OptionalArtifactFilter.INSTANCE.equals(filter)) {
+    		Iterator<Artifact> artifactItr = strippedArtifacts.iterator();
+    		while(artifactItr.hasNext()) {
+    			boolean include = OptionalArtifactFilter.INSTANCE.include(artifactItr.next());
+    			if(!include) {
+    				artifactItr.remove();
+    			}
+			}
+		}
+		result.setArtifacts(new HashSet<Artifact>(strippedArtifacts));
 		if(missingArtifacts != null) {
 			result.setUnresolvedArtifacts(missingArtifacts);
 		}

@@ -409,15 +409,25 @@ public class CalcWikiFormatClasspathTest {
 		helper = new FitNesseMojoTestHelper();
 	    assertProjectDependencyScopes(13, "compile", "test", "runtime", "system");
 		helper = new FitNesseMojoTestHelper();
+		// Let's include the 3 optional dependencies
+		helper.mojo.excludeOptionalDependencies = false;
+	    assertProjectDependencyScopes(16, true, "compile", "test", "runtime", "system");
 	}
 	
 	private void assertProjectDependencyScopes(int artifactCount, String... scopes) throws MojoExecutionException {
+	    assertProjectDependencyScopes(artifactCount, false, scopes);
+	}
+	
+	private void assertProjectDependencyScopes(int artifactCount, boolean optional, String... scopes) throws MojoExecutionException {
 		
 		helper.mojo.useProjectDependencies = new LinkedHashSet<String>(asList(scopes));
 		
+		String expectedLogLine2 = format("[INFO] Including transitive dependencies which are optional%n");
+		String expectedLog = format("[INFO] Using dependencies in the following scopes: %s%n%s",
+				Arrays.toString(scopes), (optional) ? expectedLogLine2 : "");
+		
 		assertEquals("\n", helper.mojo.calcWikiFormatClasspath());
-		assertEquals(format("[INFO] Using dependencies in the following scopes: %s%n", Arrays.toString(scopes)),
-				helper.logStream.toString());
+		assertEquals(expectedLog, helper.logStream.toString());
 		
 		verify(helper.mojo.fitNesseHelper, times(1))
 		    .formatAndAppendClasspathArtifact(any(StringBuilder.class), eq(helper.fitnesseArtifact));

@@ -168,6 +168,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      */
     protected Boolean failIfNoTests;
     
+    /**
+     * Should fitnesse-launcher-maven-plugin exclude optional transitive dependencies,
+     * when configured using &lt;useProjectDependencies&gt; ?
+     * Defaults to true. 
+     * @parameter property="fitnesse.excludeOptionalDependencies" default-value="true"
+     */
+    protected boolean excludeOptionalDependencies = true;
+
     protected FitNesseHelper fitNesseHelper;
     
     protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
@@ -235,6 +243,9 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
        	
        	if(!this.useProjectDependencies.isEmpty()) {
             getLog().info("Using dependencies in the following scopes: " + this.useProjectDependencies);
+            if(!this.excludeOptionalDependencies) {
+            	getLog().info("Including transitive dependencies which are optional");
+        	}
        		dependencyArtifactMap = ArtifactUtils.artifactMapByVersionlessId(this.project.getDependencyArtifacts());
         	final List<Dependency> dependecies = this.project.getDependencies();
 			for(Dependency dependency : dependecies) {
@@ -314,9 +325,11 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
             .setArtifact( artifact )
 			.setResolveRoot( true )
 			.setResolveTransitively( true )
-			.setCollectionFilter(OptionalArtifactFilter.INSTANCE)
 			.setRemoteRepositories( this.remoteArtifactRepositories )
 			.setLocalRepository( this.localRepository );
+        if(this.excludeOptionalDependencies) {
+			request.setCollectionFilter(OptionalArtifactFilter.INSTANCE);
+        }
 		final ArtifactResolutionResult result = this.resolver.resolve(request);
         if(!result.isSuccess()) {
             for(Artifact missing : result.getMissingArtifacts()) {
