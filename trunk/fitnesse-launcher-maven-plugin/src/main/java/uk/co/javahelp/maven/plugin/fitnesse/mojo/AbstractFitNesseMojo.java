@@ -17,6 +17,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -65,6 +66,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * @required
      */
     protected MavenProject project;
+    
+    /**
+     * The Maven Session Object
+     * @parameter property="session"
+     * @readonly
+     * @required
+     */
+    protected MavenSession session;
     
     /**
      * @parameter property="plugin"
@@ -198,7 +207,8 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         // If a System property already exists, it has priority;
         // That way we can override with a -D on the command line
         for(String key : projectProperties.stringPropertyNames()) {
-            final String value = System.getProperty(key, projectProperties.getProperty(key));
+            final String value = this.session.getSystemProperties()
+                .getProperty(key, projectProperties.getProperty(key));
             setSystemProperty(key, value);
         }
         setSystemProperty("artifact", this.project.getArtifactId());

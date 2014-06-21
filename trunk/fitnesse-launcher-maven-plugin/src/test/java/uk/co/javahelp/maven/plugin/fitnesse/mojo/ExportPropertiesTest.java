@@ -64,8 +64,8 @@ public class ExportPropertiesTest {
 		helper.mojo.project.getModel().addProperty("username", "batman");
 		helper.mojo.project.getModel().addProperty("password", "Holy Mashed Potato!");
 		
-		System.setProperty("username", "robin");
-		System.setProperty("version", "NOT OVERRIDDEN");
+		helper.systemProperties.setProperty("username", "robin");
+		helper.systemProperties.setProperty("version", "NOT OVERRIDDEN");
 		
 		helper.mojo.exportProperties();
 		

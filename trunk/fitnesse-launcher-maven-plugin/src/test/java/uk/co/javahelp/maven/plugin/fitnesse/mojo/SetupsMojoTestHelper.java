@@ -49,7 +49,7 @@ public class SetupsMojoTestHelper {
         
 		this.logStream = new ByteArrayOutputStream();
 		this.mojo.setLog(new DefaultLog(new PrintStreamLogger(
-			Logger.LEVEL_INFO, "test", new PrintStream(logStream))));
+			Logger.LEVEL_INFO, "test", new PrintStream(this.logStream))));
 	}
 
 	@SuppressWarnings("unchecked")

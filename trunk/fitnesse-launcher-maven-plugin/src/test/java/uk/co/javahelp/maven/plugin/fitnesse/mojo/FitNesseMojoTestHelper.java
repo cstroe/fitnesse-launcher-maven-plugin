@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
@@ -26,6 +27,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -58,54 +60,61 @@ public class FitNesseMojoTestHelper {
     
     ByteArrayOutputStream logStream;
     
+    Properties systemProperties;
+    
     boolean executeCalled = false;
 
     FitNesseMojoTestHelper() {
-		artifactHandler = mock(ArtifactHandler.class);
-		artifactResolver = mock(ArtifactResolver.class);
-		realm = mock(ClassRealm.class);
+		this.artifactHandler = mock(ArtifactHandler.class);
+		this.artifactResolver = mock(ArtifactResolver.class);
+		this.realm = mock(ClassRealm.class);
 		
         this.pluginArtifact = new DefaultArtifact(
-        	getClass().getPackage().getName(), getClass().getSimpleName(), "version", "scope", "type", "classifier", artifactHandler);
+        	getClass().getPackage().getName(), getClass().getSimpleName(),
+        	"version", "scope", "type", "classifier", this.artifactHandler);
         
         this.fitnesseArtifact = new DefaultArtifact(
-            "org.fitnesse", "fitnesse", "20130530", "compile", "jar", null, artifactHandler);
+            "org.fitnesse", "fitnesse", "20130530", "compile", "jar", null, this.artifactHandler);
         this.fitnesseArtifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         
-		when(artifactResolver.resolve(argThat(new ResolutionRequestForArtifact(fitnesseArtifact))))
-		    .thenReturn(createArtifactResolutionResult(fitnesseArtifact));
+		when(this.artifactResolver.resolve(argThat(new ResolutionRequestForArtifact(this.fitnesseArtifact))))
+		    .thenReturn(createArtifactResolutionResult(this.fitnesseArtifact));
         
         this.plugin = new Plugin();
-		plugin.setGroupId(pluginArtifact.getGroupId());
-		plugin.setArtifactId(pluginArtifact.getArtifactId());
+		this.plugin.setGroupId(this.pluginArtifact.getGroupId());
+		this.plugin.setArtifactId(this.pluginArtifact.getArtifactId());
 		
         Build build = new Build();
-        build.addPlugin(plugin);
+        build.addPlugin(this.plugin);
         
-		mojo = new AbstractFitNesseMojo() {
+		this.mojo = new AbstractFitNesseMojo() {
 			@Override
 			protected void executeInternal() {
 				executeCalled = true;
 			}
 		};
-		mojo.project = new MavenProject();
-		mojo.resolver = this.artifactResolver;
-		mojo.fitNesseHelper = mock(FitNesseHelper.class);
-		mojo.useProjectDependencies = new HashSet<String>();
+		this.mojo.project = new MavenProject();
+		this.mojo.resolver = this.artifactResolver;
+		this.mojo.fitNesseHelper = mock(FitNesseHelper.class);
+		this.mojo.useProjectDependencies = new HashSet<String>();
 		
-		mojo.pluginDescriptor = new PluginDescriptor();
-		mojo.pluginDescriptor.setGroupId(pluginArtifact.getGroupId());
-		mojo.pluginDescriptor.setArtifactId(pluginArtifact.getArtifactId());
-		mojo.pluginDescriptor.setArtifacts(Collections.singletonList(this.fitnesseArtifact));
-		mojo.pluginDescriptor.setClassRealm(realm);
-		mojo.project.setPluginArtifacts(Collections.singleton(this.pluginArtifact));
-		mojo.project.setBuild(build);
-		mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
-		mojo.project.setArtifactId("ARTIFACT_ID");
-		mojo.project.setVersion("VERSION");
-		mojo.project.getBuild().setTestOutputDirectory("target/test-classes");
-		mojo.project.getBuild().setOutputDirectory("target/classes");
-		mojo.project.setDependencyArtifacts(new HashSet<Artifact>());
+		this.mojo.pluginDescriptor = new PluginDescriptor();
+		this.mojo.pluginDescriptor.setGroupId(this.pluginArtifact.getGroupId());
+		this.mojo.pluginDescriptor.setArtifactId(this.pluginArtifact.getArtifactId());
+		this.mojo.pluginDescriptor.setArtifacts(Collections.singletonList(this.fitnesseArtifact));
+		this.mojo.pluginDescriptor.setClassRealm(this.realm);
+		this.mojo.project.setPluginArtifacts(Collections.singleton(this.pluginArtifact));
+		this.mojo.project.setBuild(build);
+		this.mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
+		this.mojo.project.setArtifactId("ARTIFACT_ID");
+		this.mojo.project.setVersion("VERSION");
+		this.mojo.project.getBuild().setTestOutputDirectory("target/test-classes");
+		this.mojo.project.getBuild().setOutputDirectory("target/classes");
+		this.mojo.project.setDependencyArtifacts(new HashSet<Artifact>());
+		
+		this.systemProperties = new Properties();
+		this.mojo.session = mock(MavenSession.class);
+		when(this.mojo.session.getSystemProperties()).thenReturn(this.systemProperties);
 		
         addDependency("cg1", "ca1", Artifact.SCOPE_COMPILE);
         addDependency("cg1", "ca2", Artifact.SCOPE_COMPILE);
@@ -131,9 +140,9 @@ public class FitNesseMojoTestHelper {
         addDependency("og1", "oa2", Artifact.SCOPE_COMPILE, true);
         addDependency("og2", "oa3", Artifact.SCOPE_COMPILE, true);
 		
-		logStream = new ByteArrayOutputStream();
-		mojo.setLog(new DefaultLog(new PrintStreamLogger(
-			Logger.LEVEL_INFO, "test", new PrintStream(logStream))));
+		this.logStream = new ByteArrayOutputStream();
+		this.mojo.setLog(new DefaultLog(new PrintStreamLogger(
+			Logger.LEVEL_INFO, "test", new PrintStream(this.logStream))));
 	}
     
     private void addDependency(String groupId, String artifactId, String scope) {
@@ -143,10 +152,10 @@ public class FitNesseMojoTestHelper {
     private void addDependency(String groupId, String artifactId, String scope, boolean optional) {
         final Artifact artifact = createArtifact(groupId, artifactId);
         artifact.setOptional(optional);
-		mojo.project.getDependencies().add(createDependecy(groupId, artifactId, scope));
-		mojo.project.getDependencyArtifacts().add(artifact);
+		this.mojo.project.getDependencies().add(createDependecy(groupId, artifactId, scope));
+		this.mojo.project.getDependencyArtifacts().add(artifact);
 		final ResolutionRequestForArtifact requestMatcher = new ResolutionRequestForArtifact(artifact);
-		when(artifactResolver.resolve(argThat(requestMatcher))).thenAnswer(new Answer<ArtifactResolutionResult>() {
+		when(this.artifactResolver.resolve(argThat(requestMatcher))).thenAnswer(new Answer<ArtifactResolutionResult>() {
 			@Override
 			public ArtifactResolutionResult answer(InvocationOnMock invocation) throws Throwable {
 				ArtifactResolutionRequest request = (ArtifactResolutionRequest)invocation.getArguments()[0];
@@ -226,9 +235,9 @@ public class FitNesseMojoTestHelper {
 	}
 	
 	void classRealmAssertions(int artifactCount) {
-		verify(realm, times(2 + artifactCount)).addURL(any(URL.class));
-	    verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/test-classes/")));
-		verify(realm, times(1)).addURL(argThat(new UrlEndsWith("/target/classes/")));
-		verify(realm, times(artifactCount)).addURL(argThat(new UrlEndsWith("/target/test-classes/dummy.jar")));
+		verify(this.realm, times(2 + artifactCount)).addURL(any(URL.class));
+	    verify(this.realm, times(1)).addURL(argThat(new UrlEndsWith("/target/test-classes/")));
+		verify(this.realm, times(1)).addURL(argThat(new UrlEndsWith("/target/classes/")));
+		verify(this.realm, times(artifactCount)).addURL(argThat(new UrlEndsWith("/target/test-classes/dummy.jar")));
 	}
 }
