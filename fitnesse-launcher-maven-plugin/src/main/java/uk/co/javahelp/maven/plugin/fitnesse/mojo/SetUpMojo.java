@@ -20,9 +20,28 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  */
 public class SetUpMojo extends AbstractSetupsMojo {
     
+	/**
+	 * If set, fitnesse-launcher-maven-plugin will delete any existing plugins.properties
+	 * file as part of setting up a clean fitnesse environment.
+	 * If you need to retain the plugin.properties file, set this property to false.
+	 * 
+	 * @parameter property="fitnesse.deletePluginsProperties" default-value="false"
+	 */
+    protected boolean deletePluginsProperties;
+    
+	/**
+	 * If set, fitnesse-launcher-maven-plugin will always freshly unpack
+	 * the FitNesse jar, as part of setting up a clean fitnesse environment.
+	 * 
+	 * @parameter property="fitnesse.alwaysUnpackFitnesse" default-value="false"
+	 */
+    protected boolean alwaysUnpackFitnesse;
+    
 	@Override
     public final void execute() throws MojoExecutionException {
-		clean();
+    	if(this.deletePluginsProperties) {
+		    clean();
+    	}
 		unpack();
 		move();
     }
@@ -48,13 +67,6 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 							</includes>
 	 * 							<followSymlinks>false</followSymlinks>
 	 * 						</fileset>
-	 * 						<fileset>
-	 * 							<directory>${project.build.directory}/dependency-maven-plugin-markers</directory>
-	 * 							<includes>
-	 * 								<include>*</include>
-	 * 							</includes>
-	 * 							<followSymlinks>false</followSymlinks>
-	 * 						</fileset>
 	 * 					</filesets>
 	 * 				</configuration>
 	 * 			</execution>
@@ -69,16 +81,11 @@ public class SetUpMojo extends AbstractSetupsMojo {
 		    goal("clean"),
             configuration(
 	        	element("excludeDefaultDirectories", "true"),
-	        	element("filesets",
+	        	element("filesets", 
 	            	element("fileset",
 		            	element("directory", this.workingDir),
-		            	element("includes",
+                        element("includes",
    			            	element("include", "plugins.properties")),
-		            	element("followSymlinks", "false")),
-	            	element("fileset",
-		            	element("directory", "${project.build.directory}/dependency-maven-plugin-markers"),
-		            	element("includes",
-   			            	element("include", "*")),
 		            	element("followSymlinks", "false")))),
 		    executionEnvironment(project, session, pluginManager)
 		);
@@ -127,7 +134,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 		            	element("artifactId", artifact.getArtifactId()),
 		            	element("version", artifact.getVersion()),
 		            	element("type", "jar"),
-		            	element("overWrite", "false"),
+		            	element("overWrite", Boolean.toString(this.alwaysUnpackFitnesse)),
 		            	element("outputDirectory", this.workingDir),
 		            	element("includes", "Resources/FitNesseRoot/**")))),
 		    executionEnvironment(project, session, pluginManager)

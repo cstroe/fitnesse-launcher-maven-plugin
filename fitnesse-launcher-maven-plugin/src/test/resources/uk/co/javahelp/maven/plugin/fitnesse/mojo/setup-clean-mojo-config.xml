@@ -9,12 +9,5 @@
       </includes>
       <followSymlinks>false</followSymlinks>
     </fileset>
-    <fileset>
-      <directory>${project.build.directory}/dependency-maven-plugin-markers</directory>
-      <includes>
-        <include>*</include>
-      </includes>
-      <followSymlinks>false</followSymlinks>
-    </fileset>
   </filesets>
 </configuration>

@@ -96,10 +96,15 @@ public class SetUpMojoTest {
 	}
 	
 	@Test
-	public void testExecute() throws Exception {
-		
+	public void testExecute1() throws Exception {
 		mojo.execute();
-		
+        verify(mojo.pluginManager, times(2)).executeMojo(eq(mojo.session), any(MojoExecution.class));
+	}
+	
+	@Test
+	public void testExecute2() throws Exception {
+		mojo.deletePluginsProperties = true;
+		mojo.execute();
         verify(mojo.pluginManager, times(3)).executeMojo(eq(mojo.session), any(MojoExecution.class));
 	}
 }

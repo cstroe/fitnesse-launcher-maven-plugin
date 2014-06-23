@@ -24,7 +24,7 @@ Configuration
                 <groupId>uk.co.javahelp.fitnesse</groupId>
                 <artifactId>fitnesse-launcher-maven-plugin</artifactId>
                 <configuration>
-                    <!-- These next 9 are the default values -->
+                    <!-- These next 11 are the default values -->
                     <port>9123</port>
                     <workingDir>${project.build.directory}/fitnesse</workingDir>
                     <root>FitNesseRoot</root>
@@ -34,6 +34,8 @@ Configuration
                     <summaryFile>${workingDir}/results/failsafe-summary.xml</summaryFile>
                     <createSymLink>true</createSymLink>
                     <excludeOptionalDependencies>true</excludeOptionalDependencies>
+                    <deletePluginsProperties>false</deletePluginsProperties> <!-- Note the 's' in "plugins" -->
+                    <alwaysUnpackFitnesse>false</alwaysUnpackFitnesse>
                     
                     <!-- Only configure 1 of the following 3 (See Advised Project Directory Structure) -->
                     <suite>MyTestSuite</suite>
