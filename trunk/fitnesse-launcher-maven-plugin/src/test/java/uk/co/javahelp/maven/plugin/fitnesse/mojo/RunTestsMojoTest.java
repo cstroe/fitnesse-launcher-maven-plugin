@@ -108,7 +108,7 @@ public class RunTestsMojoTest {
 		mojo.executeInternal(launch);
 		
 		verify(mojo.fitNesseHelper, never()).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
-		verify(mojo.fitNesseHelper, never()).createSymLink(any(Launch.class), any(File.class), anyString(), anyInt());
+		verify(mojo.fitNesseHelper, never()).createSymLink(any(File.class), anyString(), anyInt(), any(Launch.class));
 		verify(mojo.fitNesseHelper, never()).shutdownFitNesseServer(anyString());
 		
 		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
@@ -133,7 +133,7 @@ public class RunTestsMojoTest {
 		mojo.executeInternal(launch);
 		
 		verify(mojo.fitNesseHelper, times(1)).launchFitNesseServer(WikiMojoTest.PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(mojo.fitNesseHelper, times(1)).createSymLink(launch, mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT);
+		verify(mojo.fitNesseHelper, times(1)).createSymLink(mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT, launch);
 		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(WikiMojoTest.PORT_STRING);
 		
 		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
@@ -162,7 +162,7 @@ public class RunTestsMojoTest {
 		}
 		
 		verify(mojo.fitNesseHelper, times(1)).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
-		verify(mojo.fitNesseHelper, never()).createSymLink(any(Launch.class), any(File.class), anyString(), anyInt());
+		verify(mojo.fitNesseHelper, never()).createSymLink(any(File.class), anyString(), anyInt(), any(Launch.class));
 		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(anyString());
 		
 		assertFalse(mojo.summaryFile.exists());

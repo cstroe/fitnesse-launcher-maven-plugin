@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
@@ -75,12 +77,23 @@ public class FitNesseHelper {
 
     /**
      * Note: Through experiment I've found that we can safely send duplicate 'create SymLink' requests - FitNesse isn't bothered
+     * But We use a HashSet to eliminate duplicate top-level link names anyway, just to keep the output clean
      * @throws IOException 
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
      */
-    public int createSymLink(final Launch launch,
-    		final File basedir, final String testResourceDirectory, final int port) throws IOException {
-        final String linkName = calcLinkName(launch);
+    public void createSymLink(final File basedir, final String testResourceDirectory, final int port,
+    		final Launch... launches) throws IOException {
+        final Set<String> linkNames = new HashSet<String>();
+        for(final Launch launch : launches) {
+        	linkNames.add(calcLinkName(launch));
+        }
+        for(final String linkName : linkNames) {
+            createSymLink(basedir, testResourceDirectory, port, linkName);
+        }
+    }
+    
+    private int createSymLink(final File basedir, final String testResourceDirectory, final int port,
+    		final String linkName) throws IOException {
         final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);
 
         HttpURLConnection connection = null;

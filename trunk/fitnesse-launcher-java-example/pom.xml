@@ -112,6 +112,9 @@
     			    	<launch>
         					<suite>JavaExample</suite>
     			    	</launch>
+    			    	<launch>
+        					<suite>SecondExample</suite>
+    			    	</launch>
 					<!-- 
     			    	<launch>
         					<suite>JavaExample.SlimTest</suite>
@@ -123,7 +126,7 @@
     			    	</launch>
 					 -->
 					</launches>
-					<!-- Pre-1.4.0 config still valid -->
+					<!-- Pre-1.4.0 config is still valid -->
 					<!-- These 3 are mutually exclusive; choose one. -->
 					<!-- 
 					<suite>JavaExample</suite>

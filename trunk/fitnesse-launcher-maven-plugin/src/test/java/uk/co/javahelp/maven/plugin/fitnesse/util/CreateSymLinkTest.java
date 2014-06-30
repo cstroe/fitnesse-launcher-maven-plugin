@@ -70,11 +70,12 @@ public class CreateSymLinkTest {
 	    server.start();
 	    
 	    try {
-			int response = fitNesseHelper.createSymLink(
-				new Launch("SuiteName.NestedSuite", null),
-				baseDir, "src/test/fitnesse", port);
+			//int response =
+			fitNesseHelper.createSymLink(
+				baseDir, "src/test/fitnesse", port,
+				new Launch("SuiteName.NestedSuite", null));
 			
-			assertEquals(200, response);
+			//assertEquals(200, response);
 			assertEquals(SYMLINK_LOG_EXPECTED, logStream.toString());
 		} finally {
     		server.stop();
@@ -89,11 +90,12 @@ public class CreateSymLinkTest {
 	    server.start();
 	    
 	    try {
-			int response = fitNesseHelper.createSymLink(
-				new Launch("SuiteName.NestedSuite", null),
-				baseDirWhitespace, "src/test/fitnesse", port);
+			//int response =
+			fitNesseHelper.createSymLink(
+				baseDirWhitespace, "src/test/fitnesse", port,
+				new Launch("SuiteName.NestedSuite", null));
 			
-			assertEquals(200, response);
+			//assertEquals(200, response);
 			assertEquals(whitespace(SYMLINK_LOG_EXPECTED), logStream.toString());
 		} finally {
     		server.stop();
@@ -108,11 +110,12 @@ public class CreateSymLinkTest {
 	    server.start();
 	    
 	    try {
-			int response = fitNesseHelper.createSymLink(
-				new Launch(null, "SuiteName.NestedSuite.TestName"),
-				baseDir, "src/test/fitnesse", port);
+			//int response =
+			fitNesseHelper.createSymLink(
+				baseDir, "src/test/fitnesse", port,
+				new Launch(null, "SuiteName.NestedSuite.TestName"));
 			
-			assertEquals(200, response);
+			//assertEquals(200, response);
 			assertEquals(SYMLINK_LOG_EXPECTED, logStream.toString());
 		} finally {
     		server.stop();
@@ -128,8 +131,8 @@ public class CreateSymLinkTest {
 	    
 	    try {
 			fitNesseHelper.createSymLink(
-				new Launch("SuiteName.NestedSuite", null),
-				baseDir, "src/test/fitnesse", port);
+				baseDir, "src/test/fitnesse", port,
+				new Launch("SuiteName.NestedSuite", null));
 			
 			fail("Expected ConnectException");
 
