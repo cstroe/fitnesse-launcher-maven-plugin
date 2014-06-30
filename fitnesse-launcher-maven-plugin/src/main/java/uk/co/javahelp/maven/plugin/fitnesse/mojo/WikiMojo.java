@@ -40,7 +40,8 @@ public class WikiMojo extends AbstractFitNesseMojo {
         	Runtime.getRuntime().addShutdownHook(new Interrupter(Thread.currentThread(), 0L));
             this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
     		if(this.createSymLink) {
-	            this.fitNesseHelper.createSymLink(launches[0], this.project.getBasedir(), this.testResourceDirectory, this.port);
+	            this.fitNesseHelper.createSymLink(
+	            		this.project.getBasedir(), this.testResourceDirectory, this.port, launches);
     		}
             final Thread fitnesseThread = findFitNesseServerThread();
             if(fitnesseThread != null) {

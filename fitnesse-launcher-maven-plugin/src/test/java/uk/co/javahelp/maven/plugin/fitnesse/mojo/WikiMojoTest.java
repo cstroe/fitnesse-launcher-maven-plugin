@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import javax.security.auth.callback.LanguageCallback;
+
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -83,7 +85,7 @@ public class WikiMojoTest {
 		mojo.executeInternal();
 		
 		verify(fitNesseHelper, times(1)).launchFitNesseServer(PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(fitNesseHelper, never()).createSymLink(any(Launch.class), any(File.class), anyString(), anyInt());
+		verify(fitNesseHelper, never()).createSymLink(any(File.class), anyString(), anyInt(), any(Launch.class));
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
 		assertEquals(String.format(
@@ -106,7 +108,7 @@ public class WikiMojoTest {
 		mojo.executeInternal(launch);
 		
 		verify(fitNesseHelper, times(1)).launchFitNesseServer(PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(fitNesseHelper, times(1)).createSymLink(eq(launch), eq(mojo.project.getBasedir()), eq(mojo.testResourceDirectory), eq(PORT));
+		verify(fitNesseHelper, times(1)).createSymLink(mojo.project.getBasedir(), mojo.testResourceDirectory, PORT, launch);
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
 		assertEquals(String.format(

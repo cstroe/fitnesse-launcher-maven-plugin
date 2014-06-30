@@ -13,24 +13,28 @@ import fitnesseMain.FitNesseMain;
  */
 public class TestHelper {
 
-	private final String fitNesseRootPath;
-	private final String outputPath;
-	private final ResultsListener resultListener;
+	//private final String fitNesseRootPath;
+	//private final String outputPath;
+	//private final ResultsListener resultListener;
 
-	private boolean debug = true;
+	//private boolean debug = true;
+	
+	private final fitnesse.junit.TestHelper decorated;
 
 	public static final String PAGE_TYPE_SUITE = fitnesse.junit.TestHelper.PAGE_TYPE_SUITE;
 	public static final String PAGE_TYPE_TEST = fitnesse.junit.TestHelper.PAGE_TYPE_TEST;
 
+	/*
 	public TestHelper(String fitNesseRootPath, String outputPath) {
 		this(fitNesseRootPath, outputPath, new PrintTestListener());
 	}
+	*/
 
-	public TestHelper(String fitNesseRootPath, String outputPath,
-			ResultsListener resultListener) {
-		this.fitNesseRootPath = fitNesseRootPath;
-		this.outputPath = outputPath;
-		this.resultListener = resultListener;
+	public TestHelper(final String fitNesseRootPath, final String outputPath, final ResultsListener resultListener) {
+	    this.decorated = new fitnesse.junit.TestHelper(fitNesseRootPath, outputPath, resultListener);
+		//this.fitNesseRootPath = fitNesseRootPath;
+		//this.outputPath = outputPath;
+		//this.resultListener = resultListener;
 	}
 
 	/*
@@ -57,11 +61,19 @@ public class TestHelper {
 	}
 	*/
 
-	public TestSummary run(final Launch launch, final int port)
+	public TestSummary run(final int port, final Launch... launches)
 			throws Exception {
-		final String[] pageNameAndType = launch.calcPageNameAndType();
-		final String pageName = pageNameAndType[0];
-		final String pageType = pageNameAndType[1];
+	    final TestSummary global = new TestSummary();
+	    for(final Launch launch : launches) {
+    		final String[] pageNameAndType = launch.calcPageNameAndType();
+	    	global.add(this.decorated.run(pageNameAndType[0], pageNameAndType[1], launch.getSuiteFilter(), launch.getExcludeSuiteFilter(), port));
+	    }
+	    return global;
+	}
+	
+	/*
+	public  TestSummary run(String pageName, String pageType, String suiteFilter, String excludeSuiteFilter, int port)
+			throws Exception {
 		JavaFormatter testFormatter = JavaFormatter.getInstance(pageName);
 		testFormatter
 				.setResultsRepository(new JavaFormatter.FolderResultsRepository(
@@ -73,20 +85,16 @@ public class TestHelper {
 		arguments.setOmitUpdates(true);
 		arguments.setPort(String.valueOf(port));
 		arguments.setRootPath(fitNesseRootPath);
-		arguments.setCommand(getCommand(pageName, pageType,
-				launch.getSuiteFilter(),
-				launch.getExcludeSuiteFilter()));
+        arguments.setCommand(getCommand(pageName, pageType, suiteFilter, excludeSuiteFilter));
 		FitNesseMain.dontExitAfterSingleCommand = true;
 		FitNesseMain.launchFitNesse(arguments);
 		return testFormatter.getTotalSummary();
 	}
 
-	/*
 	public TestSummary run(String pageName, String pageType, String suiteFilter)
 			throws Exception {
 		return run(pageName, pageType, suiteFilter, 0);
 	}
-	*/
 
 	String getCommand(String pageName, String pageType, String suiteFilter,
 			String excludeSuiteFilter) {
@@ -107,8 +115,10 @@ public class TestHelper {
 		}
 		return COMMON_ARGS;
 	}
+	*/
 
-	public void setDebugMode(boolean enabled) {
-		debug = enabled;
+	public void setDebugMode(final boolean enabled) {
+		this.decorated.setDebugMode(enabled);
+		//debug = enabled;
 	}
 }

@@ -64,7 +64,7 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 		final String portString = this.port.toString();
 		try {
             this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
-			this.fitNesseHelper.createSymLink(launches[0], this.project.getBasedir(), this.testResourceDirectory, this.port);
+			this.fitNesseHelper.createSymLink(this.project.getBasedir(), this.testResourceDirectory, this.port, launches);
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception creating FitNesse SymLink", e);
 		} finally {
@@ -83,7 +83,7 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 		helper.setDebugMode(true);
 
 		try {
-			final TestSummary summary = helper.run(launches[0], this.port);
+			final TestSummary summary = helper.run(this.port, launches);
 			return summary;
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception running FitNesse tests", e);
