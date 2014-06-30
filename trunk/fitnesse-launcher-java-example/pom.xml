@@ -108,21 +108,21 @@
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
 					<!-- Since version 1.4.0 -->
-			    	<executions>
-    			    	<execution>
+			    	<launches>
+    			    	<launch>
         					<suite>JavaExample</suite>
-    			    	</execution>
+    			    	</launch>
 					<!-- 
-    			    	<execution>
+    			    	<launch>
         					<suite>JavaExample.SlimTest</suite>
         					<suiteFilter>address,division</suiteFilter>
-    			    	</execution>
-    			    	<execution>
+    			    	</launch>
+    			    	<launch>
         					<test>JavaExample.SlimTest.SlimDecisionTable</test>
 							<excludeSuiteFilter>division,decision</excludeSuiteFilter>
-    			    	</execution>
+    			    	</launch>
 					 -->
-					</executions>
+					</launches>
 					<!-- Pre-1.4.0 config still valid -->
 					<!-- These 3 are mutually exclusive; choose one. -->
 					<!-- 

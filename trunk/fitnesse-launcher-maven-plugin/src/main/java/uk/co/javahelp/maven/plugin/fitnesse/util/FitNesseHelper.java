@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
-import uk.co.javahelp.maven.plugin.fitnesse.mojo.Execution;
+import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import fitnesse.Arguments;
 import fitnesse.Shutdown;
 import fitnesseMain.FitNesseMain;
@@ -78,9 +78,9 @@ public class FitNesseHelper {
      * @throws IOException 
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
      */
-    public int createSymLink(final Execution execution,
+    public int createSymLink(final Launch launch,
     		final File basedir, final String testResourceDirectory, final int port) throws IOException {
-        final String linkName = calcLinkName(execution);
+        final String linkName = calcLinkName(launch);
         final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);
 
         HttpURLConnection connection = null;
@@ -103,8 +103,8 @@ public class FitNesseHelper {
         }
     }
 
-    private String calcLinkName(final Execution execution) {
-        final String[] pageNameAndType = execution.calcPageNameAndType();
+    private String calcLinkName(final Launch launch) {
+        final String[] pageNameAndType = launch.calcPageNameAndType();
         final String linkName = StringUtils.substringBefore(pageNameAndType[0], ".");
         return linkName;
     }

@@ -2,14 +2,14 @@ package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 public class TestFitNesseMojo extends AbstractFitNesseMojo {
 
-    public Execution[] calledWith = null;
+    public Launch[] calledWith = null;
 
 	public TestFitNesseMojo() {
-		this.executions = new Execution[0];
+		this.launches = new Launch[0];
 	}
 
 	@Override
-	protected void executeInternal(Execution... executions) {
-		this.calledWith = executions;
+	protected void executeInternal(Launch... launches) {
+		this.calledWith = launches;
 	}
 }

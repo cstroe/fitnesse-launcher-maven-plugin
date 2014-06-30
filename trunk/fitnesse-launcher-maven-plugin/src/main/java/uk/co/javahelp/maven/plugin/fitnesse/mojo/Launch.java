@@ -5,7 +5,7 @@ import java.util.Arrays;
 import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
 import fitnesse.junit.TestHelper;
 
-public class Execution {
+public class Launch {
 
     /**
      * @parameter property="fitnesse.suite"
@@ -29,14 +29,14 @@ public class Execution {
      */
     private String excludeSuiteFilter;
 
-	public Execution() {
+	public Launch() {
 	}
 		
-	public Execution(final String suite, final String test) {
+	public Launch(final String suite, final String test) {
 		this(suite, test, null, null);
 	}
 	
-	public Execution(final String suite, final String test, final String suiteFilter, final String excludeSuiteFilter) {
+	public Launch(final String suite, final String test, final String suiteFilter, final String excludeSuiteFilter) {
 		this.suite = suite;
 		this.test = test;
 		this.suiteFilter = suiteFilter;
@@ -84,7 +84,7 @@ public class Execution {
 		if (this == that) return true;
 		if (that == null) return false;
 		if (this.getClass() != that.getClass()) return false;
-		return Arrays.equals(this.getArray(), ((Execution) that).getArray());
+		return Arrays.equals(this.getArray(), ((Launch) that).getArray());
 	}
 	
 	private String[] getArray() {

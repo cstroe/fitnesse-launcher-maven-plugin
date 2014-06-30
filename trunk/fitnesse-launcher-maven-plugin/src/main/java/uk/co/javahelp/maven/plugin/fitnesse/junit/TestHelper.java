@@ -1,6 +1,6 @@
 package uk.co.javahelp.maven.plugin.fitnesse.junit;
 
-import uk.co.javahelp.maven.plugin.fitnesse.mojo.Execution;
+import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import fitnesse.Arguments;
 import fitnesse.junit.PrintTestListener;
 import fitnesse.responders.run.JavaFormatter;
@@ -57,9 +57,9 @@ public class TestHelper {
 	}
 	*/
 
-	public TestSummary run(final Execution execution, final int port)
+	public TestSummary run(final Launch launch, final int port)
 			throws Exception {
-		final String[] pageNameAndType = execution.calcPageNameAndType();
+		final String[] pageNameAndType = launch.calcPageNameAndType();
 		final String pageName = pageNameAndType[0];
 		final String pageType = pageNameAndType[1];
 		JavaFormatter testFormatter = JavaFormatter.getInstance(pageName);
@@ -74,8 +74,8 @@ public class TestHelper {
 		arguments.setPort(String.valueOf(port));
 		arguments.setRootPath(fitNesseRootPath);
 		arguments.setCommand(getCommand(pageName, pageType,
-				execution.getSuiteFilter(),
-				execution.getExcludeSuiteFilter()));
+				launch.getSuiteFilter(),
+				launch.getExcludeSuiteFilter()));
 		FitNesseMain.dontExitAfterSingleCommand = true;
 		FitNesseMain.launchFitNesse(arguments);
 		return testFormatter.getTotalSummary();

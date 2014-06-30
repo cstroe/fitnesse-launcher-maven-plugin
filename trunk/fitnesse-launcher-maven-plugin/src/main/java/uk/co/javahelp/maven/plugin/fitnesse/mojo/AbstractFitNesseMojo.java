@@ -146,9 +146,9 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     protected File summaryFile;
     
     /**
-     * @parameter property="fitnesse.executions"
+     * @parameter property="fitnesse.launches"
      */
-    protected Execution[] executions;
+    protected Launch[] launches;
 
     /**
      * @parameter property="fitnesse.suite"
@@ -192,17 +192,17 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
     protected FitNesseHelper fitNesseHelper;
     
-    protected abstract void executeInternal(Execution... executions)
+    protected abstract void executeInternal(Launch... launches)
         throws MojoExecutionException, MojoFailureException;
 
 	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	this.fitNesseHelper = new FitNesseHelper(getLog());
         exportProperties();
-        if(this.executions.length == 0) {
-            executeInternal(new Execution(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter));
+        if(this.launches.length == 0) {
+            executeInternal(new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter));
         } else {
-            executeInternal(this.executions);
+            executeInternal(this.launches);
         }
     }
 
