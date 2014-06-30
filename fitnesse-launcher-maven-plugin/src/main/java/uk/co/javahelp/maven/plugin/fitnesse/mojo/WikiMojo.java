@@ -33,14 +33,14 @@ public class WikiMojo extends AbstractFitNesseMojo {
 	 * as Maven calls System.exit() once it's business is done.
 	 */
 	@Override
-    protected final void executeInternal(final Execution... executions)
+    protected final void executeInternal(final Launch... launches)
 	        throws MojoExecutionException, MojoFailureException {
     	final String portString = this.port.toString();
         try {
         	Runtime.getRuntime().addShutdownHook(new Interrupter(Thread.currentThread(), 0L));
             this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
     		if(this.createSymLink) {
-	            this.fitNesseHelper.createSymLink(executions[0], this.project.getBasedir(), this.testResourceDirectory, this.port);
+	            this.fitNesseHelper.createSymLink(launches[0], this.project.getBasedir(), this.testResourceDirectory, this.port);
     		}
             final Thread fitnesseThread = findFitNesseServerThread();
             if(fitnesseThread != null) {

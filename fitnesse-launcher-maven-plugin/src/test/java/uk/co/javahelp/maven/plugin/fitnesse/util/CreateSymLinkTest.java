@@ -17,7 +17,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.javahelp.maven.plugin.fitnesse.mojo.Execution;
+import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
 import fitnesse.Arguments;
 
@@ -71,7 +71,7 @@ public class CreateSymLinkTest {
 	    
 	    try {
 			int response = fitNesseHelper.createSymLink(
-				new Execution("SuiteName.NestedSuite", null),
+				new Launch("SuiteName.NestedSuite", null),
 				baseDir, "src/test/fitnesse", port);
 			
 			assertEquals(200, response);
@@ -90,7 +90,7 @@ public class CreateSymLinkTest {
 	    
 	    try {
 			int response = fitNesseHelper.createSymLink(
-				new Execution("SuiteName.NestedSuite", null),
+				new Launch("SuiteName.NestedSuite", null),
 				baseDirWhitespace, "src/test/fitnesse", port);
 			
 			assertEquals(200, response);
@@ -109,7 +109,7 @@ public class CreateSymLinkTest {
 	    
 	    try {
 			int response = fitNesseHelper.createSymLink(
-				new Execution(null, "SuiteName.NestedSuite.TestName"),
+				new Launch(null, "SuiteName.NestedSuite.TestName"),
 				baseDir, "src/test/fitnesse", port);
 			
 			assertEquals(200, response);
@@ -128,7 +128,7 @@ public class CreateSymLinkTest {
 	    
 	    try {
 			fitNesseHelper.createSymLink(
-				new Execution("SuiteName.NestedSuite", null),
+				new Launch("SuiteName.NestedSuite", null),
 				baseDir, "src/test/fitnesse", port);
 			
 			fail("Expected ConnectException");

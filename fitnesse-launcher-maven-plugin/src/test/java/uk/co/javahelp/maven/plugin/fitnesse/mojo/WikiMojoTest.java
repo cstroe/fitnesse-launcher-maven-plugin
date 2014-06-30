@@ -83,7 +83,7 @@ public class WikiMojoTest {
 		mojo.executeInternal();
 		
 		verify(fitNesseHelper, times(1)).launchFitNesseServer(PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(fitNesseHelper, never()).createSymLink(any(Execution.class), any(File.class), anyString(), anyInt());
+		verify(fitNesseHelper, never()).createSymLink(any(Launch.class), any(File.class), anyString(), anyInt());
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
 		assertEquals(String.format(
@@ -100,13 +100,13 @@ public class WikiMojoTest {
 		//mojo.test = "test";
 		mojo.testResourceDirectory = "testResourceDirectory";
 		
-		Execution exec =  new Execution("suite", "test");
+		Launch launch =  new Launch("suite", "test");
 		new Interrupter(Thread.currentThread(), 100L).start();
 		
-		mojo.executeInternal(exec);
+		mojo.executeInternal(launch);
 		
 		verify(fitNesseHelper, times(1)).launchFitNesseServer(PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(fitNesseHelper, times(1)).createSymLink(eq(exec), eq(mojo.project.getBasedir()), eq(mojo.testResourceDirectory), eq(PORT));
+		verify(fitNesseHelper, times(1)).createSymLink(eq(launch), eq(mojo.project.getBasedir()), eq(mojo.testResourceDirectory), eq(PORT));
 		verify(fitNesseHelper, times(1)).shutdownFitNesseServer(PORT_STRING);
 		
 		assertEquals(String.format(
