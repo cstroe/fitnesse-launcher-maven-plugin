@@ -2,7 +2,7 @@ package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class FitNesseMojoTest {
 		
 		helper.mojo.execute();
 		
-		assertTrue(helper.executeCalled);
+		assertNotNull(((TestFitNesseMojo)helper.mojo).calledWith);
 		assertEquals(format(expected.replaceAll("[\n\r]", ""),
 				this.getClass().getResource("/dummy.jar").getFile(),
 				helper.mojo.project.getBasedir()),

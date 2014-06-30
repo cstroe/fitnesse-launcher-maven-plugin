@@ -15,10 +15,10 @@ import org.apache.maven.surefire.failsafe.model.FailsafeSummary;
 import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Writer;
 import org.apache.maven.surefire.suite.RunResult;
 
+import uk.co.javahelp.maven.plugin.fitnesse.junit.TestHelper;
 import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingResultsListener;
 import fitnesse.junit.JUnitXMLTestListener;
 import fitnesse.junit.PrintTestListener;
-import fitnesse.junit.TestHelper;
 import fitnesse.responders.run.ResultsListener;
 import fitnesse.testsystems.TestSummary;
 
@@ -44,13 +44,14 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 	}
 
 	@Override
-    protected final void executeInternal() throws MojoExecutionException, MojoFailureException {
+    protected final void executeInternal(final Execution... executions)
+	        throws MojoExecutionException, MojoFailureException {
 
 		if (this.createSymLink) {
-			createSymLink();
+			createSymLink(executions);
 		}
 
-		final TestSummary fitNesseSummary = runFitNesseTests();
+		final TestSummary fitNesseSummary = runFitNesseTests(executions);
 		getLog().info(fitNesseSummary.toString());
 		final FailsafeSummary failsafeSummary = convertAndReportResults(fitNesseSummary);
 		writeSummary(failsafeSummary);
@@ -59,11 +60,11 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 	/**
 	 * Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode.
 	 */
-	private void createSymLink() throws MojoExecutionException {
+	private void createSymLink(final Execution... execution) throws MojoExecutionException {
 		final String portString = this.port.toString();
 		try {
             this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
-			this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);
+			this.fitNesseHelper.createSymLink(execution[0], this.project.getBasedir(), this.testResourceDirectory, this.port);
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception creating FitNesse SymLink", e);
 		} finally {
@@ -75,15 +76,14 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
      * Strange side-effect behaviour:
      * If debug=false, FitNesse falls into wiki mode.
 	 */
-	private TestSummary runFitNesseTests() throws MojoExecutionException {
+	private TestSummary runFitNesseTests(final Execution... executions) throws MojoExecutionException {
 		final ResultsListener resultsListener = new DelegatingResultsListener(
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
         final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);
 		helper.setDebugMode(true);
 
 		try {
-			final String[] pageNameAndType = this.fitNesseHelper.calcPageNameAndType(this.suite, this.test);
-			final TestSummary summary = helper.run(pageNameAndType[0], pageNameAndType[1], this.suiteFilter, this.excludeSuiteFilter, this.port);
+			final TestSummary summary = helper.run(executions[0], this.port);
 			return summary;
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception running FitNesse tests", e);

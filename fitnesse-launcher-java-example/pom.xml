@@ -107,9 +107,26 @@
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
-					<!-- These 3 are mutually exclusive; choose one. -->
-					<suite>JavaExample</suite>
+					<!-- Since version 1.4.0 -->
+			    	<executions>
+    			    	<execution>
+        					<suite>JavaExample</suite>
+    			    	</execution>
 					<!-- 
+    			    	<execution>
+        					<suite>JavaExample.SlimTest</suite>
+        					<suiteFilter>address,division</suiteFilter>
+    			    	</execution>
+    			    	<execution>
+        					<test>JavaExample.SlimTest.SlimDecisionTable</test>
+							<excludeSuiteFilter>division,decision</excludeSuiteFilter>
+    			    	</execution>
+					 -->
+					</executions>
+					<!-- Pre-1.4.0 config still valid -->
+					<!-- These 3 are mutually exclusive; choose one. -->
+					<!-- 
+					<suite>JavaExample</suite>
 					<suite>JavaExample.SlimTest</suite>
 					<test>JavaExample.SlimTest.SlimDecisionTable</test>
 					 -->

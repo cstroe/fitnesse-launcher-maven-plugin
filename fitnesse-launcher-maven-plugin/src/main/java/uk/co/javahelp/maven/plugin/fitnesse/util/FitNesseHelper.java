@@ -12,9 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
+import uk.co.javahelp.maven.plugin.fitnesse.mojo.Execution;
 import fitnesse.Arguments;
 import fitnesse.Shutdown;
-import fitnesse.junit.TestHelper;
 import fitnesseMain.FitNesseMain;
 
 public class FitNesseHelper {
@@ -78,9 +78,9 @@ public class FitNesseHelper {
      * @throws IOException 
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
      */
-    public int createSymLink(final String suite, final String test,
+    public int createSymLink(final Execution execution,
     		final File basedir, final String testResourceDirectory, final int port) throws IOException {
-        final String linkName = calcLinkName(suite, test);
+        final String linkName = calcLinkName(execution);
         final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);
 
         HttpURLConnection connection = null;
@@ -103,23 +103,8 @@ public class FitNesseHelper {
         }
     }
 
-    public String[] calcPageNameAndType(final String suite, final String test) {
-        final boolean haveSuite = !Utils.isBlank(suite);
-        final boolean haveTest = !Utils.isBlank(test);
-        if (!haveSuite && !haveTest) {
-            throw new IllegalArgumentException("No suite or test page specified");
-        } else if (haveSuite && haveTest) {
-            throw new IllegalArgumentException("Suite and test page parameters are mutually exclusive");
-        }
-
-        final String pageName = (haveSuite) ? suite : test;
-        final String pageType = (haveSuite) ? TestHelper.PAGE_TYPE_SUITE : TestHelper.PAGE_TYPE_TEST;
-
-        return new String[] { pageName, pageType };
-    }
-
-    private String calcLinkName(final String suite, final String test) {
-        final String[] pageNameAndType = calcPageNameAndType(suite, test);
+    private String calcLinkName(final Execution execution) {
+        final String[] pageNameAndType = execution.calcPageNameAndType();
         final String linkName = StringUtils.substringBefore(pageNameAndType[0], ".");
         return linkName;
     }

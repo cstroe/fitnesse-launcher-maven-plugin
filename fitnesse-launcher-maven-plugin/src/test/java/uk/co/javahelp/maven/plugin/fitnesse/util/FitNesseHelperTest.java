@@ -46,49 +46,6 @@ public class FitNesseHelperTest {
 		
 		fitNesseHelper = new FitNesseHelper(log);
 	}
-	
-	@Test
-	public void testCalcPageNameAndTypeSuite() {
-		
-		String[] result = fitNesseHelper.calcPageNameAndType("SuiteName", null);
-		assertEquals(2, result.length);
-		assertEquals("SuiteName", result[0]);
-		assertEquals(TestHelper.PAGE_TYPE_SUITE, result[1]);
-	}
-		
-	@Test
-	public void testCalcPageNameAndTypeTest() {
-		
-		String[] result = fitNesseHelper.calcPageNameAndType(null, "SuiteName.NestedSuite.TestName");
-		assertEquals(2, result.length);
-		assertEquals("SuiteName.NestedSuite.TestName", result[0]);
-		assertEquals(TestHelper.PAGE_TYPE_TEST, result[1]);
-	}
-		
-	@Test
-	public void testCalcPageNameAndTypeIllegalBoth() {
-		try {
-			fitNesseHelper.calcPageNameAndType("SuiteName", "SuiteName.NestedSuite.TestName");
-			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			assertEquals("Suite and test page parameters are mutually exclusive", e.getMessage());
-		}
-	}
-		
-	@Test
-	public void testCalcPageNameAndTypeIllegalNeither() {
-	    assertCalcPageNameAndTypeIllegalNeither(null, null);
-	    assertCalcPageNameAndTypeIllegalNeither(" ", " ");
-	}
-	
-	private void assertCalcPageNameAndTypeIllegalNeither(String suite, String test) {
-		try {
-			fitNesseHelper.calcPageNameAndType(suite, test);
-			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			assertEquals("No suite or test page specified", e.getMessage());
-		}
-	}
 		
 	@Test
 	public void testFormatAndAppendClasspath() {
