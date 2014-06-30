@@ -101,13 +101,14 @@ public class RunTestsMojoTest {
 	public void testRunTestsMojoBasic() throws Exception {
 		
 		mojo.createSymLink = false;
-		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
-		    .thenReturn(new String[]{"ExampleFitNesseTestSuite", TestHelper.PAGE_TYPE_SUITE});
+		//when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
+		    //.thenReturn(new String[]{"ExampleFitNesseTestSuite", TestHelper.PAGE_TYPE_SUITE});
 		
-		mojo.executeInternal();
+		Execution exec = new Execution("ExampleFitNesseTestSuite", null);
+		mojo.executeInternal(exec);
 		
 		verify(mojo.fitNesseHelper, never()).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
-		verify(mojo.fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
+		verify(mojo.fitNesseHelper, never()).createSymLink(any(Execution.class), any(File.class), anyString(), anyInt());
 		verify(mojo.fitNesseHelper, never()).shutdownFitNesseServer(anyString());
 		
 		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
@@ -125,13 +126,14 @@ public class RunTestsMojoTest {
 	public void testRunTestsMojoCreateSymLink() throws Exception {
 		
 		mojo.createSymLink = true;
-		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
-		    .thenReturn(new String[]{"ExampleFitNesseTestSuite", TestHelper.PAGE_TYPE_SUITE});
+		//when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString()))
+		    //.thenReturn(new String[]{"ExampleFitNesseTestSuite", TestHelper.PAGE_TYPE_SUITE});
 		
-		mojo.executeInternal();
+		Execution exec = new Execution("ExampleFitNesseTestSuite", null);
+		mojo.executeInternal(exec);
 		
 		verify(mojo.fitNesseHelper, times(1)).launchFitNesseServer(WikiMojoTest.PORT_STRING, mojo.workingDir, mojo.root, mojo.logDir);
-		verify(mojo.fitNesseHelper, times(1)).createSymLink(mojo.suite, mojo.test, mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT);
+		verify(mojo.fitNesseHelper, times(1)).createSymLink(exec, mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT);
 		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(WikiMojoTest.PORT_STRING);
 		
 		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
@@ -160,7 +162,7 @@ public class RunTestsMojoTest {
 		}
 		
 		verify(mojo.fitNesseHelper, times(1)).launchFitNesseServer(anyString(), anyString(), anyString(), anyString());
-		verify(mojo.fitNesseHelper, never()).createSymLink(anyString(), anyString(), any(File.class), anyString(), anyInt());
+		verify(mojo.fitNesseHelper, never()).createSymLink(any(Execution.class), any(File.class), anyString(), anyInt());
 		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(anyString());
 		
 		assertFalse(mojo.summaryFile.exists());
@@ -170,10 +172,10 @@ public class RunTestsMojoTest {
 	
 	@Test
 	public void testSuiteAndTestException() throws Exception {
-		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
+		//when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
 		
 		try {
-			mojo.executeInternal();
+			mojo.executeInternal(new Execution());
 			fail("Expected MojoExecutionException");
 		} catch (MojoExecutionException e) {
 			assertEquals("Exception running FitNesse tests", e.getMessage());
@@ -182,25 +184,14 @@ public class RunTestsMojoTest {
 	}
 	
 	@Test
-	public void testSuiteOk() throws Exception {
-		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
-		
-		mojo.suite = "ExampleFitNesseTestSuite";
-		
-		mojo.executeInternal();
-		
-		verify(mojo.fitNesseHelper, times(1)).calcPageNameAndType(anyString(), anyString());
-	}
-	
-	@Test
 	public void testWriteSummaryException() throws Exception {
-		when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
+		//when(mojo.fitNesseHelper.calcPageNameAndType(anyString(), anyString())).thenCallRealMethod();
 		
-		mojo.suite = "ExampleFitNesseTestSuite";
+		//mojo.suite = "ExampleFitNesseTestSuite";
 		mojo.resultsDir.createNewFile();
 		
 		try {
-			mojo.executeInternal();
+			mojo.executeInternal(new Execution("ExampleFitNesseTestSuite", null));
 			fail("Expected MojoExecutionException");
 		} catch (MojoExecutionException e) {
 			assertEquals("Exception writing Failsafe summary", e.getMessage());

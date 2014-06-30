@@ -144,28 +144,33 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * @required
      */
     protected File summaryFile;
+    
+    /**
+     * @parameter property="fitnesse.executions"
+     */
+    protected Execution[] executions;
 
     /**
      * @parameter property="fitnesse.suite"
      */
-    protected String suite;
+    private String suite;
 
     /**
      * @parameter property="fitnesse.test"
      */
-    protected String test;
+    private String test;
 
     /**
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.suiteFilter"
      */
-    protected String suiteFilter;
+    private String suiteFilter;
 
     /**
      * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.excludeSuiteFilter"
      */
-    protected String excludeSuiteFilter;
+    private String excludeSuiteFilter;
     
     /**
      * @parameter property="fitnesse.useProjectDependencies"
@@ -187,13 +192,18 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
     protected FitNesseHelper fitNesseHelper;
     
-    protected abstract void executeInternal() throws MojoExecutionException, MojoFailureException;
+    protected abstract void executeInternal(Execution... executions)
+        throws MojoExecutionException, MojoFailureException;
 
 	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	this.fitNesseHelper = new FitNesseHelper(getLog());
         exportProperties();
-        executeInternal();
+        if(this.executions.length == 0) {
+            executeInternal(new Execution(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter));
+        } else {
+            executeInternal(this.executions);
+        }
     }
 
     private static final String LOG_LINE = "------------------------------------------------------------------------";

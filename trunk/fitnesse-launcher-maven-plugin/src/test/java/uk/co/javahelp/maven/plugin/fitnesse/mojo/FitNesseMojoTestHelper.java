@@ -62,8 +62,6 @@ public class FitNesseMojoTestHelper {
     
     Properties systemProperties;
     
-    boolean executeCalled = false;
-
     FitNesseMojoTestHelper() {
 		this.artifactHandler = mock(ArtifactHandler.class);
 		this.artifactResolver = mock(ArtifactResolver.class);
@@ -87,12 +85,7 @@ public class FitNesseMojoTestHelper {
         Build build = new Build();
         build.addPlugin(this.plugin);
         
-		this.mojo = new AbstractFitNesseMojo() {
-			@Override
-			protected void executeInternal() {
-				executeCalled = true;
-			}
-		};
+		this.mojo = new TestFitNesseMojo();
 		this.mojo.project = new MavenProject();
 		this.mojo.resolver = this.artifactResolver;
 		this.mojo.fitNesseHelper = mock(FitNesseHelper.class);
