@@ -14,10 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
+import uk.co.javahelp.maven.plugin.fitnesse.main.FitNesseMain;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import fitnesse.Arguments;
 import fitnesse.Shutdown;
-import fitnesseMain.FitNesseMain;
 
 public class FitNesseHelper {
 
