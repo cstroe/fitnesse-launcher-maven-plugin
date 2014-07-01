@@ -21,18 +21,20 @@ Getting Started
    |  +- java/
    |  +- resources/
    |  +- fitnesse/
-   |     +- MyTestSuite
-   |        +- SetUp
-   |        |  +- content.txt
-   |        |  +- properties.xml
-   |        +- NestedSuite
-   |        |  +- AnIndividualTest
-   |        |  |  +- content.txt
-   |        |  |  +- properties.xml
-   |        |  +- content.txt
-   |        |  +- properties.xml
-   |        +- content.txt
-   |        +- properties.xml
+   |     +- FirstTestSuite
+   |     |  +- SetUp
+   |     |  |  +-- content.txt, properties.xml
+   |     |  |
+   |     |  +- NestedSuite
+   |     |  |  +- AnIndividualTest
+   |     |  |  |  +-- content.txt, properties.xml
+   |     |  |  | 
+   |     |  |  +-- content.txt, properties.xml
+   |     |  |
+   |     |  +-- content.txt, properties.xml
+   |     |
+   |     +- SecondTestSuite
+   |        +-- content.txt, properties.xml
    +- pom.xml
 +-----+
 

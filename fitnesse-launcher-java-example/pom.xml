@@ -126,8 +126,8 @@
     			    	</launch>
 					 -->
 					</launches>
-					<!-- Pre-1.4.0 config is still valid -->
-					<!-- These 3 are mutually exclusive; choose one. -->
+					<!-- Pre-1.4.0 config is still valid, and in fact is senior -->
+					<!-- These 3 are mutually exclusive; choose only one. -->
 					<!-- 
 					<suite>JavaExample</suite>
 					<suite>JavaExample.SlimTest</suite>

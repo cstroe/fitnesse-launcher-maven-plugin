@@ -46,6 +46,9 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 	@Override
     protected final void executeInternal(final Launch... launches)
 	        throws MojoExecutionException, MojoFailureException {
+       	if(launches.length == 0) {
+    		getLog().warn("No FitNesse Suites or Tests to run! (Set -Dfitnesse.fitnesse.failIfNoTests=false to ignore.)");
+       	}
 
 		if (this.createSymLink) {
 			createSymLink(launches);
