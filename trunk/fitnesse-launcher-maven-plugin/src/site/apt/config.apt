@@ -24,7 +24,7 @@ Configuration
                 <groupId>uk.co.javahelp.fitnesse</groupId>
                 <artifactId>fitnesse-launcher-maven-plugin</artifactId>
                 <configuration>
-                    <!-- These next 11 are the default values -->
+                    <!-- These 12 are the default values -->
                     <port>9123</port>
                     <workingDir>${project.build.directory}/fitnesse</workingDir>
                     <root>FitNesseRoot</root>
@@ -36,12 +36,50 @@ Configuration
                     <excludeOptionalDependencies>true</excludeOptionalDependencies>
                     <deletePluginsProperties>false</deletePluginsProperties> <!-- Note the 's' in "plugins" -->
                     <alwaysUnpackFitnesse>false</alwaysUnpackFitnesse>
+                    <failIfNoTests>false</failIfNoTests>
                     
-                    <!-- Only configure 1 of the following 3 (See Advised Project Directory Structure) -->
+                    <!-- Since version 1.3.0 -->
+                    <!-- See section 'Project Scope Dependencies' -->
+                    <useProjectDependencies>
+                        <!-- Any combination of scopes -->
+                        <scope>test</scope>
+                    </useProjectDependencies>
+                    
+                    <!-- Since version 1.4.0 -->
+                    <!-- See section 'Configuring Top Level Suites' -->
+                    <launches>
+                        <launch>
+                            <suite>FirstTestSuite</suite>
+                            <suiteFilter>tag1,tag2</suiteFilter>
+                        </launch>
+                        <launch>
+                            <suite>SecondTestSuite</suite>
+                            <excludeSuiteFilter>tag1,tag2</excludeSuiteFilter>
+                        </launch>
+                        <launch>
+                            <suite>MyTestSuite.NestedSuite</suite>
+                        </launch>
+                        <launch>
+                            <test>MyTestSuite.NestedSuite.AnIndividualTest</test>
+                        </launch>
+                    </launches>
+
+                    <!--
+                        Pre-1.4.0 config is still valid, and in fact is senior,
+                        to allow override or specifying of suite / test from command line
+                        using -Dfitnesse.suite=X or -Dfitnesse.test=Y
+                    -->
+                    <!-- These 3 are mutually exclusive;
+                         Only configure one of the following
+                         (See Advised Project Directory Structure)
+                    -->
                     <suite>MyTestSuite</suite>
                     <suite>MyTestSuite.NestedSuite</suite>
                     <test>MyTestSuite.NestedSuite.AnIndividualTest</test>
-                    <!-- Also see section on Filtering Test Suites -->
+                    
+                    <!-- Also see section on 'Filtering Test Suites' -->
+                    <suiteFilter>tag1,tag2</suiteFilter>
+                    <excludeSuiteFilter>tag3,tag4</excludeSuiteFilter>
                 </configuration>
             </plugin>
         </plugins>
