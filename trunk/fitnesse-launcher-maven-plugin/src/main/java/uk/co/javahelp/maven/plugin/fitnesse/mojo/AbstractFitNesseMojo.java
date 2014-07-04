@@ -185,9 +185,12 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * Should fitnesse-launcher-maven-plugin exclude optional transitive dependencies,
      * when configured using &lt;useProjectDependencies&gt; ?
+     * Note: This may result in duplicates or conflicts for transitive dependencies.
+     * See Issue #27
      * Defaults to true. 
      * @parameter property="fitnesse.excludeOptionalDependencies" default-value="true"
      */
+    @Deprecated
     protected boolean excludeOptionalDependencies = true;
 
     protected FitNesseHelper fitNesseHelper;
@@ -242,9 +245,19 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     }
 
     protected final String calcWikiFormatClasspath() {
+        final Set<Artifact> artifacts = buildArtifactSet();
+        return addArtifactsToClasspath(artifacts);
+    }
+
+	private Set<Artifact> buildArtifactSet() {
         final Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        
-   		Map<String, Artifact> dependencyArtifactMap = this.pluginDescriptor.getArtifactMap(); 
+        addPluginArtifacts(artifacts);
+        addProjectArtifacts(artifacts);
+       	return artifacts;
+    }
+
+	private void addPluginArtifacts(final Set<Artifact> artifacts) {
+   		final Map<String, Artifact> dependencyArtifactMap = this.pluginDescriptor.getArtifactMap(); 
         // We should always have FitNesse itself on the FitNesse classpath!
        	artifacts.addAll(resolveDependencyKey(FitNesse.artifactKey, dependencyArtifactMap));
                 
@@ -262,22 +275,34 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         		}
         	}
         }
-       	
+    }
+
+    /**
+     * From {@link org.apache.maven.project.MavenProject#getArtifacts()}:
+     * All dependencies that this project has, including transitive ones.
+     * Contents are lazily populated, so depending on what phases have run
+     * dependencies in some scopes won't be included. eg. if only compile
+     * phase has run, dependencies with scope test won't be included.
+     * @see org.apache.maven.project.MavenProject#getArtifacts()
+     * See <a href="http://maven.apache.org/developers/mojo-api-specification.html#The_Descriptor_and_Annotations">requiresDependencyResolution</a>
+     */
+	private void addProjectArtifacts(final Set<Artifact> artifacts) {
        	if(!this.useProjectDependencies.isEmpty()) {
             getLog().info("Using dependencies in the following scopes: " + this.useProjectDependencies);
             if(!this.excludeOptionalDependencies) {
             	getLog().info("Including transitive dependencies which are optional");
+                resolveProjectDependencies(artifacts);
+        	} else {
+		        for(Artifact artifact : this.project.getArtifacts()) {
+   	    			if(this.useProjectDependencies.contains(artifact.getScope())) {
+       					artifacts.add(artifact);
+       				}
+   				}
         	}
-       		dependencyArtifactMap = ArtifactUtils.artifactMapByVersionlessId(this.project.getDependencyArtifacts());
-        	final List<Dependency> dependecies = this.project.getDependencies();
-			for(Dependency dependency : dependecies) {
-		    	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
-       	    	if(this.useProjectDependencies.contains(dependency.getScope())) {
-        			artifacts.addAll(resolveDependencyKey(key, dependencyArtifactMap));
-        		}
-       		}
        	}
-       	
+    }
+
+	private String addArtifactsToClasspath(final Set<Artifact> artifacts) {
         final StringBuilder wikiFormatClasspath = new StringBuilder("\n");
 		final ClassRealm realm = this.pluginDescriptor.getClassRealm();
 	    setupLocalTestClasspath(realm, wikiFormatClasspath);
@@ -292,6 +317,23 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
             }
         }
         return wikiFormatClasspath.toString();
+    }
+
+    /**
+     * See Issue #27. This method may result in duplicates or conflicts for transitive dependencies.
+     * Better to use correct @requiresDependencyResolution for mojo, in combination with project.getArtifacts().
+     * See <a href="http://maven.apache.org/developers/mojo-api-specification.html#The_Descriptor_and_Annotations">requiresDependencyResolution</a>
+     */
+    @Deprecated
+	private void resolveProjectDependencies(final Set<Artifact> artifacts) {
+		final Map<String, Artifact> dependencyArtifactMap = ArtifactUtils.artifactMapByVersionlessId(this.project.getDependencyArtifacts());
+       	final List<Dependency> dependecies = this.project.getDependencies();
+		for(Dependency dependency : dependecies) {
+	    	final String key = dependency.getGroupId() + ":" + dependency.getArtifactId();
+   	    	if(this.useProjectDependencies.contains(dependency.getScope())) {
+       			artifacts.addAll(resolveDependencyKey(key, dependencyArtifactMap));
+       		}
+   		}
     }
 
 	private void setupLocalTestClasspath(final ClassRealm realm, final StringBuilder wikiFormatClasspath) {
