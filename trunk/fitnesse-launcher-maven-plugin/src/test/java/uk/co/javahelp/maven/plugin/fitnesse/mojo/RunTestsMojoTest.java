@@ -66,7 +66,7 @@ public class RunTestsMojoTest {
 		mojo.fitNesseHelper = mock(FitNesseHelper.class);
 		mojo.port = WikiMojoTest.PORT;
 		mojo.workingDir = workingDir.getCanonicalPath();
-		mojo.root = "FitNesseRoot";
+		mojo.root = FitNesseHelper.DEFAULT_ROOT;
 		mojo.resultsDir = new File(System.getProperty("java.io.tmpdir"), "unit_test_results");
 		mojo.reportsDir = new File(System.getProperty("java.io.tmpdir"), "unit_test_reports");
 		mojo.summaryFile = new File(mojo.resultsDir, "failsafe-summary.xml");
@@ -94,7 +94,7 @@ public class RunTestsMojoTest {
 	 */
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(new File("FitNesseRoot"));
+		FileUtils.deleteQuietly(new File(FitNesseHelper.DEFAULT_ROOT));
 	}
 	
 	@Test
