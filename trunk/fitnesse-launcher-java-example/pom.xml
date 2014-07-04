@@ -93,16 +93,43 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/fitnesse/FitNesseRoot/FrontPage</outputDirectory>
+							<outputDirectory>${project.build.directory}/fitnesse</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/test/resources/FrontPage</directory>
+									<directory>src/test/fitnesse</directory>
+									<includes>
+    									<include>plugins.properties</include>
+									</includes>
 								</resource>
 							</resources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			<!-- 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/fitnesse/FitNesseRoot/FrontPage</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/test/fitnesse/FrontPage</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			 -->
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
