@@ -106,7 +106,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -129,7 +128,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			 -->
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
@@ -138,6 +136,9 @@
 			    	<launches>
     			    	<launch>
         					<suite>JavaExample</suite>
+        					<!-- Issue #12
+                            <runTestsMatchingAllTags>mockito,powermock</runTestsMatchingAllTags>
+        					 -->
     			    	</launch>
     			    	<launch>
         					<suite>SecondExample</suite>
