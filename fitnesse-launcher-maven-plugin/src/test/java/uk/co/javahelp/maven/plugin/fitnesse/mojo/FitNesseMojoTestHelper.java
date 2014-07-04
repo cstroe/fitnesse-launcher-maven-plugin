@@ -145,6 +145,10 @@ public class FitNesseMojoTestHelper {
     private void addDependency(String groupId, String artifactId, String scope, boolean optional) {
         final Artifact artifact = createArtifact(groupId, artifactId);
         artifact.setOptional(optional);
+		artifact.setScope(scope);
+		if(!optional) {
+		    this.mojo.project.getArtifacts().add(artifact);
+		}
 		this.mojo.project.getDependencies().add(createDependecy(groupId, artifactId, scope));
 		this.mojo.project.getDependencyArtifacts().add(artifact);
 		final ResolutionRequestForArtifact requestMatcher = new ResolutionRequestForArtifact(artifact);

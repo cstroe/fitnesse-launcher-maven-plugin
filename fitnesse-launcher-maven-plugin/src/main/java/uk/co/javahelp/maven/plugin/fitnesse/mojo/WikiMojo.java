@@ -15,7 +15,7 @@ import fitnesse.socketservice.SocketService;
  *
  * @goal wiki
  * @phase integration-test
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  */
 public class WikiMojo extends AbstractFitNesseMojo {
 	

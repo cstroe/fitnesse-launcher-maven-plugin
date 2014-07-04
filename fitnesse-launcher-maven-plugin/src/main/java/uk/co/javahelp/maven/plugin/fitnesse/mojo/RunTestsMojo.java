@@ -28,7 +28,7 @@ import fitnesse.testsystems.TestSummary;
  * 
  * @goal run-tests
  * @phase integration-test
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  * @see fitnesse.junit.TestHelper
  */
 public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReportParameters {
