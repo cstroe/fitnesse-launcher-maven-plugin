@@ -119,8 +119,7 @@ public class FitNesseHelper {
     }
 
     private String calcLinkName(final Launch launch) {
-        final String[] pageNameAndType = launch.calcPageNameAndType();
-        final String linkName = StringUtils.substringBefore(pageNameAndType[0], ".");
+        final String linkName = StringUtils.substringBefore(launch.getPageName(), ".");
         return linkName;
     }
 
