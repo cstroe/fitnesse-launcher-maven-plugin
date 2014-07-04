@@ -58,6 +58,7 @@ Configuration
                         </launch>
                         <launch>
                             <suite>MyTestSuite.NestedSuite</suite>
+                            <runTestsMatchingAllTags>tag1,tag2</runTestsMatchingAllTags>
                         </launch>
                         <launch>
                             <test>MyTestSuite.NestedSuite.AnIndividualTest</test>
@@ -80,6 +81,7 @@ Configuration
                     <!-- Also see section on 'Filtering Test Suites' -->
                     <suiteFilter>tag1,tag2</suiteFilter>
                     <excludeSuiteFilter>tag3,tag4</excludeSuiteFilter>
+                    <runTestsMatchingAllTags>tag5,tag6</runTestsMatchingAllTags>
                 </configuration>
             </plugin>
         </plugins>

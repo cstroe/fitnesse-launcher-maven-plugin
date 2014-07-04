@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
 
+/**
+ * @see fitnesse.responders.run.SuiteFilter
+ * @see fitnesse.junit.TestHelper
+ */
 public class Launch {
 
     /**
@@ -17,16 +21,22 @@ public class Launch {
     private String test;
 
     /**
-     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.suiteFilter"
      */
     private String suiteFilter;
 
     /**
-     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.excludeSuiteFilter"
      */
     private String excludeSuiteFilter;
+    
+    /**
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
+     * @parameter property="fitnesse.runTestsMatchingAllTags"
+     */
+    private String runTestsMatchingAllTags;
     
     private String pageName;
     
@@ -36,10 +46,11 @@ public class Launch {
 	}
 		
 	public Launch(final String suite, final String test) {
-		this(suite, test, null, null);
+		this(suite, test, null, null, null);
 	}
 	
-	public Launch(final String suite, final String test, final String suiteFilter, final String excludeSuiteFilter) {
+	public Launch(final String suite, final String test,
+			final String suiteFilter, final String excludeSuiteFilter, final String runTestsMatchingAllTags) {
 		this.suite = suite;
 		this.test = test;
 		this.suiteFilter = suiteFilter;
@@ -62,7 +73,11 @@ public class Launch {
 		return this.excludeSuiteFilter;
 	}
 
-    public String getPageName() {
+    public String getRunTestsMatchingAllTags() {
+		return this.runTestsMatchingAllTags;
+	}
+
+	public String getPageName() {
         if(this.pageName == null) {
         	calcPageNameAndType();
         }
@@ -111,6 +126,10 @@ public class Launch {
 		if (this.suiteFilter != null) {
        		cmdBuilder.append("&suiteFilter=");
        		cmdBuilder.append(this.suiteFilter);
+		}
+		if(this.runTestsMatchingAllTags != null) {
+       		cmdBuilder.append("&runTestsMatchingAllTags=");
+       		cmdBuilder.append(this.runTestsMatchingAllTags);
 		}
 		if (this.excludeSuiteFilter != null) {
        		cmdBuilder.append("&excludeSuiteFilter=");

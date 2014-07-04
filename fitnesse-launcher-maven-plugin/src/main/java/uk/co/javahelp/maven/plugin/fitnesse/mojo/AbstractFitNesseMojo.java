@@ -116,7 +116,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
      * as then you can directly scm commit your changes.
      * If you prefer to copy-resources from src/test/fitnesse into /target/fitnesse,
      * let 'createSymLink' be 'false'.
-     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks">FitNesse SymLink User Guide</a>
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.FitNesseWiki.SymbolicLinks">What are Symbolic Links</a>
      * @parameter property="fitnesse.createSymLink" default-value="true"
      */
     protected boolean createSymLink;
@@ -161,16 +161,22 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     private String test;
 
     /**
-     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.suiteFilter"
      */
     private String suiteFilter;
 
     /**
-     * @see <a href="http://fitnesse.org/FitNesse.UserGuide.TestSuites.TagsAndFilters">Suite Tags</a>
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.excludeSuiteFilter"
      */
     private String excludeSuiteFilter;
+    
+    /**
+     * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
+     * @parameter property="fitnesse.runTestsMatchingAllTags"
+     */
+    private String runTestsMatchingAllTags;
     
     /**
      * @parameter property="fitnesse.useProjectDependencies"
@@ -207,7 +213,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
         	// if this.launches.length == 0, it won't throw exception, just nothing to run 
             executeInternal(this.launches);
         } else {
-            executeInternal(new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter));
+            executeInternal(new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter, this.runTestsMatchingAllTags));
         }
     }
 
