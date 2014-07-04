@@ -21,6 +21,8 @@ import fitnesse.Shutdown;
 
 public class FitNesseHelper {
 
+    public static final String DEFAULT_ROOT = "FitNesseRoot";
+    
     private static final String UTF8 = "UTF-8";
     
     private static final long SHUTDOWN_WAIT_MS = 50;

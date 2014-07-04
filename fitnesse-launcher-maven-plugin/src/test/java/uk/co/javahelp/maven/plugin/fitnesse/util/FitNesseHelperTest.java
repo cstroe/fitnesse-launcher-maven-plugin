@@ -3,7 +3,6 @@ package uk.co.javahelp.maven.plugin.fitnesse.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +25,6 @@ import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
 import fitnesse.Arguments;
-import fitnesse.junit.TestHelper;
 
 public class FitNesseHelperTest {
 
@@ -107,7 +105,7 @@ public class FitNesseHelperTest {
 	public void assertLaunchFitNesseServer(String logDir) throws Exception {
 		String port = String.valueOf(Arguments.DEFAULT_COMMAND_PORT);
 		File working = new File(System.getProperty("java.io.tmpdir"), "fitnesse-launcher-test");
-		fitNesseHelper.launchFitNesseServer(port, working.getCanonicalPath(), "FitNesseRoot", logDir);
+		fitNesseHelper.launchFitNesseServer(port, working.getCanonicalPath(), FitNesseHelper.DEFAULT_ROOT, logDir);
 		URL local = new URL("http://localhost:" + port);
 		InputStream in = local.openConnection().getInputStream();
 		try {

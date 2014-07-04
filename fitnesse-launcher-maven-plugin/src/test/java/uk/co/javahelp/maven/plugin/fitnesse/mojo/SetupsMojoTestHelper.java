@@ -27,6 +27,8 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.Logger;
 import org.eclipse.aether.RepositorySystemSession;
 
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
+
 public class SetupsMojoTestHelper {
 
 	AbstractSetupsMojo mojo;
@@ -41,6 +43,7 @@ public class SetupsMojoTestHelper {
 		this.mojo = mojo;
 		
 		this.mojo.workingDir = this.workingDir.getCanonicalPath();
+		this.mojo.root = FitNesseHelper.DEFAULT_ROOT;
 		this.mojo.project = new MavenProject();
 		this.mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
 		this.mojo.pluginDescriptor = new PluginDescriptor();

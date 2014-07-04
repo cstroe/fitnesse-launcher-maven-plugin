@@ -8,6 +8,8 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
+
 /**
  * Cleanup debris after FitNesse runs.
  * See {@link fitnesse.responders.run.formatters.PageInProgressFormatter}
@@ -54,7 +56,7 @@ public class TearDownMojo extends AbstractSetupsMojo {
 				element("excludeDefaultDirectories", "true"),
 				element("filesets",
 					element("fileset",
-						element("directory", "FitNesseRoot"),
+						element("directory", FitNesseHelper.DEFAULT_ROOT),
 						element("followSymlinks", "false")))),
 			executionEnvironment(project, session, pluginManager)
 		);

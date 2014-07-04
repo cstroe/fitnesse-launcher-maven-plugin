@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import javax.security.auth.callback.LanguageCallback;
+import javax.swing.tree.FixedHeightLayoutCache;
 
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -60,7 +61,7 @@ public class WikiMojoTest {
 		mojo.fitNesseHelper = this.fitNesseHelper;
 		mojo.port = PORT;
 		mojo.workingDir = "fitnesse";
-		mojo.root = "FitNesseRoot";
+		mojo.root = FitNesseHelper.DEFAULT_ROOT;
 		mojo.project = new MavenProject();
 		mojo.project.setFile(new File(getClass().getResource("pom.xml").getPath()));
 		

@@ -17,6 +17,8 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
+
 public class SetUpMojoTest {
 
 	private SetupsMojoTestHelper helper;
@@ -80,8 +82,12 @@ public class SetUpMojoTest {
 	public void testMove() throws Exception {
 		
         final Xpp3Dom antrunConfig = Xpp3DomBuilder.build(SetUpMojoTest.class.getResourceAsStream("antrun-mojo-config.xml"), "UTF-8");
-        antrunConfig.getChild("target").getChild("move").setAttribute("todir", helper.workingDir.getCanonicalPath());
-        antrunConfig.getChild("target").getChild("move").setAttribute("file", helper.workingDir.getCanonicalPath() + "/Resources/FitNesseRoot");
+        // Because the tmp directory differs by OS
+        antrunConfig.getChild("target").getChild(0).setAttribute("todir", helper.workingDir.getCanonicalPath());
+        antrunConfig.getChild("target").getChild(0).setAttribute("file", helper.workingDir.getCanonicalPath() + "/" + SetUpMojo.FIT_ROOT);
+        antrunConfig.getChild("target").getChild(1).setAttribute("todir", helper.workingDir.getCanonicalPath() + "/" + FitNesseHelper.DEFAULT_ROOT + "/files");
+        antrunConfig.getChild("target").getChild(1).getChild("fileset").setAttribute("dir",
+        		helper.workingDir.getCanonicalPath() + "/" + FitNesseHelper.DEFAULT_ROOT + "/files/" + SetUpMojo.FIT_FILES);
         
         doAnswer(new Answer<Void>() {
 			@Override

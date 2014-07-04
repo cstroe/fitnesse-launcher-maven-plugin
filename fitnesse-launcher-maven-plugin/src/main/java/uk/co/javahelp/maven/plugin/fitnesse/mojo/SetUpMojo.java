@@ -6,9 +6,16 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.twdata.maven.mojoexecutor.MojoExecutor.Attribute;
+import org.twdata.maven.mojoexecutor.MojoExecutor.Attributes;
+import org.twdata.maven.mojoexecutor.MojoExecutor.Element;
+
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 /**
  * This Mojo is devoted simply to fetching and unpacking
@@ -19,6 +26,10 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * @phase pre-integration-test
  */
 public class SetUpMojo extends AbstractSetupsMojo {
+	
+	static final String FIT_ROOT = "Resources/" + FitNesseHelper.DEFAULT_ROOT;
+    
+	static final String FIT_FILES = "fitnesse/resources";
     
 	/**
 	 * If set, fitnesse-launcher-maven-plugin will delete any existing plugins.properties
@@ -114,6 +125,15 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 							<outputDirectory>${fitnesse.working}</outputDirectory>
 	 * 							<includes>Resources/FitNesseRoot/**</includes>
 	 * 						</artifactItem>
+	 * 						<artifactItem>
+	 * 							<groupId>org.fitnesse</groupId>
+	 * 							<artifactId>fitnesse</artifactId>
+	 * 							<version>20130530</version>
+	 * 							<type>jar</type>
+	 * 							<overWrite>false</overWrite>
+	 * 							<outputDirectory>${fitnesse.working}/${fitnesse.root}/files</outputDirectory>
+	 * 							<includes>fitnesse/resources/**</includes>
+	 * 						</artifactItem>
 	 * 					</artifactItems>
 	 * 				</configuration>
 	 * 			</execution>
@@ -129,16 +149,25 @@ public class SetUpMojo extends AbstractSetupsMojo {
 		    goal("unpack"),
             configuration(
 	        	element("artifactItems",
-	            	element("artifactItem",
+	        			artifactItem(this.workingDir, includes(FIT_ROOT), artifact),
+	        			artifactItem(workingFiles(null), includes(FIT_FILES), artifact))),
+		    executionEnvironment(project, session, pluginManager)
+		);
+    }
+    
+    private Element artifactItem(final String outputDirectory, final String includes, final Artifact artifact) {
+        return element("artifactItem",
 		            	element("groupId", artifact.getGroupId()),
 		            	element("artifactId", artifact.getArtifactId()),
 		            	element("version", artifact.getVersion()),
 		            	element("type", "jar"),
 		            	element("overWrite", Boolean.toString(this.alwaysUnpackFitnesse)),
-		            	element("outputDirectory", this.workingDir),
-		            	element("includes", "Resources/FitNesseRoot/**")))),
-		    executionEnvironment(project, session, pluginManager)
-		);
+		            	element("outputDirectory", outputDirectory),
+		            	element("includes", includes));
+    }
+    
+    private String includes(final String includes) {
+        return includes + "/**";
     }
     
     /**
@@ -158,6 +187,11 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 *                 <target>
 	 *                     <move file="${fitnesse.working}/Resources/FitNesseRoot"
 	 *                          todir="${fitnesse.working}" failonerror="false" />
+	 *                     <move todir="${fitnesse.working}/${fitnesse.root}/files" failonerror="false">
+	 *                         <fileset dir="${fitnesse.working}/${fitnesse.root}/files/fitnesse/resources">
+	 *                             <include name="**\/\*"/>
+	 *                         </fileset>
+	 *                     </move>
 	 *                 </target>
 	 *             </configuration>
 	 *         </execution>
@@ -167,19 +201,40 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * </pre>
 	 */
     final void move() throws MojoExecutionException {
-        final Xpp3Dom config = configuration(
-        	element("target",
-            	element("move")));
-        final Xpp3Dom move = config.getChild("target").getChild("move");
-        move.setAttribute("file", this.workingDir + "/Resources/FitNesseRoot");
-		move.setAttribute("todir", this.workingDir);
-		move.setAttribute("failonerror", "false");
-		move.setAttribute("overwrite", "false");
 		executeMojo(
 			plugin("org.apache.maven.plugins:maven-antrun-plugin"),
 		    goal("run"),
-		    config,
+		    //config,
+        	configuration(
+        	element("target",
+            	element("move", move(this.workingDir, new Attribute("file", this.workingDir + "/" + FIT_ROOT))),
+            	element("move", move(workingFiles(null)),
+            		element("fileset",new Attribute("dir", workingFiles(FIT_FILES)),
+            			element("include", new Attribute("name", "**/*")))))),
 		    executionEnvironment(project, session, pluginManager)
 		);
+    }
+    
+    private Attributes move(final String todir, final Attribute... additional) {
+    	final List<Attribute> list = new ArrayList<Attribute>();
+		list.add(new Attribute("todir", todir));
+		list.add(new Attribute("failonerror", "false"));
+		list.add(new Attribute("overwrite", "false"));
+		for(Attribute a : additional) {
+		    list.add(a);
+		}
+		return new Attributes(list.toArray(new Attribute[list.size()]));
+    }
+    
+    private String workingFiles(final String additional) {
+    	final StringBuilder sb = new StringBuilder(this.workingDir);
+    	sb.append("/");
+    	sb.append(this.root);
+    	sb.append("/files");
+    	if(additional != null) {
+    	    sb.append("/");
+            sb.append(additional);
+    	}
+        return sb.toString();
     }
 }

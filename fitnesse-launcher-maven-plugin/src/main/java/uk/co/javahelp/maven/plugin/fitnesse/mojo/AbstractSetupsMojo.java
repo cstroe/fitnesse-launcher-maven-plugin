@@ -44,6 +44,11 @@ public abstract class AbstractSetupsMojo extends org.apache.maven.plugin.Abstrac
      */
     protected String workingDir;
     
+    /**
+     * @parameter property="fitnesse.root" default-value="FitNesseRoot"
+     */
+    protected String root;
+
     protected final Plugin plugin(final String key) {
        	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);
         final Plugin plugin = new Plugin();
