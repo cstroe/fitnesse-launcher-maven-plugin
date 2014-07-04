@@ -3,7 +3,6 @@ package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 import java.util.Arrays;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
-import fitnesse.junit.TestHelper;
 
 public class Launch {
 
@@ -28,6 +27,10 @@ public class Launch {
      * @parameter property="fitnesse.excludeSuiteFilter"
      */
     private String excludeSuiteFilter;
+    
+    private String pageName;
+    
+    private String pageType;
 
 	public Launch() {
 	}
@@ -59,7 +62,25 @@ public class Launch {
 		return this.excludeSuiteFilter;
 	}
 
-    public String[] calcPageNameAndType() {
+    public String getPageName() {
+        if(this.pageName == null) {
+        	calcPageNameAndType();
+        }
+    	return this.pageName;
+	}
+
+    public String getPageType() {
+        if(this.pageType == null) {
+        	calcPageNameAndType();
+        }
+    	return this.pageType;
+	}
+
+	public static final String PAGE_TYPE_SUITE = fitnesse.junit.TestHelper.PAGE_TYPE_SUITE;
+
+	public static final String PAGE_TYPE_TEST = fitnesse.junit.TestHelper.PAGE_TYPE_TEST;
+
+    private void calcPageNameAndType() {
         final boolean haveSuite = !Utils.isBlank(this.suite);
         final boolean haveTest = !Utils.isBlank(this.test);
         if (!haveSuite && !haveTest) {
@@ -68,11 +89,35 @@ public class Launch {
             throw new IllegalArgumentException("Suite and test page parameters are mutually exclusive");
         }
 
-        final String pageName = (haveSuite) ? this.suite : this.test;
-        final String pageType = (haveSuite) ? TestHelper.PAGE_TYPE_SUITE : TestHelper.PAGE_TYPE_TEST;
-
-        return new String[] { pageName, pageType };
+        this.pageName = (haveSuite) ? this.suite : this.test;
+        this.pageType = (haveSuite) ? PAGE_TYPE_SUITE : PAGE_TYPE_TEST;
     }
+
+	private static final String COMMON_ARGS = "&nohistory=true&format=java";
+	
+	private static final String DEBUG_ARG = "&debug=true";
+
+	/**
+	 * @see fitnesse.junit.TestHelper
+	 */
+	public String getCommand(final boolean debug) {
+   		final StringBuilder cmdBuilder = new StringBuilder(getPageName());
+   		cmdBuilder.append("?");
+   		cmdBuilder.append(getPageType());
+		if (debug) {
+       		cmdBuilder.append(DEBUG_ARG);
+		}
+   		cmdBuilder.append(COMMON_ARGS);
+		if (this.suiteFilter != null) {
+       		cmdBuilder.append("&suiteFilter=");
+       		cmdBuilder.append(this.suiteFilter);
+		}
+		if (this.excludeSuiteFilter != null) {
+       		cmdBuilder.append("&excludeSuiteFilter=");
+       		cmdBuilder.append(this.excludeSuiteFilter);
+		}
+		return cmdBuilder.toString();
+	}
 
 	@Override
 	public int hashCode() {
