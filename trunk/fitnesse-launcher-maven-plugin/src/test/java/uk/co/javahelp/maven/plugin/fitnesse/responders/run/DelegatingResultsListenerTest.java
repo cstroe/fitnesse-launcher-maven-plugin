@@ -4,15 +4,30 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
+import org.htmlparser.tags.TableColumn;
+import org.htmlparser.tags.TableHeader;
+import org.htmlparser.tags.TableRow;
+import org.htmlparser.tags.TableTag;
+import org.htmlparser.util.NodeList;
 import org.junit.Before;
 import org.junit.Test;
 
 import util.TimeMeasurement;
 import fitnesse.responders.run.ResultsListener;
 import fitnesse.testsystems.CompositeExecutionLog;
+import fitnesse.testsystems.ExecutionResult;
 import fitnesse.testsystems.TestPage;
 import fitnesse.testsystems.TestSummary;
 import fitnesse.testsystems.TestSystem;
+import fitnesse.testsystems.slim.HtmlTable;
+import fitnesse.testsystems.slim.SlimTestContextImpl;
+import fitnesse.testsystems.slim.results.ExceptionResult;
+import fitnesse.testsystems.slim.results.TestResult;
+import fitnesse.testsystems.slim.tables.Assertion;
+import fitnesse.testsystems.slim.tables.QueryTable;
+import fitnesse.testsystems.slim.tables.SyntaxError;
 import fitnesse.wiki.WikiPageDummy;
 
 public class DelegatingResultsListenerTest {
@@ -105,6 +120,30 @@ public class DelegatingResultsListenerTest {
     }
     
     @Test
+    public void testTestAssertionVerified() throws SyntaxError {
+    	Assertion assertion = assertion();
+    	TestResult testResult = new TestResult(ExecutionResult.PASS);
+    	
+    	delegatingListener.testAssertionVerified(assertion, testResult);
+    	
+    	for(int i = 0 ; i < DELEGATE_COUNT ; i++) {
+    		verify(delegates[i], times(1)).testAssertionVerified(assertion, testResult);
+    	}
+    }
+    
+    @Test
+    public void testTestExceptionOccurred() throws Exception {
+    	Assertion assertion = assertion();
+    	ExceptionResult exceptionResult = new ExceptionResult("resultKey", "exceptionValue");
+    	
+    	delegatingListener.testExceptionOccurred(assertion, exceptionResult);
+    	
+    	for(int i = 0 ; i < DELEGATE_COUNT ; i++) {
+    		verify(delegates[i], times(1)).testExceptionOccurred(assertion, exceptionResult);
+    	}
+    }
+    
+    @Test
     public void testTestComplete() throws Exception {
     	TestPage test = new TestPage(new WikiPageDummy());
         TestSummary testSummary = new TestSummary();
@@ -124,5 +163,23 @@ public class DelegatingResultsListenerTest {
     	for(int i = 0 ; i < DELEGATE_COUNT ; i++) {
     		verify(delegates[i], times(1)).errorOccured();
     	}
+    }
+    
+    private Assertion assertion() throws SyntaxError {
+		NodeList headerColumns = new NodeList();
+		headerColumns.add(new TableColumn());
+		TableHeader tableHeader = new TableHeader();
+		tableHeader.setChildren(headerColumns);
+		NodeList rowColumns = new NodeList();
+		rowColumns.add(new TableColumn());
+		TableRow tableRow = new TableRow();
+		tableRow.setChildren(rowColumns);
+		NodeList rows = new NodeList();
+		rows.add(tableHeader);
+		rows.add(tableRow);
+		TableTag tableTag = new TableTag();
+		tableTag.setChildren(rows);
+    	List<Assertion> list = new QueryTable(new HtmlTable(tableTag), "id", new SlimTestContextImpl()).getAssertions();
+    	return list.get(0);
     }
 }

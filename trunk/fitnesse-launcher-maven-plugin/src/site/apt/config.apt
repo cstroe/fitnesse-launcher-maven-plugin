@@ -15,7 +15,7 @@ Configuration
 <project>
     [...]
     <properties>
-        <!-- Any properties will be available to FitNesse using '${variable}' syntax -->
+        <!-- All properties will be available to FitNesse using '${variable}' syntax -->
     </properties>
     [...]
     <build>
@@ -33,7 +33,7 @@ Configuration
                     <resultsDir>${workingDir}/results</resultsDir>
                     <summaryFile>${workingDir}/results/failsafe-summary.xml</summaryFile>
                     <createSymLink>true</createSymLink>
-                    <excludeOptionalDependencies>true</excludeOptionalDependencies>
+                    <excludeOptionalDependencies>true</excludeOptionalDependencies> <!-- Deprecated -->
                     <deletePluginsProperties>false</deletePluginsProperties> <!-- Note the 's' in "plugins" -->
                     <alwaysUnpackFitnesse>false</alwaysUnpackFitnesse>
                     <failIfNoTests>false</failIfNoTests>
@@ -42,11 +42,11 @@ Configuration
                     <!-- See section 'Project Scope Dependencies' -->
                     <useProjectDependencies>
                         <!-- Any combination of scopes -->
-                        <scope>test</scope>
+                        <scope>scope</scope>
                     </useProjectDependencies>
                     
                     <!-- Since version 1.4.0 -->
-                    <!-- See section 'Configuring Top Level Suites' -->
+                    <!-- See section 'Configuring Test Suites' -->
                     <launches>
                         <launch>
                             <suite>FirstTestSuite</suite>
@@ -67,28 +67,44 @@ Configuration
 
                     <!--
                         Pre-1.4.0 config is still valid, and in fact is senior,
-                        to allow override or specifying of suite / test from command line
-                        using -Dfitnesse.suite=X or -Dfitnesse.test=Y
+                        to allow override or specifying of suite or test from command line
+                        
+                            using -Dfitnesse.suite=X
+                            or    -Dfitnesse.test=Y
                     -->
                     <!-- These 3 are mutually exclusive;
-                         Only configure one of the following
-                         (See Advised Project Directory Structure)
+                         Only configure one of the following.
                     -->
+                    <!-- See section 'Configuring Test Suites' -->
                     <suite>MyTestSuite</suite>
                     <suite>MyTestSuite.NestedSuite</suite>
                     <test>MyTestSuite.NestedSuite.AnIndividualTest</test>
                     
-                    <!-- Also see section on 'Filtering Test Suites' -->
+                    <!--
+                        These 3 are only honoured if top-level <suite> or <test> is in use,
+                        either configured as directly above,
+                        or through the use of command line property.
+                    -->
                     <suiteFilter>tag1,tag2</suiteFilter>
                     <excludeSuiteFilter>tag3,tag4</excludeSuiteFilter>
                     <runTestsMatchingAllTags>tag5,tag6</runTestsMatchingAllTags>
                 </configuration>
+                <dependencies>
+                    <!-- See section 'Individually Specified Dependencies' -->
+                    <dependency>
+                        <groupId>groupId</groupId>
+                        <artifactId>artifactId</artifactId>
+                        <version>version</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
     [...]
 </project>
 +-----+
+
+  * Also see section {{{./filtering.html}Configuring Test Suites}}.
 
 ** CreateSymLink Option
  
@@ -99,12 +115,12 @@ Configuration
   *
 
     By setting <<<createSymLink>>> to <<<true>>>, the plugin will
-    create a {{{http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks}FitNesse SymLink}}
+    create a {{{http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.FitNesseWiki.SymbolicLinks}FitNesse SymLink}}
     directly from its working directory to your test suite under <<<src/test/fitnesse>>>.
  
   *
 
-    This is most useful when developing tests in 'wiki' mode,
+    This is most useful when developing tests in '<<<wiki>>>' mode,
     as then you can directly scm commit your wiki test page changes,
     without having to also commit FitNesse server files,
     or having to <<<svn:ignore>>> the <<<ErrorLogs>>> directory, etc.
@@ -138,30 +154,37 @@ Configuration
 [INFO] Using dependencies in the following scopes: [system, compile, provided, runtime, test]
 +-----+
 
-** Optional Transitive Dependencies
+** Transitive Dependencies
 
   *
 
-    In version 1.3.0 and earlier, transitive dependencies which are optional were included by default in the FitNesse classpath.
+    In version 1.3.0 and earlier, transitive dependencies were programmatically calculated by the plugin,
+    and dependencies which are optional were included by default in the FitNesse classpath.
 
   *
 
-    From version 1.4.0 onwards, transitive dependencies which are optional are excluded by default from the FitNesse classpath. This reduces the runtime size of the FitNesse classpath significantly for large projects.
+    From version 1.4.0 onwards, transitive dependencies are calculated by the Maven internal API,
+    which follows all the standard Maven rules, including excluding optional dependencies.
+    This reduces the runtime size of the FitNesse classpath significantly for large projects.
 See {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/detail?id=30}project issue #30}}.
     
   *
 
-    This only applies to dependencies brought in through the use of <<<\<useProjectDependencies/\>>>>.
-    
-  *
-
     Optional transitive dependencies can be included by setting the config property <<<fitnesse.excludeOptionalDependencies=false>>>.
-    This would then be the pre-1.4.0 behaviour. When using this option, look for the following in the Maven output:
+    This configuration to include optional dependencies would then engage the pre-1.4.0 behaviour.
+    This should be used with caution, and is considered a deprecated option,
+    as the dependency resolution may result in duplicates or conflicts. 
+See {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/detail?id=27}project issue #27}}.
+    When using this option, look for the following in the Maven output:
   
 +-----+
 [INFO] Including transitive dependencies which are optional
 +-----+
 
+  *
+
+    This only applies to dependencies brought in through the use of <<<\<useProjectDependencies/\>>>>.
+    
     
 ** Individually Specified Dependencies
 
@@ -214,10 +237,15 @@ See {{{http://code.google.com/p/fitnesse-launcher-maven-plugin/issues/detail?id=
                     </useProjectDependencies>
                 </configuration>
                 <dependencies>
-                <!--
-                    Any dependency (including transitive dependencies) placed here
-                    will be available to FitNesse in the variable ${maven.classpath}
-                -->
+                    <!--
+                        Any dependency (including transitive dependencies thereof) placed here
+                        will be available to FitNesse in the variable ${maven.classpath}
+                    -->
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                        <version>3.2.0.RELEASE</version>
+                    </dependency>
                 </dependencies>
             </plugin>
         </plugins>
@@ -254,7 +282,7 @@ ${maven.classpath}
     
     [basedir] The canonical filesystem path to the end-user project base directory (containing the <<<pom.xml>>>).
     
-    [Any project properties] As configured in the <<<\<properties\>>>> section of the <<<pom.xml>>>. Can be overridden on command line using '<<<-Dname=value>>>', but a default value must be configured in the <<<pom.xml>>> first, for this to be picked up.
+    [All project properties] As configured in the <<<\<properties\>>>> section of the <<<pom.xml>>>. Can be overridden on command line using '<<<-Dname=value>>>', but a default value must be configured in the <<<pom.xml>>> first, for this to be picked up.
     
   * When the build is running, look for the following in the Maven output:
   

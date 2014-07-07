@@ -13,7 +13,7 @@ FitNesse Launcher Plugin
 
   We already have a number of Maven plugins for FitNesse,
   including {{{http://mojo.codehaus.org/fitnesse-maven-plugin/}<<<fitnesse-maven-plugin>>>}},
-  {{{http://fitnesse.org/FitNesse.UserGuide.RunningFromMaven}<<<maven-trinidad-plugin>>>}} and others.
+  {{{http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.RunningFromMaven}<<<maven-trinidad-plugin>>>}} and others.
   
   The author of FitNesse Launcher Plugin found these plugins
   difficult or awkward to configure in an environment agnostic fashion suitable for team development.
@@ -24,7 +24,7 @@ FitNesse Launcher Plugin
   
   As a result projects will often commit the entire set of FitNesse server files to SCM,
   and / or write custom bootstrap code (typically a <<<main(String [] args)>>> method).
-  The {{{http://fitnesse.org/FitNesse.UserGuide.ClassPath}java classpath for FitNesse}} is particularly {{{http://johannesbrodwall.com/2008/03/19/some-fitnesse-tricks-classpath-and-debugging/}difficult to configure}},
+  The {{{http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.ClassPath}java classpath for FitNesse}} is particularly {{{http://johannesbrodwall.com/2008/03/19/some-fitnesse-tricks-classpath-and-debugging/}difficult to configure}},
   but vital to get correct, as FitNesse boots a fresh JVM in which to run tests.
   
   A particularly inspired idea is to use a Maven plugin which makes Maven Dependencies available to FitNesse as the configured classpath.

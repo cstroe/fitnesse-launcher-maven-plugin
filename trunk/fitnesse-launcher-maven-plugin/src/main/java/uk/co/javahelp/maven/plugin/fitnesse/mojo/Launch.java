@@ -55,6 +55,7 @@ public class Launch {
 		this.test = test;
 		this.suiteFilter = suiteFilter;
 		this.excludeSuiteFilter = excludeSuiteFilter;
+		this.runTestsMatchingAllTags = runTestsMatchingAllTags;
 	}
 
 	public String getSuite() {
@@ -147,7 +148,7 @@ public class Launch {
 	public boolean equals(final Object that) {
 		if (this == that) return true;
 		if (that == null) return false;
-		if (this.getClass() != that.getClass()) return false;
+		if (!Launch.class.isInstance(that)) return false;
 		return Arrays.equals(this.getArray(), ((Launch) that).getArray());
 	}
 	

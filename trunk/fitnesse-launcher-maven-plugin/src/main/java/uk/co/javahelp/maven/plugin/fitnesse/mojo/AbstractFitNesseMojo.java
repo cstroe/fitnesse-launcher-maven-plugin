@@ -153,30 +153,30 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * @parameter property="fitnesse.suite"
      */
-    private String suite;
+    protected String suite;
 
     /**
      * @parameter property="fitnesse.test"
      */
-    private String test;
+    protected String test;
 
     /**
      * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.suiteFilter"
      */
-    private String suiteFilter;
+    protected String suiteFilter;
 
     /**
      * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.excludeSuiteFilter"
      */
-    private String excludeSuiteFilter;
+    protected String excludeSuiteFilter;
     
     /**
      * @see <a href="http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters">Suite Tags</a>
      * @parameter property="fitnesse.runTestsMatchingAllTags"
      */
-    private String runTestsMatchingAllTags;
+    protected String runTestsMatchingAllTags;
     
     /**
      * @parameter property="fitnesse.useProjectDependencies"
@@ -191,9 +191,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * Should fitnesse-launcher-maven-plugin exclude optional transitive dependencies,
      * when configured using &lt;useProjectDependencies&gt; ?
+     * <br>
      * Note: This may result in duplicates or conflicts for transitive dependencies.
-     * See Issue #27
+     * <br>
+     * See Issue #27.
+     * <br>
      * Defaults to true. 
+     * <br>
+     * <strong>@Deprecated</strong>
      * @parameter property="fitnesse.excludeOptionalDependencies" default-value="true"
      */
     @Deprecated
@@ -201,7 +206,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
 
     protected FitNesseHelper fitNesseHelper;
     
-    protected abstract void executeInternal(Launch... launches)
+    protected abstract void executeInternal(Launch... executeLaunches)
         throws MojoExecutionException, MojoFailureException;
 
 	@Override

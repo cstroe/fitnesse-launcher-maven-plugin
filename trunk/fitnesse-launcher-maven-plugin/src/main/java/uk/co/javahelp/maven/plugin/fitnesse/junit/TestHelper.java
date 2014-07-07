@@ -38,7 +38,7 @@ public class TestHelper {
 		return global;
 	}
 
-	public TestSummary run(final Launch launch, int port) throws Exception {
+	public TestSummary run(final Launch launch, final int port) throws Exception {
 		JavaFormatter testFormatter = JavaFormatter.getInstance(launch.getPageName());
 		testFormatter.setResultsRepository(
 						new JavaFormatter.FolderResultsRepository(this.outputPath));

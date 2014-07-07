@@ -34,7 +34,10 @@ Getting Started
    |     |  +-- content.txt, properties.xml
    |     |
    |     +- SecondTestSuite
-   |        +-- content.txt, properties.xml
+   |     |  +-- content.txt, properties.xml
+   |     |
+   |     +-- plugins.properties  // optional, use maven-resources-plugin:copy-resources to copy to FitNesse working directory
+   |
    +- pom.xml
 +-----+
 
@@ -48,7 +51,7 @@ Getting Started
   *
 
     Project specific FitNesse tests should go under <<<src/test/fitnesse>>>.
-    FitNesse Launcher will create a {{{http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks}FitNesse SymLink}}
+    FitNesse Launcher will create a {{{http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.FitNesseWiki.SymbolicLinks}FitNesse SymLink}}
     directly from <<</target/fitnesse/FitNesseRoot>>> to your test suite under <<<src/test/fitnesse>>>.
  
   *
