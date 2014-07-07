@@ -21,7 +21,6 @@ import fitnesse.components.Logger;
 import fitnesse.components.PluginsClassLoader;
 import fitnesse.responders.WikiImportTestEventListener;
 import fitnesse.responders.run.formatters.TestTextFormatter;
-import fitnesse.updates.UpdaterImplementation;
 import fitnesse.wiki.PageVersionPruner;
 
 /**
@@ -32,6 +31,7 @@ public class FitNesseMain {
 	private static String extraOutput;
 	public static boolean dontExitAfterSingleCommand;
 
+	/*
 	public static void main(String[] args) throws Exception {
 		Arguments arguments = fitnesseMain.FitNesseMain.parseCommandLine(args);
 		if (arguments != null) {
@@ -41,17 +41,18 @@ public class FitNesseMain {
 			System.exit(1);
 		}
 	}
+	*/
 
 	public static FitNesse launchFitNesse(Arguments arguments) throws Exception {
 		loadPlugins();
 		FitNesseContext context = loadContext(arguments);
 		Updater updater = null;
-		if (!arguments.isOmittingUpdates())
-			updater = new UpdaterImplementation(context);
+		//if (!arguments.isOmittingUpdates())
+			//updater = new UpdaterImplementation(context);
 		PageVersionPruner.daysTillVersionsExpire = arguments
 				.getDaysTillVersionsExpire();
 		FitNesse fitnesse = new FitNesse(context, updater);
-		update(arguments, fitnesse);
+		//update(arguments, fitnesse);
 		if(!launch(arguments, context, fitnesse)) {
 			throw new MojoExecutionException("FitNesse could not be launched");
 		}
@@ -62,14 +63,16 @@ public class FitNesseMain {
 		new PluginsClassLoader().addPluginsToClassLoader();
 	}
 
+	/*
 	static void update(Arguments arguments, FitNesse fitnesse) throws Exception {
 		if (!arguments.isOmittingUpdates())
 			fitnesse.applyUpdates();
 	}
+	*/
 
-	static boolean launch(Arguments arguments, FitNesseContext context,
-			FitNesse fitnesse) throws Exception {
-		if (!arguments.isInstallOnly()) {
+	static boolean launch(Arguments arguments, FitNesseContext context, FitNesse fitnesse)
+	        throws Exception {
+		//if (!arguments.isInstallOnly()) {
 			boolean started = fitnesse.start();
 			if (started) {
 				printStartMessage(arguments, context);
@@ -78,8 +81,8 @@ public class FitNesseMain {
 				}
 			}
 			return started;
-		}
-		return false;
+		//}
+		//return false;
 	}
 
 	private static void executeSingleCommand(Arguments arguments,
@@ -216,6 +219,7 @@ public class FitNesseMain {
 		return componentFactory.getAuthenticator(authenticator);
 	}
 
+	/*
 	private static void printUsage() {
 		System.err.println("Usage: java -jar fitnesse.jar [-pdrleoab]");
 		System.err.println("\t-p <port number> {" + Arguments.DEFAULT_PORT
@@ -234,6 +238,7 @@ public class FitNesseMain {
 		System.err.println("\t-c <command> execute single command.");
 		System.err.println("\t-b <filename> redirect command output.");
 	}
+	*/
 
 	private static void printStartMessage(Arguments args,
 			FitNesseContext context) {

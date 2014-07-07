@@ -6,7 +6,7 @@
 	</bannerLeft>
 
 	<poweredBy>
-		<logo name="FitNesse" href="http://fitnesse.org/" img="http://fitnesse.org/files/images/FitNesseLogo.gif" />
+		<logo name="FitNesse" href="http://fitnesse.org/" img="images/FitNesseLogo.png" width="56"/>
 		<logo name="Apache Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-feather.png" />
 	</poweredBy>
 
@@ -19,7 +19,7 @@
 				<item name="Configuration" href="config.html" />
 				<item name="Running FitNesse" href="running.html" />
 				<item name="Use of Profiles" href="profiles.html" />
-				<item name="Filtering Test Suites" href="filtering.html" />
+				<item name="Configuring Test Suites" href="filtering.html" />
 			</item>
 			<item name="FAQ" href="faq.html" />
 		</menu>

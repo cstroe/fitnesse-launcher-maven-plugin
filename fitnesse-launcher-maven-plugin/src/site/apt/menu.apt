@@ -15,7 +15,7 @@
 
    * {{{./config.html#Project_Scope_Dependencies}Project Scope Dependencies}}
 
-   * {{{./config.html#Optional_Transitive_Dependencies}Optional Transitive Dependencies}}
+   * {{{./config.html#Transitive_Dependencies}Transitive Dependencies}}
 
    * {{{./config.html#Individually_Specified_Dependencies}Individually Specified Dependencies}}
 
@@ -43,9 +43,13 @@
 
   * {{{./profiles.html#Example_Profile_Configuration}Example Profile Configuration}}
 
- * {{{./filtering.html}Filtering Test Suites}}
+ * {{{./filtering.html}Configuring Test Suites}}
   
-  * {{{./filtering.html#Specifying_A_Suite_Or_Test}Specifying A Suite Or Test}}
+  * {{{./filtering.html#Configuring_Which_Suites_Or_Tests_To_Run}Configuring Which Suites Or Tests To Run}}
 
+   * {{{./filtering.html#Configuring_Suites_Using_Multiple_'Launches'}Configuring Suites Using Multiple 'Launches'}}
+   
+   * {{{./filtering.html#Configuring_Suites_Using_'Top-Level'_Plugin_Configuration}Configuring Suites Using 'Top-Level' Plugin Configuration}}
+   
   * {{{./filtering.html#Include__Exclude_Filtering_Using_FitNesse_Tags}Include / Exclude Filtering Using FitNesse Tags}}
 

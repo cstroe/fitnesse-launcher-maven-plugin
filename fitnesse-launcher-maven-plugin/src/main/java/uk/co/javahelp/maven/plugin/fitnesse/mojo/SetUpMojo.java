@@ -209,7 +209,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
         	element("target",
             	element("move", move(this.workingDir, new Attribute("file", this.workingDir + "/" + FIT_ROOT))),
             	element("move", move(workingFiles(null)),
-            		element("fileset",new Attribute("dir", workingFiles(FIT_FILES)),
+            		element("fileset", new Attribute("dir", workingFiles(FIT_FILES)),
             			element("include", new Attribute("name", "**/*")))))),
 		    executionEnvironment(project, session, pluginManager)
 		);
