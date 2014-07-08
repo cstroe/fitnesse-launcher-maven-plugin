@@ -1,6 +1,14 @@
 #summary Example Project Source Downloads
 #labels Featured
 
+== All example projects are in Maven Central ==
+
+ * [http://google-opensource.blogspot.co.uk/2013/05/a-change-to-google-code-download-service.html A Change to Google Code Download Service]
+
+ * [http://thenextweb.com/google/2013/05/22/google-codes-download-option-deprecated-due-to-misuse-only-existing-project-downloads-to-be-kept-after-january-15/ Google Code’s Download Option Deprecated]
+
+----
+
 = Example Project Source Downloads = 
 
 == Release 1.4.0 ==
