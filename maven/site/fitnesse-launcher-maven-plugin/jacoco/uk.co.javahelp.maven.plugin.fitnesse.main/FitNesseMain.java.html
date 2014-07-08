@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FitNesseMain.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Maven Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.main</a> &gt; <span class="el_source">FitNesseMain.java</span></div><h1>FitNesseMain.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.main;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
+import org.apache.maven.plugin.MojoExecutionException;
+
+import fitnesse.Arguments;
+import fitnesse.ComponentFactory;
+import fitnesse.FitNesse;
+import fitnesse.FitNesseContext;
+import fitnesse.FitNesseContext.Builder;
+import fitnesse.Updater;
+import fitnesse.WikiPageFactory;
+import fitnesse.authentication.Authenticator;
+import fitnesse.authentication.MultiUserAuthenticator;
+import fitnesse.authentication.OneUserAuthenticator;
+import fitnesse.authentication.PromiscuousAuthenticator;
+import fitnesse.components.Logger;
+import fitnesse.components.PluginsClassLoader;
+import fitnesse.responders.WikiImportTestEventListener;
+import fitnesse.responders.run.formatters.TestTextFormatter;
+import fitnesse.wiki.PageVersionPruner;
+
+/**
+ * Copied from {@link fitnesseMain.FitNesseMain} and
+ * altered to return boolean status of {@link fitnesse.FitNesse#start()}.
+ */
+<span class="nc" id="L30">public class FitNesseMain {</span>
+	private static String extraOutput;
+	public static boolean dontExitAfterSingleCommand;
+
+	/*
+	public static void main(String[] args) throws Exception {
+		Arguments arguments = fitnesseMain.FitNesseMain.parseCommandLine(args);
+		if (arguments != null) {
+			launchFitNesse(arguments);
+		} else {
+			printUsage();
+			System.exit(1);
+		}
+	}
+	*/
+
+	public static FitNesse launchFitNesse(Arguments arguments) throws Exception {
+<span class="fc" id="L47">		loadPlugins();</span>
+<span class="fc" id="L48">		FitNesseContext context = loadContext(arguments);</span>
+<span class="fc" id="L49">		Updater updater = null;</span>
+		//if (!arguments.isOmittingUpdates())
+			//updater = new UpdaterImplementation(context);
+<span class="fc" id="L52">		PageVersionPruner.daysTillVersionsExpire = arguments</span>
+				.getDaysTillVersionsExpire();
+<span class="fc" id="L54">		FitNesse fitnesse = new FitNesse(context, updater);</span>
+		//update(arguments, fitnesse);
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">		if(!launch(arguments, context, fitnesse)) {</span>
+<span class="nc" id="L57">			throw new MojoExecutionException(&quot;FitNesse could not be launched&quot;);</span>
+		}
+<span class="fc" id="L59">		return fitnesse;</span>
+	}
+
+	private static void loadPlugins() throws Exception {
+<span class="fc" id="L63">		new PluginsClassLoader().addPluginsToClassLoader();</span>
+<span class="fc" id="L64">	}</span>
+
+	/*
+	static void update(Arguments arguments, FitNesse fitnesse) throws Exception {
+		if (!arguments.isOmittingUpdates())
+			fitnesse.applyUpdates();
+	}
+	*/
+
+	static boolean launch(Arguments arguments, FitNesseContext context, FitNesse fitnesse)
+	        throws Exception {
+		//if (!arguments.isInstallOnly()) {
+<span class="fc" id="L76">			boolean started = fitnesse.start();</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">			if (started) {</span>
+<span class="fc" id="L78">				printStartMessage(arguments, context);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">				if (arguments.getCommand() != null) {</span>
+<span class="fc" id="L80">					executeSingleCommand(arguments, fitnesse, context);</span>
+				}
+			}
+<span class="fc" id="L83">			return started;</span>
+		//}
+		//return false;
+	}
+
+	private static void executeSingleCommand(Arguments arguments,
+			FitNesse fitnesse, FitNesseContext context) throws Exception {
+<span class="fc" id="L90">		TestTextFormatter.finalErrorCount = 0;</span>
+<span class="fc" id="L91">		System.out.println(&quot;Executing command: &quot; + arguments.getCommand());</span>
+
+		OutputStream os;
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		boolean outputRedirectedToFile = arguments.getOutput() != null;</span>
+
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (outputRedirectedToFile) {</span>
+<span class="nc" id="L98">			System.out.println(&quot;-----Command Output redirected to &quot;</span>
+					+ arguments.getOutput() + &quot;-----&quot;);
+<span class="nc" id="L100">			os = new FileOutputStream(arguments.getOutput());</span>
+		} else {
+<span class="fc" id="L102">			System.out.println(&quot;-----Command Output-----&quot;);</span>
+<span class="fc" id="L103">			os = System.out;</span>
+		}
+
+<span class="fc" id="L106">		fitnesse.executeSingleCommand(arguments.getCommand(), os);</span>
+<span class="fc" id="L107">		fitnesse.stop();</span>
+
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (outputRedirectedToFile) {</span>
+<span class="nc" id="L110">			os.close();</span>
+		} else {
+<span class="fc" id="L112">			System.out.println(&quot;-----Command Complete-----&quot;);</span>
+		}
+
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (shouldExitAfterSingleCommand()) {</span>
+<span class="nc" id="L116">			System.exit(TestTextFormatter.finalErrorCount);</span>
+		}
+<span class="fc" id="L118">	}</span>
+
+	private static boolean shouldExitAfterSingleCommand() {
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		return !dontExitAfterSingleCommand;</span>
+	}
+
+	private static FitNesseContext loadContext(Arguments arguments)
+			throws Exception {
+<span class="fc" id="L126">		Builder builder = new Builder();</span>
+<span class="fc" id="L127">		WikiPageFactory wikiPageFactory = new WikiPageFactory();</span>
+<span class="fc" id="L128">		ComponentFactory componentFactory = new ComponentFactory(</span>
+				arguments.getRootPath());
+
+<span class="fc" id="L131">		builder.port = arguments.getPort();</span>
+<span class="fc" id="L132">		builder.rootPath = arguments.getRootPath();</span>
+<span class="fc" id="L133">		builder.rootDirectoryName = arguments.getRootDirectory();</span>
+
+<span class="fc" id="L135">		builder.pageTheme = componentFactory</span>
+				.getProperty(ComponentFactory.THEME);
+<span class="fc" id="L137">		builder.defaultNewPageContent = componentFactory</span>
+				.getProperty(ComponentFactory.DEFAULT_NEWPAGE_CONTENT);
+
+<span class="fc" id="L140">		builder.root = wikiPageFactory.makeRootPage(builder.rootPath,</span>
+				builder.rootDirectoryName, componentFactory);
+
+<span class="fc" id="L143">		builder.logger = makeLogger(arguments);</span>
+<span class="fc" id="L144">		builder.authenticator = makeAuthenticator(arguments.getUserpass(),</span>
+				componentFactory);
+
+<span class="fc" id="L147">		FitNesseContext context = builder.createFitNesseContext();</span>
+
+<span class="fc" id="L149">		extraOutput = componentFactory.loadPlugins(context.responderFactory,</span>
+				wikiPageFactory);
+<span class="fc" id="L151">		extraOutput += componentFactory.loadWikiPage(wikiPageFactory);</span>
+<span class="fc" id="L152">		extraOutput += componentFactory</span>
+				.loadResponders(context.responderFactory);
+<span class="fc" id="L154">		extraOutput += componentFactory.loadSymbolTypes();</span>
+<span class="fc" id="L155">		extraOutput += componentFactory.loadContentFilter();</span>
+<span class="fc" id="L156">		extraOutput += componentFactory.loadSlimTables();</span>
+
+<span class="fc" id="L158">		WikiImportTestEventListener.register();</span>
+
+<span class="fc" id="L160">		return context;</span>
+	}
+
+	/*
+	public static Arguments parseCommandLine(String[] args) {
+		CommandLine commandLine = new CommandLine(
+				&quot;[-p port][-d dir][-r root][-l logDir][-e days][-o][-i][-a userpass][-c command][-b output]&quot;);
+		Arguments arguments = null;
+		if (commandLine.parse(args)) {
+			arguments = new Arguments();
+			if (commandLine.hasOption(&quot;p&quot;))
+				arguments.setPort(commandLine.getOptionArgument(&quot;p&quot;, &quot;port&quot;));
+			if (commandLine.hasOption(&quot;d&quot;))
+				arguments
+						.setRootPath(commandLine.getOptionArgument(&quot;d&quot;, &quot;dir&quot;));
+			if (commandLine.hasOption(&quot;r&quot;))
+				arguments.setRootDirectory(commandLine.getOptionArgument(&quot;r&quot;,
+						&quot;root&quot;));
+			if (commandLine.hasOption(&quot;l&quot;))
+				arguments.setLogDirectory(commandLine.getOptionArgument(&quot;l&quot;,
+						&quot;logDir&quot;));
+			if (commandLine.hasOption(&quot;e&quot;))
+				arguments.setDaysTillVersionsExpire(commandLine
+						.getOptionArgument(&quot;e&quot;, &quot;days&quot;));
+			if (commandLine.hasOption(&quot;a&quot;))
+				arguments.setUserpass(commandLine.getOptionArgument(&quot;a&quot;,
+						&quot;userpass&quot;));
+			if (commandLine.hasOption(&quot;c&quot;))
+				arguments.setCommand(commandLine.getOptionArgument(&quot;c&quot;,
+						&quot;command&quot;));
+			if (commandLine.hasOption(&quot;b&quot;))
+				arguments.setOutput(commandLine
+						.getOptionArgument(&quot;b&quot;, &quot;output&quot;));
+			arguments.setOmitUpdates(commandLine.hasOption(&quot;o&quot;));
+			arguments.setInstallOnly(commandLine.hasOption(&quot;i&quot;));
+		}
+		return arguments;
+	}
+	*/
+
+	private static Logger makeLogger(Arguments arguments) {
+<span class="fc" id="L201">		String logDirectory = arguments.getLogDirectory();</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		return logDirectory != null ? new Logger(logDirectory) : null;</span>
+	}
+
+	public static Authenticator makeAuthenticator(
+			String authenticationParameter, ComponentFactory componentFactory)
+			throws Exception {
+<span class="fc" id="L208">		Authenticator authenticator = new PromiscuousAuthenticator();</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">		if (authenticationParameter != null) {</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (new File(authenticationParameter).exists())</span>
+<span class="nc" id="L211">				authenticator = new MultiUserAuthenticator(</span>
+						authenticationParameter);
+			else {
+<span class="nc" id="L214">				String[] values = authenticationParameter.split(&quot;:&quot;);</span>
+<span class="nc" id="L215">				authenticator = new OneUserAuthenticator(values[0], values[1]);</span>
+			}
+		}
+
+<span class="fc" id="L219">		return componentFactory.getAuthenticator(authenticator);</span>
+	}
+
+	/*
+	private static void printUsage() {
+		System.err.println(&quot;Usage: java -jar fitnesse.jar [-pdrleoab]&quot;);
+		System.err.println(&quot;\t-p &lt;port number&gt; {&quot; + Arguments.DEFAULT_PORT
+				+ &quot;}&quot;);
+		System.err.println(&quot;\t-d &lt;working directory&gt; {&quot;
+				+ Arguments.DEFAULT_PATH + &quot;}&quot;);
+		System.err.println(&quot;\t-r &lt;page root directory&gt; {&quot;
+				+ Arguments.DEFAULT_ROOT + &quot;}&quot;);
+		System.err.println(&quot;\t-l &lt;log directory&gt; {no logging}&quot;);
+		System.err.println(&quot;\t-e &lt;days&gt; {&quot; + Arguments.DEFAULT_VERSION_DAYS
+				+ &quot;} Number of days before page versions expire&quot;);
+		System.err.println(&quot;\t-o omit updates&quot;);
+		System.err
+				.println(&quot;\t-a {user:pwd | user-file-name} enable authentication.&quot;);
+		System.err.println(&quot;\t-i Install only, then quit.&quot;);
+		System.err.println(&quot;\t-c &lt;command&gt; execute single command.&quot;);
+		System.err.println(&quot;\t-b &lt;filename&gt; redirect command output.&quot;);
+	}
+	*/
+
+	private static void printStartMessage(Arguments args,
+			FitNesseContext context) {
+<span class="fc" id="L245">		System.out.println(&quot;FitNesse (&quot; + FitNesse.VERSION + &quot;) Started...&quot;);</span>
+<span class="fc" id="L246">		System.out.print(context.toString());</span>
+<span class="fc" id="L247">		System.out.println(&quot;\tpage version expiration set to &quot;</span>
+				+ args.getDaysTillVersionsExpire() + &quot; days.&quot;);
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (extraOutput != null)</span>
+<span class="fc" id="L250">			System.out.print(extraOutput);</span>
+<span class="fc" id="L251">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

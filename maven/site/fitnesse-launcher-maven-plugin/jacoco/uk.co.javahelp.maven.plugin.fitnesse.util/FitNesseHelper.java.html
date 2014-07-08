@@ -7,121 +7,120 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 
+import uk.co.javahelp.maven.plugin.fitnesse.main.FitNesseMain;
+import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import fitnesse.Arguments;
 import fitnesse.Shutdown;
-import fitnesse.junit.TestHelper;
-import fitnesseMain.FitNesseMain;
 
 public class FitNesseHelper {
 
+    public static final String DEFAULT_ROOT = &quot;FitNesseRoot&quot;;
+    
     private static final String UTF8 = &quot;UTF-8&quot;;
     
     private static final long SHUTDOWN_WAIT_MS = 50;
     
     private final Log log;
 
-<span class="fc" id="L28">    public FitNesseHelper(final Log log) {</span>
-<span class="fc" id="L29">		this.log = log;</span>
-<span class="fc" id="L30">	}</span>
+<span class="fc" id="L32">    public FitNesseHelper(final Log log) {</span>
+<span class="fc" id="L33">		this.log = log;</span>
+<span class="fc" id="L34">	}</span>
     
     public StringBuilder formatAndAppendClasspathArtifact(final StringBuilder wikiFormatClasspath, final Artifact artifact) {
-<span class="fc" id="L33">    	return formatAndAppendClasspath(wikiFormatClasspath, artifact.getFile().getPath());</span>
+<span class="fc" id="L37">    	return formatAndAppendClasspath(wikiFormatClasspath, artifact.getFile().getPath());</span>
 	}
     
     public StringBuilder formatAndAppendClasspath(final StringBuilder wikiFormatClasspath, final String path) {
-<span class="fc bfc" id="L37" title="All 2 branches covered.">		if(Utils.whitespaceSituation(path)) {</span>
-<span class="fc" id="L38">            log.error(Utils.whitespaceWarning(path, &quot;FitNesse classpath may not function correctly in wiki mode&quot;));</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if(Utils.whitespaceSituation(path)) {</span>
+<span class="fc" id="L42">            log.error(Utils.whitespaceWarning(path, &quot;FitNesse classpath may not function correctly in wiki mode&quot;));</span>
 		}
-<span class="fc" id="L40">       	wikiFormatClasspath.append(&quot;!path &quot;);</span>
-<span class="fc" id="L41">       	wikiFormatClasspath.append(path);</span>
-<span class="fc" id="L42">       	wikiFormatClasspath.append(&quot;\n&quot;);</span>
-<span class="fc" id="L43">       	return wikiFormatClasspath;</span>
+<span class="fc" id="L44">       	wikiFormatClasspath.append(&quot;!path &quot;);</span>
+<span class="fc" id="L45">       	wikiFormatClasspath.append(path);</span>
+<span class="fc" id="L46">       	wikiFormatClasspath.append(&quot;\n&quot;);</span>
+<span class="fc" id="L47">       	return wikiFormatClasspath;</span>
     }
 
 	public void launchFitNesseServer(
     		final String port, final String workingDir, final String root, final String logDir) throws Exception {
-<span class="fc" id="L48">        final Arguments arguments = new Arguments();</span>
-<span class="fc" id="L49">        arguments.setCommand(null);</span>
-<span class="fc" id="L50">        arguments.setInstallOnly(false);</span>
-<span class="fc" id="L51">        arguments.setOmitUpdates(true);</span>
-<span class="fc" id="L52">        arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
-<span class="fc" id="L53">        arguments.setPort(port);</span>
-<span class="fc" id="L54">        arguments.setRootPath(workingDir);</span>
-<span class="fc" id="L55">        arguments.setRootDirectory(root);</span>
-<span class="fc bfc" id="L56" title="All 4 branches covered.">        if(logDir != null &amp;&amp; !logDir.trim().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L57">            arguments.setLogDirectory(logDir);</span>
+<span class="fc" id="L52">        final Arguments arguments = new Arguments();</span>
+<span class="fc" id="L53">        arguments.setCommand(null);</span>
+<span class="fc" id="L54">        arguments.setInstallOnly(false);</span>
+<span class="fc" id="L55">        arguments.setOmitUpdates(true);</span>
+<span class="fc" id="L56">        arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
+<span class="fc" id="L57">        arguments.setPort(port);</span>
+<span class="fc" id="L58">        arguments.setRootPath(workingDir);</span>
+<span class="fc" id="L59">        arguments.setRootDirectory(root);</span>
+<span class="fc bfc" id="L60" title="All 4 branches covered.">        if(logDir != null &amp;&amp; !logDir.trim().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L61">            arguments.setLogDirectory(logDir);</span>
         }
-<span class="fc" id="L59">        FitNesseMain.launchFitNesse(arguments);</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L63">        FitNesseMain.launchFitNesse(arguments);</span>
+<span class="fc" id="L64">    }</span>
 
 	public void shutdownFitNesseServer(final String port) {
         try {
-<span class="fc" id="L64">			Shutdown.main(new String[]{&quot;-p&quot;, port});</span>
+<span class="fc" id="L68">			Shutdown.main(new String[]{&quot;-p&quot;, port});</span>
 			// Pause to give it a chance to shutdown
-<span class="fc" id="L66">    		Thread.sleep(SHUTDOWN_WAIT_MS);</span>
-<span class="fc" id="L67">		} catch (ConnectException e) {</span>
+<span class="fc" id="L70">    		Thread.sleep(SHUTDOWN_WAIT_MS);</span>
+<span class="fc" id="L71">		} catch (ConnectException e) {</span>
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
-<span class="fc" id="L70">            this.log.info(&quot;FitNesse already not running.&quot;);</span>
-<span class="fc" id="L71">		} catch (Exception e) {</span>
-<span class="fc" id="L72">           	this.log.error(e);</span>
-<span class="fc" id="L73">		}</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L74">            this.log.info(&quot;FitNesse already not running.&quot;);</span>
+<span class="fc" id="L75">		} catch (Exception e) {</span>
+<span class="fc" id="L76">           	this.log.error(e);</span>
+<span class="fc" id="L77">		}</span>
+<span class="fc" id="L78">    }</span>
 
     /**
      * Note: Through experiment I've found that we can safely send duplicate 'create SymLink' requests - FitNesse isn't bothered
+     * But We use a HashSet to eliminate duplicate top-level link names anyway, just to keep the output clean
      * @throws IOException 
      * @see &lt;a href=&quot;http://fitnesse.org/FitNesse.UserGuide.SymbolicLinks&quot;&gt;FitNesse SymLink User Guide&lt;/a&gt;
      */
-    public int createSymLink(final String suite, final String test,
-    		final File basedir, final String testResourceDirectory, final int port) throws IOException {
-<span class="fc" id="L83">        final String linkName = calcLinkName(suite, test);</span>
-<span class="fc" id="L84">        final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);</span>
+    public void createSymLink(final File basedir, final String testResourceDirectory, final int port,
+    		final Launch... launches) throws IOException {
+<span class="fc" id="L88">        final Set&lt;String&gt; linkNames = new HashSet&lt;String&gt;();</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for(final Launch launch : launches) {</span>
+<span class="fc" id="L90">        	linkNames.add(calcLinkName(launch));</span>
+        }
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for(final String linkName : linkNames) {</span>
+<span class="fc" id="L93">            createSymLink(basedir, testResourceDirectory, port, linkName);</span>
+<span class="fc" id="L94">        }</span>
+<span class="fc" id="L95">    }</span>
+    
+    private int createSymLink(final File basedir, final String testResourceDirectory, final int port,
+    		final String linkName) throws IOException {
+<span class="fc" id="L99">        final String linkPath = calcLinkPath(linkName, basedir, testResourceDirectory);</span>
 
-<span class="fc" id="L86">        HttpURLConnection connection = null;</span>
+<span class="fc" id="L101">        HttpURLConnection connection = null;</span>
         try {
-<span class="fc" id="L88">            final String urlPath = </span>
+<span class="fc" id="L103">            final String urlPath = </span>
                 String.format(&quot;/root?responder=symlink&amp;linkName=%s&amp;linkPath=%s&amp;submit=%s&quot;,
                 URLEncoder.encode(linkName, UTF8), URLEncoder.encode(linkPath, UTF8), URLEncoder.encode(&quot;Create/Replace&quot;, UTF8));
-<span class="fc" id="L91">            final URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, port, urlPath);</span>
-<span class="fc" id="L92">            this.log.info(&quot;Calling &quot; + url);</span>
-<span class="fc" id="L93">            connection = (HttpURLConnection) url.openConnection();</span>
-<span class="fc" id="L94">            connection.setRequestMethod(&quot;GET&quot;);</span>
-<span class="fc" id="L95">            connection.connect();</span>
-<span class="fc" id="L96">            final int responseCode = connection.getResponseCode();</span>
-<span class="fc" id="L97">            this.log.info(&quot;Response code: &quot; + responseCode);</span>
-<span class="fc" id="L98">            return responseCode;</span>
+<span class="fc" id="L106">            final URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, port, urlPath);</span>
+<span class="fc" id="L107">            this.log.info(&quot;Calling &quot; + url);</span>
+<span class="fc" id="L108">            connection = (HttpURLConnection) url.openConnection();</span>
+<span class="fc" id="L109">            connection.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L110">            connection.connect();</span>
+<span class="fc" id="L111">            final int responseCode = connection.getResponseCode();</span>
+<span class="fc" id="L112">            this.log.info(&quot;Response code: &quot; + responseCode);</span>
+<span class="fc" id="L113">            return responseCode;</span>
         } finally {
-<span class="pc bpc" id="L100" title="2 of 4 branches missed.">            if(connection != null) {</span>
-<span class="fc" id="L101">                connection.disconnect();</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">            if(connection != null) {</span>
+<span class="fc" id="L116">                connection.disconnect();</span>
             }
         }
     }
 
-    public String[] calcPageNameAndType(final String suite, final String test) {
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        final boolean haveSuite = !Utils.isBlank(suite);</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">        final boolean haveTest = !Utils.isBlank(test);</span>
-<span class="fc bfc" id="L109" title="All 4 branches covered.">        if (!haveSuite &amp;&amp; !haveTest) {</span>
-<span class="fc" id="L110">            throw new IllegalArgumentException(&quot;No suite or test page specified&quot;);</span>
-<span class="fc bfc" id="L111" title="All 4 branches covered.">        } else if (haveSuite &amp;&amp; haveTest) {</span>
-<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Suite and test page parameters are mutually exclusive&quot;);</span>
-        }
-
-<span class="fc bfc" id="L115" title="All 2 branches covered.">        final String pageName = (haveSuite) ? suite : test;</span>
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        final String pageType = (haveSuite) ? TestHelper.PAGE_TYPE_SUITE : TestHelper.PAGE_TYPE_TEST;</span>
-
-<span class="fc" id="L118">        return new String[] { pageName, pageType };</span>
-    }
-
-    private String calcLinkName(final String suite, final String test) {
-<span class="fc" id="L122">        final String[] pageNameAndType = calcPageNameAndType(suite, test);</span>
-<span class="fc" id="L123">        final String linkName = StringUtils.substringBefore(pageNameAndType[0], &quot;.&quot;);</span>
-<span class="fc" id="L124">        return linkName;</span>
+    private String calcLinkName(final Launch launch) {
+<span class="fc" id="L122">        final String linkName = StringUtils.substringBefore(launch.getPageName(), &quot;.&quot;);</span>
+<span class="fc" id="L123">        return linkName;</span>
     }
 
     /**
@@ -130,14 +129,14 @@ public class FitNesseHelper {
      */
     @SuppressWarnings(&quot;deprecation&quot;)
 	private String calcLinkPath(final String linkName, final File basedir, final String testResourceDirectory) throws MalformedURLException {
-<span class="fc" id="L133">        final StringBuilder linkPath = new StringBuilder(</span>
+<span class="fc" id="L132">        final StringBuilder linkPath = new StringBuilder(</span>
             basedir.toURL().toString()
                 .replaceFirst(&quot;/[A-Z]:&quot;, &quot;&quot;)
 				.replaceFirst(&quot;:&quot;, &quot;://&quot;));
-<span class="fc" id="L137">		linkPath.append(testResourceDirectory);</span>
-<span class="fc" id="L138">		linkPath.append(&quot;/&quot;);</span>
-<span class="fc" id="L139">		linkPath.append(linkName);</span>
-<span class="fc" id="L140">		return linkPath.toString();</span>
+<span class="fc" id="L136">		linkPath.append(testResourceDirectory);</span>
+<span class="fc" id="L137">		linkPath.append(&quot;/&quot;);</span>
+<span class="fc" id="L138">		linkPath.append(linkName);</span>
+<span class="fc" id="L139">		return linkPath.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

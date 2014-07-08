@@ -1,3 +1,6 @@
+uk.co.javahelp.maven.plugin.artifact.resolver
+uk.co.javahelp.maven.plugin.fitnesse.junit
+uk.co.javahelp.maven.plugin.fitnesse.main
 uk.co.javahelp.maven.plugin.fitnesse.mojo
 uk.co.javahelp.maven.plugin.fitnesse.reporting
 uk.co.javahelp.maven.plugin.fitnesse.responders.run

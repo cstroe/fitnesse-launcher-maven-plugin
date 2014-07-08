@@ -6,10 +6,10 @@
     <link>http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin</link>
     <description>FitNesse Launcher Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2012 - 2013</copyright>
+    <copyright>&#169;2012 - 2014</copyright>
     <item>
-      <title>File: 17,
-             Errors: 0,
+      <title>File: 24,
+             Errors: 20,
              Warnings: 0,
              Infos: 0
       </title>
@@ -27,6 +27,34 @@
             </tr>
           </thead>
           <tbody>
+                          <tr>
+                <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.artifact.resolver.package-info.java">uk/co/javahelp/maven/plugin/artifact/resolver/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.junit.package-info.java">uk/co/javahelp/maven/plugin/fitnesse/junit/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
                           <tr>
                 <td>
                   <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.util.Utils.java">uk/co/javahelp/maven/plugin/fitnesse/util/Utils.java</a>
@@ -57,7 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.mojo.WikiMojo.java">uk/co/javahelp/maven/plugin/fitnesse/mojo/WikiMojo.java</a>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.main.package-info.java">uk/co/javahelp/maven/plugin/fitnesse/main/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -71,7 +99,49 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.main.FitNesseMain.java">uk/co/javahelp/maven/plugin/fitnesse/main/FitNesseMain.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  17
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch.java">uk/co/javahelp/maven/plugin/fitnesse/mojo/Launch.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.mojo.RunTestsMojo.java">uk/co/javahelp/maven/plugin/fitnesse/mojo/RunTestsMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.mojo.WikiMojo.java">uk/co/javahelp/maven/plugin/fitnesse/mojo/WikiMojo.java</a>
                 </td>
                 <td>
                   0
@@ -169,6 +239,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.junit.TestHelper.java">uk/co/javahelp/maven/plugin/fitnesse/junit/TestHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.responders.run.package-info.java">uk/co/javahelp/maven/plugin/fitnesse/responders/run/package-info.java</a>
                 </td>
                 <td>
@@ -239,6 +323,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.mojo.ShutdownMojo.java">uk/co/javahelp/maven/plugin/fitnesse/mojo/ShutdownMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.util.package-info.java">uk/co/javahelp/maven/plugin/fitnesse/util/package-info.java</a>
                 </td>
                 <td>
@@ -253,7 +351,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.fitnesse.mojo.ShutdownMojo.java">uk/co/javahelp/maven/plugin/fitnesse/mojo/ShutdownMojo.java</a>
+                  <a href="http://code.google.com/p/fitnesse-launcher-maven-plugin/fitnesse-launcher-maven-plugin/checkstyle.html#uk.co.javahelp.maven.plugin.artifact.resolver.OptionalArtifactFilter.java">uk/co/javahelp/maven/plugin/artifact/resolver/OptionalArtifactFilter.java</a>
                 </td>
                 <td>
                   0

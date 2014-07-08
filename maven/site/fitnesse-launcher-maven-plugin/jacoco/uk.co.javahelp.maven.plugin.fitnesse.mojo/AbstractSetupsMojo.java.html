@@ -44,13 +44,18 @@ import org.apache.maven.project.MavenProject;
      */
     protected String workingDir;
     
+    /**
+     * @parameter property=&quot;fitnesse.root&quot; default-value=&quot;FitNesseRoot&quot;
+     */
+    protected String root;
+
     protected final Plugin plugin(final String key) {
-<span class="fc" id="L48">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
-<span class="fc" id="L49">        final Plugin plugin = new Plugin();</span>
-<span class="fc" id="L50">        plugin.setGroupId(artifact.getGroupId());</span>
-<span class="fc" id="L51">        plugin.setArtifactId(artifact.getArtifactId());</span>
-<span class="fc" id="L52">        plugin.setVersion(artifact.getVersion());</span>
-<span class="fc" id="L53">        return plugin;</span>
+<span class="fc" id="L53">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(key);</span>
+<span class="fc" id="L54">        final Plugin plugin = new Plugin();</span>
+<span class="fc" id="L55">        plugin.setGroupId(artifact.getGroupId());</span>
+<span class="fc" id="L56">        plugin.setArtifactId(artifact.getArtifactId());</span>
+<span class="fc" id="L57">        plugin.setVersion(artifact.getVersion());</span>
+<span class="fc" id="L58">        return plugin;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

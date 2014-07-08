@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TestHelper.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Maven Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.junit</a> &gt; <span class="el_source">TestHelper.java</span></div><h1>TestHelper.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.junit;
+
+import uk.co.javahelp.maven.plugin.fitnesse.main.FitNesseMain;
+import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
+import fitnesse.Arguments;
+import fitnesse.responders.run.JavaFormatter;
+import fitnesse.responders.run.ResultsListener;
+import fitnesse.testsystems.TestSummary;
+
+/**
+ * @see fitnesse.junit.TestHelper
+ */
+public class TestHelper {
+
+	private final String fitNesseRootPath;
+
+	private final String outputPath;
+
+	private final ResultsListener resultListener;
+
+<span class="fc" id="L21">	private boolean debug = true;</span>
+
+	public TestHelper(
+			final String fitNesseRootPath,
+			final String outputPath,
+<span class="fc" id="L26">			final ResultsListener resultListener) {</span>
+<span class="fc" id="L27">		this.fitNesseRootPath = fitNesseRootPath;</span>
+<span class="fc" id="L28">		this.outputPath = outputPath;</span>
+<span class="fc" id="L29">		this.resultListener = resultListener;</span>
+<span class="fc" id="L30">	}</span>
+
+	public TestSummary run(final int port, final Launch... launches)
+			throws Exception {
+<span class="fc" id="L34">		final TestSummary global = new TestSummary();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		for (final Launch launch : launches) {</span>
+<span class="fc" id="L36">			global.add(run(launch, port));</span>
+		}
+<span class="fc" id="L38">		return global;</span>
+	}
+
+	public TestSummary run(final Launch launch, final int port) throws Exception {
+<span class="fc" id="L42">		JavaFormatter testFormatter = JavaFormatter.getInstance(launch.getPageName());</span>
+<span class="fc" id="L43">		testFormatter.setResultsRepository(</span>
+						new JavaFormatter.FolderResultsRepository(this.outputPath));
+<span class="fc" id="L45">		testFormatter.setListener(resultListener);</span>
+<span class="fc" id="L46">		Arguments arguments = new Arguments();</span>
+<span class="fc" id="L47">		arguments.setDaysTillVersionsExpire(&quot;0&quot;);</span>
+<span class="fc" id="L48">		arguments.setInstallOnly(false);</span>
+<span class="fc" id="L49">		arguments.setOmitUpdates(true);</span>
+<span class="fc" id="L50">		arguments.setPort(String.valueOf(port));</span>
+<span class="fc" id="L51">		arguments.setRootPath(this.fitNesseRootPath);</span>
+<span class="fc" id="L52">		arguments.setCommand(launch.getCommand(this.debug));</span>
+<span class="fc" id="L53">		FitNesseMain.dontExitAfterSingleCommand = true;</span>
+<span class="fc" id="L54">		FitNesseMain.launchFitNesse(arguments);</span>
+<span class="fc" id="L55">		return testFormatter.getTotalSummary();</span>
+	}
+
+	public void setDebugMode(final boolean enabled) {
+<span class="fc" id="L59">		debug = enabled;</span>
+<span class="fc" id="L60">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

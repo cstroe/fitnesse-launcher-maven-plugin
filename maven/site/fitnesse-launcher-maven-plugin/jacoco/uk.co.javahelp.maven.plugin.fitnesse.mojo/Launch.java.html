@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Launch.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FitNesse Launcher Maven Plugin</a> &gt; <a href="index.html" class="el_package">uk.co.javahelp.maven.plugin.fitnesse.mojo</a> &gt; <span class="el_source">Launch.java</span></div><h1>Launch.java</h1><pre class="source lang-java linenums">package uk.co.javahelp.maven.plugin.fitnesse.mojo;
+
+import java.util.Arrays;
+
+import uk.co.javahelp.maven.plugin.fitnesse.util.Utils;
+
+/**
+ * @see fitnesse.responders.run.SuiteFilter
+ * @see fitnesse.junit.TestHelper
+ */
+public class Launch {
+
+    /**
+     * @parameter property=&quot;fitnesse.suite&quot;
+     */
+    private String suite;
+
+    /**
+     * @parameter property=&quot;fitnesse.test&quot;
+     */
+    private String test;
+
+    /**
+     * @see &lt;a href=&quot;http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters&quot;&gt;Suite Tags&lt;/a&gt;
+     * @parameter property=&quot;fitnesse.suiteFilter&quot;
+     */
+    private String suiteFilter;
+
+    /**
+     * @see &lt;a href=&quot;http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters&quot;&gt;Suite Tags&lt;/a&gt;
+     * @parameter property=&quot;fitnesse.excludeSuiteFilter&quot;
+     */
+    private String excludeSuiteFilter;
+    
+    /**
+     * @see &lt;a href=&quot;http://fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.WritingAcceptanceTests.TestSuites.TagsAndFilters&quot;&gt;Suite Tags&lt;/a&gt;
+     * @parameter property=&quot;fitnesse.runTestsMatchingAllTags&quot;
+     */
+    private String runTestsMatchingAllTags;
+    
+    private String pageName;
+    
+    private String pageType;
+
+<span class="fc" id="L45">	public Launch() {</span>
+<span class="fc" id="L46">	}</span>
+		
+	public Launch(final String suite, final String test) {
+<span class="fc" id="L49">		this(suite, test, null, null, null);</span>
+<span class="fc" id="L50">	}</span>
+	
+	public Launch(final String suite, final String test,
+<span class="fc" id="L53">			final String suiteFilter, final String excludeSuiteFilter, final String runTestsMatchingAllTags) {</span>
+<span class="fc" id="L54">		this.suite = suite;</span>
+<span class="fc" id="L55">		this.test = test;</span>
+<span class="fc" id="L56">		this.suiteFilter = suiteFilter;</span>
+<span class="fc" id="L57">		this.excludeSuiteFilter = excludeSuiteFilter;</span>
+<span class="fc" id="L58">		this.runTestsMatchingAllTags = runTestsMatchingAllTags;</span>
+<span class="fc" id="L59">	}</span>
+
+	public String getSuite() {
+<span class="fc" id="L62">		return this.suite;</span>
+	}
+
+	public String getTest() {
+<span class="fc" id="L66">		return this.test;</span>
+	}
+
+	public String getSuiteFilter() {
+<span class="fc" id="L70">		return this.suiteFilter;</span>
+	}
+
+	public String getExcludeSuiteFilter() {
+<span class="fc" id="L74">		return this.excludeSuiteFilter;</span>
+	}
+
+    public String getRunTestsMatchingAllTags() {
+<span class="fc" id="L78">		return this.runTestsMatchingAllTags;</span>
+	}
+
+	public String getPageName() {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if(this.pageName == null) {</span>
+<span class="fc" id="L83">        	calcPageNameAndType();</span>
+        }
+<span class="fc" id="L85">    	return this.pageName;</span>
+	}
+
+    public String getPageType() {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if(this.pageType == null) {</span>
+<span class="fc" id="L90">        	calcPageNameAndType();</span>
+        }
+<span class="fc" id="L92">    	return this.pageType;</span>
+	}
+
+	public static final String PAGE_TYPE_SUITE = fitnesse.junit.TestHelper.PAGE_TYPE_SUITE;
+
+	public static final String PAGE_TYPE_TEST = fitnesse.junit.TestHelper.PAGE_TYPE_TEST;
+
+    private void calcPageNameAndType() {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        final boolean haveSuite = !Utils.isBlank(this.suite);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        final boolean haveTest = !Utils.isBlank(this.test);</span>
+<span class="fc bfc" id="L102" title="All 4 branches covered.">        if (!haveSuite &amp;&amp; !haveTest) {</span>
+<span class="fc" id="L103">            throw new IllegalArgumentException(&quot;No suite or test page specified&quot;);</span>
+<span class="fc bfc" id="L104" title="All 4 branches covered.">        } else if (haveSuite &amp;&amp; haveTest) {</span>
+<span class="fc" id="L105">            throw new IllegalArgumentException(&quot;Suite and test page parameters are mutually exclusive&quot;);</span>
+        }
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        this.pageName = (haveSuite) ? this.suite : this.test;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        this.pageType = (haveSuite) ? PAGE_TYPE_SUITE : PAGE_TYPE_TEST;</span>
+<span class="fc" id="L110">    }</span>
+
+	private static final String COMMON_ARGS = &quot;&amp;nohistory=true&amp;format=java&quot;;
+	
+	private static final String DEBUG_ARG = &quot;&amp;debug=true&quot;;
+
+	/**
+	 * @see fitnesse.junit.TestHelper
+	 */
+	public String getCommand(final boolean debug) {
+<span class="fc" id="L120">   		final StringBuilder cmdBuilder = new StringBuilder(getPageName());</span>
+<span class="fc" id="L121">   		cmdBuilder.append(&quot;?&quot;);</span>
+<span class="fc" id="L122">   		cmdBuilder.append(getPageType());</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		if (debug) {</span>
+<span class="fc" id="L124">       		cmdBuilder.append(DEBUG_ARG);</span>
+		}
+<span class="fc" id="L126">   		cmdBuilder.append(COMMON_ARGS);</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (this.suiteFilter != null) {</span>
+<span class="fc" id="L128">       		cmdBuilder.append(&quot;&amp;suiteFilter=&quot;);</span>
+<span class="fc" id="L129">       		cmdBuilder.append(this.suiteFilter);</span>
+		}
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		if(this.runTestsMatchingAllTags != null) {</span>
+<span class="fc" id="L132">       		cmdBuilder.append(&quot;&amp;runTestsMatchingAllTags=&quot;);</span>
+<span class="fc" id="L133">       		cmdBuilder.append(this.runTestsMatchingAllTags);</span>
+		}
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		if (this.excludeSuiteFilter != null) {</span>
+<span class="fc" id="L136">       		cmdBuilder.append(&quot;&amp;excludeSuiteFilter=&quot;);</span>
+<span class="fc" id="L137">       		cmdBuilder.append(this.excludeSuiteFilter);</span>
+		}
+<span class="fc" id="L139">		return cmdBuilder.toString();</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="fc" id="L144">		return Arrays.hashCode(getArray());</span>
+	}
+
+	@Override
+	public boolean equals(final Object that) {
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		if (this == that) return true;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (that == null) return false;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (!Launch.class.isInstance(that)) return false;</span>
+<span class="fc" id="L152">		return Arrays.equals(this.getArray(), ((Launch) that).getArray());</span>
+	}
+	
+	private String[] getArray() {
+<span class="fc" id="L156">		return toArray(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter);</span>
+	}
+	
+	private String[] toArray(final String... array) {
+<span class="fc" id="L160">		return array;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="fc" id="L165">		final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L166">	    appendField(sb, &quot;suite&quot;, this.suite);</span>
+<span class="fc" id="L167">	    appendField(sb, &quot;test&quot;, this.test);</span>
+<span class="fc" id="L168">	    appendField(sb, &quot;suiteFilter&quot;, this.suiteFilter);</span>
+<span class="fc" id="L169">	    appendField(sb, &quot;excludeSuiteFilter&quot;, this.excludeSuiteFilter);</span>
+<span class="fc" id="L170">		return sb.toString();</span>
+	}
+	
+	private void appendField(final StringBuilder sb, final String name, final String field) {
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		if(field != null) {</span>
+<span class="fc" id="L175">			sb.append(name);</span>
+<span class="fc" id="L176">			sb.append(&quot;:&quot;);</span>
+<span class="fc" id="L177">			sb.append(field);</span>
+<span class="fc" id="L178">			sb.append(&quot; &quot;);</span>
+		}
+<span class="fc" id="L180">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

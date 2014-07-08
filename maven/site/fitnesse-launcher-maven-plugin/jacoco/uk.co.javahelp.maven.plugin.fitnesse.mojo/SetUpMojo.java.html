@@ -6,9 +6,16 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.twdata.maven.mojoexecutor.MojoExecutor.Attribute;
+import org.twdata.maven.mojoexecutor.MojoExecutor.Attributes;
+import org.twdata.maven.mojoexecutor.MojoExecutor.Element;
+
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 /**
  * This Mojo is devoted simply to fetching and unpacking
@@ -18,14 +25,37 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * @goal set-up
  * @phase pre-integration-test
  */
-<span class="fc" id="L21">public class SetUpMojo extends AbstractSetupsMojo {</span>
+<span class="fc" id="L28">public class SetUpMojo extends AbstractSetupsMojo {</span>
+	
+	static final String FIT_ROOT = &quot;Resources/&quot; + FitNesseHelper.DEFAULT_ROOT;
+    
+	static final String FIT_FILES = &quot;fitnesse/resources&quot;;
+    
+	/**
+	 * If set, fitnesse-launcher-maven-plugin will delete any existing plugins.properties
+	 * file as part of setting up a clean fitnesse environment.
+	 * If you need to retain the plugin.properties file, set this property to false.
+	 * 
+	 * @parameter property=&quot;fitnesse.deletePluginsProperties&quot; default-value=&quot;false&quot;
+	 */
+    protected boolean deletePluginsProperties;
+    
+	/**
+	 * If set, fitnesse-launcher-maven-plugin will always freshly unpack
+	 * the FitNesse jar, as part of setting up a clean fitnesse environment.
+	 * 
+	 * @parameter property=&quot;fitnesse.alwaysUnpackFitnesse&quot; default-value=&quot;false&quot;
+	 */
+    protected boolean alwaysUnpackFitnesse;
     
 	@Override
     public final void execute() throws MojoExecutionException {
-<span class="fc" id="L25">		clean();</span>
-<span class="fc" id="L26">		unpack();</span>
-<span class="fc" id="L27">		move();</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    	if(this.deletePluginsProperties) {</span>
+<span class="fc" id="L54">		    clean();</span>
+    	}
+<span class="fc" id="L56">		unpack();</span>
+<span class="fc" id="L57">		move();</span>
+<span class="fc" id="L58">    }</span>
     
 	/**
 	 * &lt;pre&gt;
@@ -48,13 +78,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * 							&lt;/includes&gt;
 	 * 							&lt;followSymlinks&gt;false&lt;/followSymlinks&gt;
 	 * 						&lt;/fileset&gt;
-	 * 						&lt;fileset&gt;
-	 * 							&lt;directory&gt;${project.build.directory}/dependency-maven-plugin-markers&lt;/directory&gt;
-	 * 							&lt;includes&gt;
-	 * 								&lt;include&gt;*&lt;/include&gt;
-	 * 							&lt;/includes&gt;
-	 * 							&lt;followSymlinks&gt;false&lt;/followSymlinks&gt;
-	 * 						&lt;/fileset&gt;
 	 * 					&lt;/filesets&gt;
 	 * 				&lt;/configuration&gt;
 	 * 			&lt;/execution&gt;
@@ -64,25 +87,20 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * &lt;/pre&gt;
 	 */
     final void clean() throws MojoExecutionException {
-<span class="fc" id="L67">		executeMojo(</span>
+<span class="fc" id="L90">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-clean-plugin&quot;),
 		    goal(&quot;clean&quot;),
             configuration(
 	        	element(&quot;excludeDefaultDirectories&quot;, &quot;true&quot;),
-	        	element(&quot;filesets&quot;,
+	        	element(&quot;filesets&quot;, 
 	            	element(&quot;fileset&quot;,
 		            	element(&quot;directory&quot;, this.workingDir),
-		            	element(&quot;includes&quot;,
+                        element(&quot;includes&quot;,
    			            	element(&quot;include&quot;, &quot;plugins.properties&quot;)),
-		            	element(&quot;followSymlinks&quot;, &quot;false&quot;)),
-	            	element(&quot;fileset&quot;,
-		            	element(&quot;directory&quot;, &quot;${project.build.directory}/dependency-maven-plugin-markers&quot;),
-		            	element(&quot;includes&quot;,
-   			            	element(&quot;include&quot;, &quot;*&quot;)),
 		            	element(&quot;followSymlinks&quot;, &quot;false&quot;)))),
 		    executionEnvironment(project, session, pluginManager)
 		);
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L103">    }</span>
     
     /**
 	 * &lt;pre&gt;
@@ -101,11 +119,20 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * 						&lt;artifactItem&gt;
 	 * 							&lt;groupId&gt;org.fitnesse&lt;/groupId&gt;
 	 * 							&lt;artifactId&gt;fitnesse&lt;/artifactId&gt;
-	 * 							&lt;version&gt;20121220&lt;/version&gt;
+	 * 							&lt;version&gt;20130530&lt;/version&gt;
 	 * 							&lt;type&gt;jar&lt;/type&gt;
 	 * 							&lt;overWrite&gt;false&lt;/overWrite&gt;
 	 * 							&lt;outputDirectory&gt;${fitnesse.working}&lt;/outputDirectory&gt;
 	 * 							&lt;includes&gt;Resources/FitNesseRoot/**&lt;/includes&gt;
+	 * 						&lt;/artifactItem&gt;
+	 * 						&lt;artifactItem&gt;
+	 * 							&lt;groupId&gt;org.fitnesse&lt;/groupId&gt;
+	 * 							&lt;artifactId&gt;fitnesse&lt;/artifactId&gt;
+	 * 							&lt;version&gt;20130530&lt;/version&gt;
+	 * 							&lt;type&gt;jar&lt;/type&gt;
+	 * 							&lt;overWrite&gt;false&lt;/overWrite&gt;
+	 * 							&lt;outputDirectory&gt;${fitnesse.working}/${fitnesse.root}/files&lt;/outputDirectory&gt;
+	 * 							&lt;includes&gt;fitnesse/resources/**&lt;/includes&gt;
 	 * 						&lt;/artifactItem&gt;
 	 * 					&lt;/artifactItems&gt;
 	 * 				&lt;/configuration&gt;
@@ -116,23 +143,32 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * &lt;/pre&gt;
      */
     final void unpack() throws MojoExecutionException {
-<span class="fc" id="L119">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);</span>
-<span class="fc" id="L120">		executeMojo(</span>
+<span class="fc" id="L146">       	final Artifact artifact = this.pluginDescriptor.getArtifactMap().get(FitNesse.artifactKey);</span>
+<span class="fc" id="L147">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-dependency-plugin&quot;),
 		    goal(&quot;unpack&quot;),
             configuration(
 	        	element(&quot;artifactItems&quot;,
-	            	element(&quot;artifactItem&quot;,
+	        			artifactItem(this.workingDir, includes(FIT_ROOT), artifact),
+	        			artifactItem(workingFiles(null), includes(FIT_FILES), artifact))),
+		    executionEnvironment(project, session, pluginManager)
+		);
+<span class="fc" id="L156">    }</span>
+    
+    private Element artifactItem(final String outputDirectory, final String includes, final Artifact artifact) {
+<span class="fc" id="L159">        return element(&quot;artifactItem&quot;,</span>
 		            	element(&quot;groupId&quot;, artifact.getGroupId()),
 		            	element(&quot;artifactId&quot;, artifact.getArtifactId()),
 		            	element(&quot;version&quot;, artifact.getVersion()),
 		            	element(&quot;type&quot;, &quot;jar&quot;),
-		            	element(&quot;overWrite&quot;, &quot;false&quot;),
-		            	element(&quot;outputDirectory&quot;, this.workingDir),
-		            	element(&quot;includes&quot;, &quot;Resources/FitNesseRoot/**&quot;)))),
-		    executionEnvironment(project, session, pluginManager)
-		);
-<span class="fc" id="L135">    }</span>
+		            	element(&quot;overWrite&quot;, Boolean.toString(this.alwaysUnpackFitnesse)),
+		            	element(&quot;outputDirectory&quot;, outputDirectory),
+		            	element(&quot;includes&quot;, includes));
+    }
+    
+    private String includes(final String includes) {
+<span class="fc" id="L170">        return includes + &quot;/**&quot;;</span>
+    }
     
     /**
 	 * &lt;pre&gt;
@@ -151,6 +187,11 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 *                 &lt;target&gt;
 	 *                     &lt;move file=&quot;${fitnesse.working}/Resources/FitNesseRoot&quot;
 	 *                          todir=&quot;${fitnesse.working}&quot; failonerror=&quot;false&quot; /&gt;
+	 *                     &lt;move todir=&quot;${fitnesse.working}/${fitnesse.root}/files&quot; failonerror=&quot;false&quot;&gt;
+	 *                         &lt;fileset dir=&quot;${fitnesse.working}/${fitnesse.root}/files/fitnesse/resources&quot;&gt;
+	 *                             &lt;include name=&quot;**\/\*&quot;/&gt;
+	 *                         &lt;/fileset&gt;
+	 *                     &lt;/move&gt;
 	 *                 &lt;/target&gt;
 	 *             &lt;/configuration&gt;
 	 *         &lt;/execution&gt;
@@ -160,19 +201,41 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 	 * &lt;/pre&gt;
 	 */
     final void move() throws MojoExecutionException {
-<span class="fc" id="L163">        final Xpp3Dom config = configuration(</span>
-        	element(&quot;target&quot;,
-            	element(&quot;move&quot;)));
-<span class="fc" id="L166">        final Xpp3Dom move = config.getChild(&quot;target&quot;).getChild(&quot;move&quot;);</span>
-<span class="fc" id="L167">        move.setAttribute(&quot;file&quot;, this.workingDir + &quot;/Resources/FitNesseRoot&quot;);</span>
-<span class="fc" id="L168">		move.setAttribute(&quot;todir&quot;, this.workingDir);</span>
-<span class="fc" id="L169">		move.setAttribute(&quot;failonerror&quot;, &quot;false&quot;);</span>
-<span class="fc" id="L170">		executeMojo(</span>
+<span class="fc" id="L204">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-antrun-plugin&quot;),
 		    goal(&quot;run&quot;),
-		    config,
+		    //config,
+        	configuration(
+        	element(&quot;target&quot;,
+            	element(&quot;move&quot;, move(this.workingDir, new Attribute(&quot;file&quot;, this.workingDir + &quot;/&quot; + FIT_ROOT))),
+            	element(&quot;move&quot;, move(workingFiles(null)),
+            		element(&quot;fileset&quot;, new Attribute(&quot;dir&quot;, workingFiles(FIT_FILES)),
+            			element(&quot;include&quot;, new Attribute(&quot;name&quot;, &quot;**/*&quot;)))))),
 		    executionEnvironment(project, session, pluginManager)
 		);
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L216">    }</span>
+    
+    private Attributes move(final String todir, final Attribute... additional) {
+<span class="fc" id="L219">    	final List&lt;Attribute&gt; list = new ArrayList&lt;Attribute&gt;();</span>
+<span class="fc" id="L220">		list.add(new Attribute(&quot;todir&quot;, todir));</span>
+<span class="fc" id="L221">		list.add(new Attribute(&quot;failonerror&quot;, &quot;false&quot;));</span>
+<span class="fc" id="L222">		list.add(new Attribute(&quot;overwrite&quot;, &quot;false&quot;));</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		for(Attribute a : additional) {</span>
+<span class="fc" id="L224">		    list.add(a);</span>
+		}
+<span class="fc" id="L226">		return new Attributes(list.toArray(new Attribute[list.size()]));</span>
+    }
+    
+    private String workingFiles(final String additional) {
+<span class="fc" id="L230">    	final StringBuilder sb = new StringBuilder(this.workingDir);</span>
+<span class="fc" id="L231">    	sb.append(&quot;/&quot;);</span>
+<span class="fc" id="L232">    	sb.append(this.root);</span>
+<span class="fc" id="L233">    	sb.append(&quot;/files&quot;);</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">    	if(additional != null) {</span>
+<span class="fc" id="L235">    	    sb.append(&quot;/&quot;);</span>
+<span class="fc" id="L236">            sb.append(additional);</span>
+    	}
+<span class="fc" id="L238">        return sb.toString();</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

@@ -15,7 +15,7 @@ import fitnesse.socketservice.SocketService;
  *
  * @goal wiki
  * @phase integration-test
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  */
 <span class="fc" id="L20">public class WikiMojo extends AbstractFitNesseMojo {</span>
 	
@@ -33,52 +33,54 @@ import fitnesse.socketservice.SocketService;
 	 * as Maven calls System.exit() once it's business is done.
 	 */
 	@Override
-    protected final void executeInternal() throws MojoExecutionException, MojoFailureException {
-<span class="fc" id="L37">    	final String portString = this.port.toString();</span>
+    protected final void executeInternal(final Launch... launches)
+	        throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L38">    	final String portString = this.port.toString();</span>
         try {
-<span class="fc" id="L39">        	Runtime.getRuntime().addShutdownHook(new Interrupter(Thread.currentThread(), 0L));</span>
-<span class="fc" id="L40">            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">    		if(this.createSymLink) {</span>
-<span class="fc" id="L42">	            this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);</span>
+<span class="fc" id="L40">        	Runtime.getRuntime().addShutdownHook(new Interrupter(Thread.currentThread(), 0L));</span>
+<span class="fc" id="L41">            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">    		if(this.createSymLink) {</span>
+<span class="fc" id="L43">	            this.fitNesseHelper.createSymLink(</span>
+	            		this.project.getBasedir(), this.testResourceDirectory, this.port, launches);
     		}
-<span class="fc" id="L44">            final Thread fitnesseThread = findFitNesseServerThread();</span>
-<span class="fc bfc" id="L45" title="All 2 branches covered.">            if(fitnesseThread != null) {</span>
-<span class="fc" id="L46">            	getLog().info(&quot;FitNesse wiki server launched.&quot;);</span>
-<span class="fc" id="L47">                fitnesseThread.join();</span>
+<span class="fc" id="L46">            final Thread fitnesseThread = findFitNesseServerThread();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if(fitnesseThread != null) {</span>
+<span class="fc" id="L48">            	getLog().info(&quot;FitNesse wiki server launched.&quot;);</span>
+<span class="fc" id="L49">                fitnesseThread.join();</span>
             }
-<span class="fc" id="L49">        } catch (InterruptedException e) {</span>
-<span class="fc" id="L50">        	getLog().info(&quot;FitNesse wiki server interrupted!&quot;);</span>
-<span class="fc" id="L51">        } catch (Exception e) {</span>
-<span class="fc" id="L52">            throw new MojoExecutionException(&quot;Exception launching FitNesse&quot;, e);</span>
+<span class="fc" id="L51">        } catch (InterruptedException e) {</span>
+<span class="fc" id="L52">        	getLog().info(&quot;FitNesse wiki server interrupted!&quot;);</span>
+<span class="fc" id="L53">        } catch (Exception e) {</span>
+<span class="fc" id="L54">            throw new MojoExecutionException(&quot;Exception launching FitNesse&quot;, e);</span>
         } finally {
-<span class="fc" id="L54">        	this.fitNesseHelper.shutdownFitNesseServer(portString);</span>
-<span class="fc" id="L55">           	getLog().info(&quot;FitNesse wiki server is shutdown.&quot;);</span>
-<span class="fc" id="L56">        }</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L56">        	this.fitNesseHelper.shutdownFitNesseServer(portString);</span>
+<span class="fc" id="L57">           	getLog().info(&quot;FitNesse wiki server is shutdown.&quot;);</span>
+<span class="fc" id="L58">        }</span>
+<span class="fc" id="L59">    }</span>
     
     private Thread findFitNesseServerThread() {
-<span class="fc" id="L60">    	final Thread[] activeThreads = findActiveThreads(3);</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">    	for( int i = activeThreads.length - 1 ; i &gt;= 0 ; i-- ) {</span>
-<span class="fc" id="L62">    		final StackTraceElement[] trace = activeThreads[i].getStackTrace();</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">            for( int j = trace.length - 1 ; j &gt;= 0 ; j-- ) {</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">            	if(FITNESSE_SOCKET_SERVICE.equals(trace[j].getClassName())) {</span>
-<span class="fc" id="L65">            		return activeThreads[i];</span>
+<span class="fc" id="L62">    	final Thread[] activeThreads = findActiveThreads(3);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    	for( int i = activeThreads.length - 1 ; i &gt;= 0 ; i-- ) {</span>
+<span class="fc" id="L64">    		final StackTraceElement[] trace = activeThreads[i].getStackTrace();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            for( int j = trace.length - 1 ; j &gt;= 0 ; j-- ) {</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            	if(FITNESSE_SOCKET_SERVICE.equals(trace[j].getClassName())) {</span>
+<span class="fc" id="L67">            		return activeThreads[i];</span>
             	}
             }
     	}
-<span class="fc" id="L69">       	getLog().warn(&quot;Could not identify FitNesse service Thread.&quot;);</span>
-<span class="fc" id="L70">    	return null;</span>
+<span class="fc" id="L71">       	getLog().warn(&quot;Could not identify FitNesse service Thread.&quot;);</span>
+<span class="fc" id="L72">    	return null;</span>
     }
     
     private Thread[] findActiveThreads(final int arraySize) {
-<span class="fc" id="L74">    	final Thread[] activeThreads = new Thread[arraySize];</span>
-<span class="fc" id="L75">    	final int threadsFound = Thread.currentThread().getThreadGroup().enumerate(activeThreads, false);</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">    	if(threadsFound &lt; arraySize) {</span>
-<span class="fc" id="L77">        	final Thread[] foundThreads = new Thread[threadsFound];</span>
-<span class="fc" id="L78">        	System.arraycopy(activeThreads, 0, foundThreads, 0, threadsFound);</span>
-<span class="fc" id="L79">        	return foundThreads;</span>
+<span class="fc" id="L76">    	final Thread[] activeThreads = new Thread[arraySize];</span>
+<span class="fc" id="L77">    	final int threadsFound = Thread.currentThread().getThreadGroup().enumerate(activeThreads, false);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">    	if(threadsFound &lt; arraySize) {</span>
+<span class="fc" id="L79">        	final Thread[] foundThreads = new Thread[threadsFound];</span>
+<span class="fc" id="L80">        	System.arraycopy(activeThreads, 0, foundThreads, 0, threadsFound);</span>
+<span class="fc" id="L81">        	return foundThreads;</span>
     	} 
-<span class="fc" id="L81">    	return findActiveThreads(arraySize + arraySize);</span>
+<span class="fc" id="L83">    	return findActiveThreads(arraySize + arraySize);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

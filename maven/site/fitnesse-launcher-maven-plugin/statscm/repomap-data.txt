@@ -18,40 +18,63 @@
                   <branch>
                       <label>plugin</label>
                     <branch>
+                        <label>artifact</label>
+                      <branch>
+                          <label>resolver</label>
+                          <leaf><label>OptionalArtifactFilter.java</label><weight>17</weight><value>100.0</value></leaf>
+                          <leaf><label>package-info.java</label><weight>4</weight><value>100.0</value></leaf>
+                      </branch>
+                    </branch>
+
+                    <branch>
                         <label>fitnesse</label>
                       <branch>
+                          <label>junit</label>
+                          <leaf><label>TestHelper.java</label><weight>61</weight><value>100.0</value></leaf>
+                          <leaf><label>package-info.java</label><weight>4</weight><value>100.0</value></leaf>
+                      </branch>
+
+                      <branch>
+                          <label>main</label>
+                          <leaf><label>FitNesseMain.java</label><weight>252</weight><value>100.0</value></leaf>
+                          <leaf><label>package-info.java</label><weight>4</weight><value>100.0</value></leaf>
+                      </branch>
+
+                      <branch>
                           <label>mojo</label>
-                          <leaf><label>AbstractFitNesseMojo.java</label><weight>332</weight><value>-9.036144578313253</value></leaf>
-                          <leaf><label>AbstractSetupsMojo.java</label><weight>55</weight><value>0.0</value></leaf>
+                          <leaf><label>AbstractFitNesseMojo.java</label><weight>422</weight><value>21.32701421800948</value></leaf>
+                          <leaf><label>AbstractSetupsMojo.java</label><weight>60</weight><value>8.333333333333332</value></leaf>
+                          <leaf><label>Execution.java</label><weight>116</weight><value>100.0</value></leaf>
                           <leaf><label>FitNesse.java</label><weight>10</weight><value>0.0</value></leaf>
-                          <leaf><label>RunTestsMojo.java</label><weight>186</weight><value>-1.6129032258064515</value></leaf>
-                          <leaf><label>SetUpMojo.java</label><weight>177</weight><value>0.0</value></leaf>
+                          <leaf><label>Launch.java</label><weight>181</weight><value>100.0</value></leaf>
+                          <leaf><label>RunTestsMojo.java</label><weight>189</weight><value>1.5873015873015872</value></leaf>
+                          <leaf><label>SetUpMojo.java</label><weight>240</weight><value>26.25</value></leaf>
                           <leaf><label>ShutdownMojo.java</label><weight>24</weight><value>0.0</value></leaf>
-                          <leaf><label>TearDownMojo.java</label><weight>62</weight><value>0.0</value></leaf>
-                          <leaf><label>VerifyMojo.java</label><weight>51</weight><value>-1.9607843137254901</value></leaf>
-                          <leaf><label>WikiMojo.java</label><weight>83</weight><value>0.0</value></leaf>
+                          <leaf><label>TearDownMojo.java</label><weight>64</weight><value>3.125</value></leaf>
+                          <leaf><label>VerifyMojo.java</label><weight>51</weight><value>0.0</value></leaf>
+                          <leaf><label>WikiMojo.java</label><weight>85</weight><value>2.3529411764705883</value></leaf>
                           <leaf><label>package-info.java</label><weight>4</weight><value>0.0</value></leaf>
                       </branch>
 
                       <branch>
                           <label>reporting</label>
-                          <leaf><label>FitNesseHtmlReport.java</label><weight>86</weight><value>5.813953488372093</value></leaf>
+                          <leaf><label>FitNesseHtmlReport.java</label><weight>86</weight><value>0.0</value></leaf>
                       </branch>
 
                       <branch>
                           <label>responders</label>
                         <branch>
                             <label>run</label>
-                            <leaf><label>DelegatingResultsListener.java</label><weight>70</weight><value>0.0</value></leaf>
+                            <leaf><label>DelegatingResultsListener.java</label><weight>95</weight><value>0.0</value></leaf>
                             <leaf><label>package-info.java</label><weight>4</weight><value>0.0</value></leaf>
                         </branch>
                       </branch>
 
                       <branch>
                           <label>util</label>
-                          <leaf><label>FitNesseHelper.java</label><weight>142</weight><value>7.042253521126761</value></leaf>
+                          <leaf><label>FitNesseHelper.java</label><weight>141</weight><value>-0.7092198581560284</value></leaf>
                           <leaf><label>Interrupter.java</label><weight>25</weight><value>0.0</value></leaf>
-                          <leaf><label>Utils.java</label><weight>70</weight><value>100.0</value></leaf>
+                          <leaf><label>Utils.java</label><weight>70</weight><value>0.0</value></leaf>
                           <leaf><label>package-info.java</label><weight>4</weight><value>0.0</value></leaf>
                       </branch>
                     </branch>
@@ -64,7 +87,7 @@
 
         <branch>
             <label>resources</label>
-            <leaf><label>fitnesse-html-report.properties</label><weight>2</weight><value>100.0</value></leaf>
+            <leaf><label>fitnesse-html-report.properties</label><weight>2</weight><value>0.0</value></leaf>
         </branch>
       </branch>
 
@@ -72,19 +95,19 @@
           <label>site</label>
         <branch>
             <label>apt</label>
-            <leaf><label>config.apt</label><weight>196</weight><value>100.0</value></leaf>
-            <leaf><label>filtering.apt</label><weight>69</weight><value>100.0</value></leaf>
-            <leaf><label>index.apt</label><weight>111</weight><value>9.00900900900901</value></leaf>
-            <leaf><label>menu.apt</label><weight>47</weight><value>100.0</value></leaf>
-            <leaf><label>profiles.apt</label><weight>91</weight><value>100.0</value></leaf>
-            <leaf><label>running.apt</label><weight>90</weight><value>100.0</value></leaf>
-            <leaf><label>started.apt</label><weight>38</weight><value>100.0</value></leaf>
-            <leaf><label>usage.apt</label><weight>11</weight><value>-2400.0</value></leaf>
+            <leaf><label>config.apt</label><weight>292</weight><value>32.87671232876712</value></leaf>
+            <leaf><label>filtering.apt</label><weight>144</weight><value>52.083333333333336</value></leaf>
+            <leaf><label>index.apt</label><weight>111</weight><value>0.0</value></leaf>
+            <leaf><label>menu.apt</label><weight>55</weight><value>14.545454545454545</value></leaf>
+            <leaf><label>profiles.apt</label><weight>91</weight><value>0.0</value></leaf>
+            <leaf><label>running.apt</label><weight>90</weight><value>0.0</value></leaf>
+            <leaf><label>started.apt</label><weight>67</weight><value>43.28358208955223</value></leaf>
+            <leaf><label>usage.apt</label><weight>11</weight><value>0.0</value></leaf>
         </branch>
 
         <branch>
             <label>fml</label>
-            <leaf><label>faq.fml</label><weight>83</weight><value>37.34939759036144</value></leaf>
+            <leaf><label>faq.fml</label><weight>148</weight><value>43.91891891891892</value></leaf>
         </branch>
 
         <branch>
@@ -96,18 +119,19 @@
 
           <branch>
               <label>images</label>
-              <leaf><label>FitNesse_Tags.png</label><weight>531</weight><value>100.0</value></leaf>
+              <leaf><label>FitNesseLogo.png</label><weight>678</weight><value>100.0</value></leaf>
+              <leaf><label>FitNesse_Tags.png</label><weight>531</weight><value>0.0</value></leaf>
           </branch>
         </branch>
 
         <branch>
             <label>violations</label>
-            <leaf><label>checkstyle-suppressions.xml</label><weight>12</weight><value>100.0</value></leaf>
-            <leaf><label>checkstyle.xml</label><weight>183</weight><value>100.0</value></leaf>
-            <leaf><label>findbugs-exclude.xml</label><weight>9</weight><value>100.0</value></leaf>
-            <leaf><label>pmd-ruleset.xml</label><weight>14</weight><value>100.0</value></leaf>
+            <leaf><label>checkstyle-suppressions.xml</label><weight>12</weight><value>0.0</value></leaf>
+            <leaf><label>checkstyle.xml</label><weight>183</weight><value>0.0</value></leaf>
+            <leaf><label>findbugs-exclude.xml</label><weight>9</weight><value>0.0</value></leaf>
+            <leaf><label>pmd-ruleset.xml</label><weight>14</weight><value>0.0</value></leaf>
         </branch>
-          <leaf><label>site.xml</label><weight>36</weight><value>-2.7777777777777777</value></leaf>
+          <leaf><label>site.xml</label><weight>36</weight><value>0.0</value></leaf>
       </branch>
 
       <branch>
@@ -125,41 +149,57 @@
                   <branch>
                       <label>plugin</label>
                     <branch>
+                        <label>artifact</label>
+                      <branch>
+                          <label>resolver</label>
+                          <leaf><label>OptionalArtifactFilterTest.java</label><weight>23</weight><value>100.0</value></leaf>
+                      </branch>
+                    </branch>
+
+                    <branch>
                         <label>fitnesse</label>
                       <branch>
+                          <label>main</label>
+                          <leaf><label>FitNesseMainTest.java</label><weight>47</weight><value>100.0</value></leaf>
+                      </branch>
+
+                      <branch>
                           <label>mojo</label>
-                          <leaf><label>AbstractFitNesseMojoTestHelper.java</label><weight>4</weight><value>100.0</value></leaf>
-                          <leaf><label>CalcWikiFormatClasspathTest.java</label><weight>524</weight><value>11.259541984732824</value></leaf>
+                          <leaf><label>CalcWikiFormatClasspathTest.java</label><weight>534</weight><value>1.8726591760299627</value></leaf>
+                          <leaf><label>ExecutionTest.java</label><weight>56</weight><value>100.0</value></leaf>
                           <leaf><label>ExportPropertiesTest.java</label><weight>119</weight><value>0.0</value></leaf>
-                          <leaf><label>FitNesseMojoTest.java</label><weight>36</weight><value>100.0</value></leaf>
-                          <leaf><label>FitNesseMojoTestHelper.java</label><weight>189</weight><value>100.0</value></leaf>
+                          <leaf><label>FitNesseMojoTest.java</label><weight>77</weight><value>53.246753246753244</value></leaf>
+                          <leaf><label>FitNesseMojoTestHelper.java</label><weight>240</weight><value>21.25</value></leaf>
+                          <leaf><label>LaunchTest.java</label><weight>82</weight><value>100.0</value></leaf>
                           <leaf><label>PrintStreamLogger.java</label><weight>99</weight><value>0.0</value></leaf>
                           <leaf><label>ResolutionRequestForArtifact.java</label><weight>24</weight><value>0.0</value></leaf>
-                          <leaf><label>RunTestsMojoTest.java</label><weight>245</weight><value>1.2244897959183674</value></leaf>
-                          <leaf><label>SetUpMojoTest.java</label><weight>162</weight><value>1.2345679012345678</value></leaf>
+                          <leaf><label>RunTestsMojoTest.java</label><weight>236</weight><value>-3.8135593220338984</value></leaf>
+                          <leaf><label>SetUpMojoTest.java</label><weight>116</weight><value>9.482758620689655</value></leaf>
+                          <leaf><label>SetupsMojoTestHelper.java</label><weight>76</weight><value>3.9473684210526314</value></leaf>
                           <leaf><label>ShutdownMojoTest.java</label><weight>85</weight><value>0.0</value></leaf>
-                          <leaf><label>TearDownMojoTest.java</label><weight>115</weight><value>0.0</value></leaf>
+                          <leaf><label>TearDownMojoTest.java</label><weight>55</weight><value>0.0</value></leaf>
+                          <leaf><label>TestFitNesseMojo.java</label><weight>15</weight><value>100.0</value></leaf>
                           <leaf><label>UrlEndsWith.java</label><weight>24</weight><value>0.0</value></leaf>
-                          <leaf><label>VerifyMojoTest.java</label><weight>102</weight><value>-2.941176470588235</value></leaf>
-                          <leaf><label>WikiMojoTest.java</label><weight>170</weight><value>0.0</value></leaf>
+                          <leaf><label>VerifyMojoTest.java</label><weight>102</weight><value>0.0</value></leaf>
+                          <leaf><label>WikiMojoTest.java</label><weight>176</weight><value>2.840909090909091</value></leaf>
                       </branch>
 
                       <branch>
                           <label>responders</label>
                         <branch>
                             <label>run</label>
-                            <leaf><label>DelegatingResultsListenerTest.java</label><weight>128</weight><value>0.0</value></leaf>
+                            <leaf><label>DelegatingResultsListenerTest.java</label><weight>185</weight><value>30.810810810810814</value></leaf>
                         </branch>
                       </branch>
 
                       <branch>
                           <label>util</label>
-                          <leaf><label>CreateSymLinkTest.java</label><weight>141</weight><value>100.0</value></leaf>
-                          <leaf><label>DisconnectingHandler.java</label><weight>32</weight><value>100.0</value></leaf>
-                          <leaf><label>FitNesseHelperTest.java</label><weight>204</weight><value>-33.82352941176471</value></leaf>
+                          <leaf><label>CreateSymLinkTest.java</label><weight>145</weight><value>2.7586206896551726</value></leaf>
+                          <leaf><label>DisconnectingHandler.java</label><weight>32</weight><value>0.0</value></leaf>
+                          <leaf><label>FitNesseHelperTest.java</label><weight>159</weight><value>-28.30188679245283</value></leaf>
                           <leaf><label>InterrupterTest.java</label><weight>89</weight><value>0.0</value></leaf>
-                          <leaf><label>OkHandler.java</label><weight>37</weight><value>100.0</value></leaf>
-                          <leaf><label>UtilsTest.java</label><weight>96</weight><value>100.0</value></leaf>
+                          <leaf><label>OkHandler.java</label><weight>37</weight><value>0.0</value></leaf>
+                          <leaf><label>UtilsTest.java</label><weight>96</weight><value>0.0</value></leaf>
                       </branch>
                     </branch>
                   </branch>
@@ -205,11 +245,11 @@
                       <branch>
                           <label>mojo</label>
                           <leaf><label>ExampleFitNesseTestSuite.html</label><weight>32</weight><value>0.0</value></leaf>
-                          <leaf><label>antrun-mojo-config.xml</label><weight>6</weight><value>0.0</value></leaf>
-                          <leaf><label>exec-output.log</label><weight>10</weight><value>100.0</value></leaf>
-                          <leaf><label>setup-clean-mojo-config.xml</label><weight>20</weight><value>0.0</value></leaf>
+                          <leaf><label>antrun-mojo-config.xml</label><weight>11</weight><value>45.45454545454545</value></leaf>
+                          <leaf><label>exec-output.log</label><weight>10</weight><value>0.0</value></leaf>
+                          <leaf><label>setup-clean-mojo-config.xml</label><weight>13</weight><value>-53.84615384615385</value></leaf>
                           <leaf><label>teardown-clean-mojo-config.xml</label><weight>10</weight><value>0.0</value></leaf>
-                          <leaf><label>unpack-mojo-config.xml</label><weight>14</weight><value>0.0</value></leaf>
+                          <leaf><label>unpack-mojo-config.xml</label><weight>23</weight><value>39.130434782608695</value></leaf>
                           <leaf><label>verify-bad-xml.xml</label><weight>1</weight><value>0.0</value></leaf>
                           <leaf><label>verify-failure.xml</label><weight>2</weight><value>0.0</value></leaf>
                           <leaf><label>verify-no-tests.xml</label><weight>2</weight><value>0.0</value></leaf>
@@ -228,6 +268,6 @@
 
   <branch>
       <label>[root]</label>
-      <leaf><label>pom.xml</label><weight>406</weight><value>-13.30049261083744</value></leaf>
+      <leaf><label>pom.xml</label><weight>407</weight><value>0.0</value></leaf>
   </branch>
 </root>

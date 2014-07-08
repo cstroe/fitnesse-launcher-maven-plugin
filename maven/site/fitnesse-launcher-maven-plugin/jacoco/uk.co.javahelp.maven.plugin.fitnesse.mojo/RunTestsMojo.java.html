@@ -15,20 +15,20 @@ import org.apache.maven.surefire.failsafe.model.FailsafeSummary;
 import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Writer;
 import org.apache.maven.surefire.suite.RunResult;
 
+import uk.co.javahelp.maven.plugin.fitnesse.junit.TestHelper;
 import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingResultsListener;
 import fitnesse.junit.JUnitXMLTestListener;
 import fitnesse.junit.PrintTestListener;
-import fitnesse.junit.TestHelper;
 import fitnesse.responders.run.ResultsListener;
-import fitnesse.responders.run.TestSummary;
+import fitnesse.testsystems.TestSummary;
 
 /**
- * Goal that runs FitNesse tests using fitnesse.junit.TestHelper.
+ * Goal that launches FitNesse tests using fitnesse.junit.TestHelper.
  * Intended to be bound to the 'integration-test' phase.
  * 
  * @goal run-tests
  * @phase integration-test
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  * @see fitnesse.junit.TestHelper
  */
 public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReportParameters {
@@ -44,72 +44,75 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 <span class="fc" id="L44">	}</span>
 
 	@Override
-    protected final void executeInternal() throws MojoExecutionException, MojoFailureException {
+    protected final void executeInternal(final Launch... launches)
+	        throws MojoExecutionException, MojoFailureException {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">       	if(launches.length == 0) {</span>
+<span class="fc" id="L50">    		getLog().warn(&quot;No FitNesse Suites or Tests to run! (Set -Dfitnesse.fitnesse.failIfNoTests=false to ignore.)&quot;);</span>
+       	}
 
-<span class="fc bfc" id="L49" title="All 2 branches covered.">		if (this.createSymLink) {</span>
-<span class="fc" id="L50">			createSymLink();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">		if (this.createSymLink) {</span>
+<span class="fc" id="L54">			createSymLink(launches);</span>
 		}
 
-<span class="fc" id="L53">		final TestSummary fitNesseSummary = runFitNesseTests();</span>
-<span class="fc" id="L54">		getLog().info(fitNesseSummary.toString());</span>
-<span class="fc" id="L55">		final FailsafeSummary failsafeSummary = convertAndReportResults(fitNesseSummary);</span>
-<span class="fc" id="L56">		writeSummary(failsafeSummary);</span>
-<span class="fc" id="L57">	}</span>
+<span class="fc" id="L57">		final TestSummary fitNesseSummary = runFitNesseTests(launches);</span>
+<span class="fc" id="L58">		getLog().info(fitNesseSummary.toString());</span>
+<span class="fc" id="L59">		final FailsafeSummary failsafeSummary = convertAndReportResults(fitNesseSummary);</span>
+<span class="fc" id="L60">		writeSummary(failsafeSummary);</span>
+<span class="fc" id="L61">	}</span>
 
 	/**
 	 * Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode.
 	 */
-	private void createSymLink() throws MojoExecutionException {
-<span class="fc" id="L63">		final String portString = this.port.toString();</span>
+	private void createSymLink(final Launch... launches) throws MojoExecutionException {
+<span class="fc" id="L67">		final String portString = this.port.toString();</span>
 		try {
-<span class="fc" id="L65">            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);</span>
-<span class="fc" id="L66">			this.fitNesseHelper.createSymLink(this.suite, this.test, this.project.getBasedir(), this.testResourceDirectory, this.port);</span>
-<span class="fc" id="L67">		} catch (Exception e) {</span>
-<span class="fc" id="L68">			throw new MojoExecutionException(&quot;Exception creating FitNesse SymLink&quot;, e);</span>
+<span class="fc" id="L69">            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);</span>
+<span class="fc" id="L70">			this.fitNesseHelper.createSymLink(this.project.getBasedir(), this.testResourceDirectory, this.port, launches);</span>
+<span class="fc" id="L71">		} catch (Exception e) {</span>
+<span class="fc" id="L72">			throw new MojoExecutionException(&quot;Exception creating FitNesse SymLink&quot;, e);</span>
 		} finally {
-<span class="fc" id="L70">			this.fitNesseHelper.shutdownFitNesseServer(portString);</span>
-<span class="fc" id="L71">		}</span>
-<span class="fc" id="L72">	}</span>
+<span class="fc" id="L74">			this.fitNesseHelper.shutdownFitNesseServer(portString);</span>
+<span class="fc" id="L75">		}</span>
+<span class="fc" id="L76">	}</span>
 
 	/**
      * Strange side-effect behaviour:
      * If debug=false, FitNesse falls into wiki mode.
 	 */
-	private TestSummary runFitNesseTests() throws MojoExecutionException {
-<span class="fc" id="L79">		final ResultsListener resultsListener = new DelegatingResultsListener(</span>
+	private TestSummary runFitNesseTests(final Launch... launches) throws MojoExecutionException {
+<span class="fc" id="L83">		final ResultsListener resultsListener = new DelegatingResultsListener(</span>
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
-<span class="fc" id="L81">        final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);</span>
-<span class="fc" id="L82">		helper.setDebugMode(true);</span>
+<span class="fc" id="L85">        final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);</span>
+<span class="fc" id="L86">		helper.setDebugMode(true);</span>
 
 		try {
-<span class="fc" id="L85">			final String[] pageNameAndType = this.fitNesseHelper.calcPageNameAndType(this.suite, this.test);</span>
-<span class="fc" id="L86">			final TestSummary summary = helper.run(pageNameAndType[0], pageNameAndType[1], this.suiteFilter, this.excludeSuiteFilter, this.port);</span>
-<span class="fc" id="L87">			return summary;</span>
-<span class="fc" id="L88">		} catch (Exception e) {</span>
-<span class="fc" id="L89">			throw new MojoExecutionException(&quot;Exception running FitNesse tests&quot;, e);</span>
+<span class="fc" id="L89">			final TestSummary summary = helper.run(this.port, launches);</span>
+<span class="fc" id="L90">			return summary;</span>
+<span class="fc" id="L91">		} catch (Exception e) {</span>
+<span class="fc" id="L92">			throw new MojoExecutionException(&quot;Exception running FitNesse tests&quot;, e);</span>
 		}
 	}
 
     private FailsafeSummary convertAndReportResults(final TestSummary summary) throws MojoFailureException {
-<span class="fc" id="L94">        final RunResult result = new RunResult(summary.right, summary.exceptions, summary.wrong, summary.ignores);</span>
-<span class="fc" id="L95">		SurefireHelper.reportExecution(this, result, getLog());</span>
-<span class="fc" id="L96">		final FailsafeSummary failsafeSummary = new FailsafeSummary();</span>
-<span class="fc" id="L97">		failsafeSummary.setResult(result.getForkedProcessCode());</span>
-<span class="fc" id="L98">		return failsafeSummary;</span>
+<span class="fc" id="L97">        final RunResult result = new RunResult(summary.right, summary.exceptions, summary.wrong, summary.ignores);</span>
+<span class="fc" id="L98">		SurefireHelper.reportExecution(this, result, getLog());</span>
+<span class="fc" id="L99">		final FailsafeSummary failsafeSummary = new FailsafeSummary();</span>
+<span class="fc" id="L100">		failsafeSummary.setResult(result.getForkedProcessCode());</span>
+<span class="fc" id="L101">		return failsafeSummary;</span>
 	}
 
     private void writeSummary(final FailsafeSummary summary) throws MojoExecutionException {
-<span class="fc" id="L102">		Writer writer = null;</span>
+<span class="fc" id="L105">		Writer writer = null;</span>
 		try {
-<span class="fc" id="L104">			writer = new FileWriter(this.summaryFile);</span>
-<span class="fc" id="L105">			FailsafeSummaryXpp3Writer xpp3Writer = new FailsafeSummaryXpp3Writer();</span>
-<span class="fc" id="L106">			xpp3Writer.write(writer, summary);</span>
-<span class="fc" id="L107">		} catch (IOException e) {</span>
-<span class="fc" id="L108">            throw new MojoExecutionException(&quot;Exception writing Failsafe summary&quot;, e);</span>
+<span class="fc" id="L107">			writer = new FileWriter(this.summaryFile);</span>
+<span class="fc" id="L108">			FailsafeSummaryXpp3Writer xpp3Writer = new FailsafeSummaryXpp3Writer();</span>
+<span class="fc" id="L109">			xpp3Writer.write(writer, summary);</span>
+<span class="fc" id="L110">		} catch (IOException e) {</span>
+<span class="fc" id="L111">            throw new MojoExecutionException(&quot;Exception writing Failsafe summary&quot;, e);</span>
 		} finally {
-<span class="fc" id="L110">			close(writer);</span>
-<span class="fc" id="L111">		}</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L113">			close(writer);</span>
+<span class="fc" id="L114">		}</span>
+<span class="fc" id="L115">	}</span>
 
 	// ------------------------------------------------------------------------
 	// See http://maven.apache.org/plugins/maven-surefire-plugin/test-mojo.html
@@ -117,71 +120,71 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 
 	@Override
 	public final boolean isSkipTests() {
-<span class="fc" id="L120">		return false;</span>
+<span class="fc" id="L123">		return false;</span>
 	}
 
 	@Override
-<span class="fc" id="L124">    public void setSkipTests(final boolean unused) {}</span>
+<span class="fc" id="L127">    public void setSkipTests(final boolean unused) {}</span>
 
 	@Override
 	public final boolean isSkipExec() {
-<span class="fc" id="L128">		return false;</span>
+<span class="fc" id="L131">		return false;</span>
 	}
 
 	@Override
-<span class="fc" id="L132">    public void setSkipExec(final boolean unused) {}</span>
+<span class="fc" id="L135">    public void setSkipExec(final boolean unused) {}</span>
 
 	@Override
 	public final boolean isSkip() {
-<span class="fc" id="L136">		return false;</span>
+<span class="fc" id="L139">		return false;</span>
 	}
 
 	@Override
-<span class="fc" id="L140">    public void setSkip(final boolean unused) {}</span>
+<span class="fc" id="L143">    public void setSkip(final boolean unused) {}</span>
 
 	@Override
 	public final boolean isTestFailureIgnore() {
-<span class="fc" id="L144">		return this.testFailureIgnore;</span>
+<span class="fc" id="L147">		return this.testFailureIgnore;</span>
 	}
 
 	@Override
-<span class="fc" id="L148">    public void setTestFailureIgnore(final boolean unused) {}</span>
+<span class="fc" id="L151">    public void setTestFailureIgnore(final boolean unused) {}</span>
 
 	@Override
 	public final File getBasedir() {
-<span class="fc" id="L152">		return this.project.getBasedir();</span>
+<span class="fc" id="L155">		return this.project.getBasedir();</span>
 	}
 
 	@Override
 	public void setBasedir(final File unused) {
-<span class="fc" id="L157">	}</span>
+<span class="fc" id="L160">	}</span>
 
 	@Override
 	public final File getTestClassesDirectory() {
-<span class="fc" id="L161">		return new File(this.project.getBuild().getTestOutputDirectory());</span>
+<span class="fc" id="L164">		return new File(this.project.getBuild().getTestOutputDirectory());</span>
 	}
 
 	@Override
-<span class="fc" id="L165">	public final void setTestClassesDirectory(final File unused) {}</span>
+<span class="fc" id="L168">	public final void setTestClassesDirectory(final File unused) {}</span>
 
 	@Override
 	public final File getReportsDirectory() {
-<span class="fc" id="L169">		return this.reportsDir;</span>
+<span class="fc" id="L172">		return this.reportsDir;</span>
 	}
 
 	@Override
 	public final void setReportsDirectory(final File reportsDirectory) {
-<span class="fc" id="L174">		this.reportsDir = reportsDirectory;</span>
-<span class="fc" id="L175">	}</span>
+<span class="fc" id="L177">		this.reportsDir = reportsDirectory;</span>
+<span class="fc" id="L178">	}</span>
 
 	@Override
 	public final Boolean getFailIfNoTests() {
-<span class="fc" id="L179">		return this.failIfNoTests;</span>
+<span class="fc" id="L182">		return this.failIfNoTests;</span>
 	}
 
 	@Override
 	public final void setFailIfNoTests(final Boolean failIfNoTests) {
-<span class="fc" id="L184">		this.failIfNoTests = failIfNoTests;</span>
-<span class="fc" id="L185">	}</span>
+<span class="fc" id="L187">		this.failIfNoTests = failIfNoTests;</span>
+<span class="fc" id="L188">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>

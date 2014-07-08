@@ -8,6 +8,8 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
+import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
+
 /**
  * Cleanup debris after FitNesse runs.
  * See {@link fitnesse.responders.run.formatters.PageInProgressFormatter}
@@ -17,7 +19,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal tear-down
  * @phase post-integration-test
  */
-<span class="fc" id="L20">public class TearDownMojo extends AbstractSetupsMojo {</span>
+<span class="fc" id="L22">public class TearDownMojo extends AbstractSetupsMojo {</span>
 
 	/**
 	 * &lt;pre&gt;
@@ -47,17 +49,17 @@ import org.apache.maven.plugin.MojoExecutionException;
 	 */
 	@Override
 	public final void execute() throws MojoExecutionException {
-<span class="fc" id="L50">		executeMojo(</span>
+<span class="fc" id="L52">		executeMojo(</span>
 			plugin(&quot;org.apache.maven.plugins:maven-clean-plugin&quot;),
 			goal(&quot;clean&quot;),
 			configuration(
 				element(&quot;excludeDefaultDirectories&quot;, &quot;true&quot;),
 				element(&quot;filesets&quot;,
 					element(&quot;fileset&quot;,
-						element(&quot;directory&quot;, &quot;FitNesseRoot&quot;),
+						element(&quot;directory&quot;, FitNesseHelper.DEFAULT_ROOT),
 						element(&quot;followSymlinks&quot;, &quot;false&quot;)))),
 			executionEnvironment(project, session, pluginManager)
 		);
-<span class="fc" id="L61">	}</span>
+<span class="fc" id="L63">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.0.201210061924</span></div></body></html>
