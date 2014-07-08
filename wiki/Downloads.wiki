@@ -1,5 +1,5 @@
+#summary Example Project Source Downloads
 #labels Featured
-#Downloads
 
 = Example Project Source Downloads = 
 
