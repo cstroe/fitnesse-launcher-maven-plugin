@@ -35,5 +35,5 @@ mvn clean verify -P auto
 
 ======
 
- * A custom Fit Fixture ({{{./xref-test/index.html}SpringColumnFixture}}) had to be written for the Fit tests, and a custom Slim Runner ({{{./xref-test/index.html}SpringSlimRunner}}) for the Slim tests. (More of the difference between the Fit and Slim engines of FitNesse can be found {{{http://gojko.net/2010/03/12/fit-vs-slim/}here}}.)
+ * A custom Fit Fixture ({{{./xref-test/index.html}SpringColumnFixture}}) had to be written for the Fit tests, and a custom Slim Runner ({{{./xref-test/index.html}SpringSlimRunner}}) for the Slim tests. (More on the difference between the Fit and Slim engines of FitNesse can be found in {{{http://gojko.net/2009/04/17/slim-and-the-future-of-fitnesse-video/}Gojko Adzic's presentation}}.)
 
