@@ -65,6 +65,7 @@ public class SetUpMojoTest {
 		
         final Xpp3Dom unpackConfig = Xpp3DomBuilder.build(SetUpMojoTest.class.getResourceAsStream("unpack-mojo-config.xml"), "UTF-8");
         unpackConfig.getChild("artifactItems").getChild(0).getChild("outputDirectory").setValue(helper.workingDir.getCanonicalPath());
+        unpackConfig.getChild("artifactItems").getChild(1).getChild("outputDirectory").setValue(helper.workingDir.getCanonicalPath() + "/FitNesseRoot/files");
         
         doAnswer(new Answer<Void>() {
 			@Override

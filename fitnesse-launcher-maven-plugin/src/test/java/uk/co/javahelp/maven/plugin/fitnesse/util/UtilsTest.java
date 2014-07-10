@@ -1,5 +1,7 @@
 package uk.co.javahelp.maven.plugin.fitnesse.util;
 
+import static org.apache.commons.io.FilenameUtils.getPrefix;
+import static org.apache.commons.io.FilenameUtils.separatorsToUnix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -61,17 +63,26 @@ public class UtilsTest {
 	
 	@Test
 	public void testGetRelativePath() throws IOException {
-		assertEquals(".",               Utils.getRelativePath(new File("/x/y/z"),     new File("/x/y/z")));
-		assertEquals("/",               Utils.getRelativePath(new File("/a/b/c"),     new File("/")));
-		assertEquals("/x/y/z",          Utils.getRelativePath(new File("/"),          new File("/x/y/z")));
-		assertEquals("/x/y/z",          Utils.getRelativePath(new File("/a/b/c"),     new File("/x/y/z")));
-		assertEquals("../../y/z",       Utils.getRelativePath(new File("/x/a/b"),     new File("/x/y/z")));
-		assertEquals("../../../../y/z", Utils.getRelativePath(new File("/x/a/b/c/d"), new File("/x/y/z")));
-		assertEquals("../z",            Utils.getRelativePath(new File("/w/x/y/b"),   new File("/w/x/y/z")));
-		assertEquals("..",              Utils.getRelativePath(new File("/w/x/y/z"),   new File("/w/x/y")));
-		assertEquals("../..",           Utils.getRelativePath(new File("/w/x/y/z"),   new File("/w/x")));
-		assertEquals("z",               Utils.getRelativePath(new File("/w/x/y"),     new File("/w/x/y/z")));
-		assertEquals("y/z",             Utils.getRelativePath(new File("/w/x"),       new File("/w/x/y/z")));
+		assertGetRelativePath(".",               "/x/y/z",     "/x/y/z");
+		assertGetRelativePath("/",               "/a/b/c",     "/");
+		assertGetRelativePath("/x/y/z",          "/",          "/x/y/z");
+		assertGetRelativePath("/x/y/z",          "/a/b/c",     "/x/y/z");
+		assertGetRelativePath("../../y/z",       "/x/a/b",     "/x/y/z");
+		assertGetRelativePath("../../../../y/z", "/x/a/b/c/d", "/x/y/z");
+		assertGetRelativePath("../z",            "/w/x/y/b",   "/w/x/y/z");
+		assertGetRelativePath("..",              "/w/x/y/z",   "/w/x/y");
+		assertGetRelativePath("../..",           "/w/x/y/z",   "/w/x");
+		assertGetRelativePath("z",               "/w/x/y",     "/w/x/y/z");
+		assertGetRelativePath("y/z",             "/w/x",       "/w/x/y/z");
+	}
+	
+	private void assertGetRelativePath(String expected, String from, String to) throws IOException {
+		String path = Utils.getRelativePath(new File(from), new File(to));
+		String prefix = separatorsToUnix(getPrefix(path));
+		if(expected.startsWith("/") && prefix.length() > 0) {
+			expected = expected.replaceFirst("/", prefix);
+		}
+		assertEquals(expected, separatorsToUnix(path));
 	}
 
 	@Test
