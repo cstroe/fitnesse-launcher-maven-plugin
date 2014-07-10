@@ -45,7 +45,7 @@ mvn clean verify -P auto
 
    *
 
-     Note: This does mean that FitNesse should be cleanly shutdown from running in wiki mode. Using <<<mvn fitnesse:shutdown>>> is preferred because <<<Ctrl+C>>> will not execute the <<<post-integration-test>>> phase, leaving Derby still running. Also see {{{../fitnesse-launcher-maven-plugin/faq.html#shutdown}FAQ Q2}}.
+     Note: This does mean that FitNesse should be cleanly shutdown from running in wiki mode. Using <<<mvn fitnesse:shutdown>>> is preferred because <<<Ctrl+C>>> will not execute the <<<post-integration-test>>> phase, leaving Derby still running. Also see {{{../fitnesse-launcher-maven-plugin/faq.html}the FAQ's}}.
 
   *
 
@@ -53,7 +53,7 @@ mvn clean verify -P auto
 
   *
 
-    The Fit tests are run on Derby, using {{{http://sourceforge.net/projects/dbfit/}DB Fit}}.
+    The Fit tests are run on Derby, using {{{http://benilovj.github.com/dbfit}DB Fit}}.
 
   *
 
