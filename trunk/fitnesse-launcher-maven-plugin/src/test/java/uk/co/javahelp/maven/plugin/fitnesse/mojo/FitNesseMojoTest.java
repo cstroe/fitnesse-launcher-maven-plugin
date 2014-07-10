@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static uk.co.javahelp.maven.plugin.fitnesse.mojo.LaunchTest.assertLaunch;
 
 import java.io.IOException;
+import java.io.File;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -69,9 +70,15 @@ public class FitNesseMojoTest {
 		helper.mojo.execute();
 
 		assertNotNull(((TestFitNesseMojo) helper.mojo).calledWith);
-		assertEquals(format(expected.replaceAll("[\n\r]", ""),
-				this.getClass().getResource("/dummy.jar").getFile(),
+
+		String actual = format(newlines(helper.logStream.toString(), "%n"));
+		assertEquals(format(newlines(expected, ""),
+				new File(this.getClass().getResource("/dummy.jar").getFile()),
 				helper.mojo.project.getBasedir()),
-				helper.logStream.toString());
+				actual);
+	}
+
+	private String newlines(String string, String token) {
+		return string.replaceAll("[\n\r]+", token);
 	}
 }
