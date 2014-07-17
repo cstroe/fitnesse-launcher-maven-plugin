@@ -176,7 +176,6 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * <plugin>
 	 *     <groupId>org.apache.maven.plugins</groupId>
 	 *     <artifactId>maven-antrun-plugin</artifactId>
-	 *     <version>1.7</version>
 	 *     <executions>
 	 *         <execution>
 	 *             <phase>pre-integration-test</phase>

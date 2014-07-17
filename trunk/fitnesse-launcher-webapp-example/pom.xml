@@ -46,23 +46,20 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<configuration>
-					<reportPlugins>
-						<!--
-						<plugin>
-							<groupId>uk.co.javahelp.fitnesse</groupId>
-							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-       						<version>${project.version}</version>
-						</plugin>
-						-->
-					</reportPlugins>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<!--
+			<plugin>
+				<groupId>uk.co.javahelp.fitnesse</groupId>
+				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+                <version>${project.version}</version>
+			</plugin>
+			-->
+		</plugins>
+	</reporting>
 
 	<profiles>
 		<profile>
