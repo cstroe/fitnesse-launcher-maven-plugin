@@ -14,12 +14,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 
 import org.apache.commons.io.FileUtils;
@@ -35,7 +35,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
-import fitnesse.junit.TestHelper;
 import fitnesse.responders.run.formatters.PageInProgressFormatter;
 
 public class RunTestsMojoTest {
@@ -49,9 +48,7 @@ public class RunTestsMojoTest {
 				"</testcase>" +
 			"</testsuite>";
 	
-	private static final String FAILSAFE_SUMMARY_XML =
-		    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-			"<failsafe-summary result=\"255\" />\n";
+	private String failsafeSummaryXml;
 			
 	private RunTestsMojo mojo;
 	
@@ -87,6 +84,13 @@ public class RunTestsMojoTest {
 		root.mkdirs();
 		FileUtils.copyDirectoryToDirectory(new File(getClass().getResource("/files").getPath()), root);
 		FileUtils.copyDirectoryToDirectory(new File(getClass().getResource("/ExampleFitNesseTestSuite").getPath()), root);
+		
+        InputStream summaryIn = RunTestsMojoTest.class.getResourceAsStream("summary.xml");
+		try {
+			this.failsafeSummaryXml = IOUtils.toString(RunTestsMojoTest.class.getResourceAsStream("summary.xml"));
+		} finally {
+			IOUtils.closeQuietly(summaryIn);
+		}
 	}
 	
 	/**
@@ -111,7 +115,7 @@ public class RunTestsMojoTest {
 		verify(mojo.fitNesseHelper, never()).createSymLink(any(File.class), anyString(), anyInt(), any(Launch.class));
 		verify(mojo.fitNesseHelper, never()).shutdownFitNesseServer(anyString());
 		
-		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
+		assertEquals(this.failsafeSummaryXml, FileUtils.readFileToString(mojo.summaryFile));
 		
 		assertTrue(
 			FileUtils.readFileToString(
@@ -136,7 +140,9 @@ public class RunTestsMojoTest {
 		verify(mojo.fitNesseHelper, times(1)).createSymLink(mojo.project.getBasedir(), mojo.testResourceDirectory, WikiMojoTest.PORT, launch);
 		verify(mojo.fitNesseHelper, times(1)).shutdownFitNesseServer(WikiMojoTest.PORT_STRING);
 		
-		assertEquals(FAILSAFE_SUMMARY_XML, FileUtils.readFileToString(mojo.summaryFile));
+		// Easier than having a separate summary.xml file. Will separate as need and complexity grows.
+		this.failsafeSummaryXml = this.failsafeSummaryXml.replace(">3<", ">2<").replace(">6<", ">4<");
+		assertEquals(this.failsafeSummaryXml, FileUtils.readFileToString(mojo.summaryFile));
 		
 		assertTrue(
 			FileUtils.readFileToString(
@@ -194,7 +200,7 @@ public class RunTestsMojoTest {
 			mojo.executeInternal(new Launch("ExampleFitNesseTestSuite", null));
 			fail("Expected MojoExecutionException");
 		} catch (MojoExecutionException e) {
-			assertEquals("Exception writing Failsafe summary", e.getMessage());
+			assertEquals(mojo.resultsDir + "/failsafe-summary.xml (Not a directory)", e.getMessage());
 			assertEquals(FileNotFoundException.class, e.getCause().getClass());
 		}
 	}

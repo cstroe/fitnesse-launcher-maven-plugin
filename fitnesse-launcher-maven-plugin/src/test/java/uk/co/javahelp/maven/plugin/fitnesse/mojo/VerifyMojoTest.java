@@ -1,6 +1,7 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
@@ -75,10 +76,10 @@ public class VerifyMojoTest {
 		
 		try {
 			mojo.execute();
-			fail("Expected MojoExecutionException");
+			fail("Expected ");
 		} catch (MojoExecutionException e) {
-    		assertEquals("no more data available - expected end tag </failsafe-summary> to close start tag <failsafe-summary> from line 1, " +
-    				"parser stopped on START_DOCUMENT seen <failsafe-summary result=\"THIS IS NOT XML!\\n... @2:1", e.getMessage());
+    		assertTrue(e.getMessage().startsWith("org.xml.sax.SAXParseException"));
+    		assertTrue(e.getMessage().endsWith("XML document structures must start and end within the same entity."));
 		}
 		
 		assertEquals("", logStream.toString());
@@ -93,8 +94,7 @@ public class VerifyMojoTest {
 			mojo.execute();
 			fail("Expected MojoExecutionException");
 		} catch (MojoExecutionException e) {
-    		assertEquals("Expected root element 'failsafe-summary' but found 'not-failsafe-summary' (position: " +
-    				"START_TAG seen ...ion=\"1.0\" encoding=\"UTF-8\"?>\\n<not-failsafe-summary result=\"255\" />... @2:38) ", e.getMessage());
+    		assertEquals(NullPointerException.class, e.getCause().getClass());
 		}
 		
 		assertEquals("", logStream.toString());
