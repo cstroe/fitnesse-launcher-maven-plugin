@@ -40,6 +40,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import uk.co.javahelp.maven.plugin.artifact.resolver.OptionalArtifactFilter;
+import uk.co.javahelp.maven.plugin.fitnesse.TestArtifactFactory;
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 
 public class FitNesseMojoTestHelper {
@@ -71,8 +72,7 @@ public class FitNesseMojoTestHelper {
         	getClass().getPackage().getName(), getClass().getSimpleName(),
         	"version", "scope", "type", "classifier", this.artifactHandler);
         
-        this.fitnesseArtifact = new DefaultArtifact(
-            "org.fitnesse", "fitnesse", "20130530", "compile", "jar", null, this.artifactHandler);
+        this.fitnesseArtifact = TestArtifactFactory.fitNesseArtifact(this.artifactHandler);
         this.fitnesseArtifact.setFile(new File(getClass().getResource("/dummy.jar").getPath()));
         
 		when(this.artifactResolver.resolve(argThat(new ResolutionRequestForArtifact(this.fitnesseArtifact))))

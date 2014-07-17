@@ -16,11 +16,12 @@ import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Write
 import org.apache.maven.surefire.suite.RunResult;
 
 import uk.co.javahelp.maven.plugin.fitnesse.junit.TestHelper;
-import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingResultsListener;
+import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingTestSystemListener;
 import fitnesse.junit.JUnitXMLTestListener;
 import fitnesse.junit.PrintTestListener;
-import fitnesse.responders.run.ResultsListener;
+import fitnesse.testrunner.WikiTestPage;
 import fitnesse.testsystems.TestSummary;
+import fitnesse.testsystems.TestSystemListener;
 
 /**
  * Goal that launches FitNesse tests using fitnesse.junit.TestHelper.
@@ -80,7 +81,8 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
      * If debug=false, FitNesse falls into wiki mode.
 	 */
 	private TestSummary runFitNesseTests(final Launch... launches) throws MojoExecutionException {
-		final ResultsListener resultsListener = new DelegatingResultsListener(
+		@SuppressWarnings("unchecked")
+		final TestSystemListener<WikiTestPage> resultsListener = new DelegatingTestSystemListener(
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
         final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);
 		helper.setDebugMode(true);

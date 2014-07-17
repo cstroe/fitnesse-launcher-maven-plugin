@@ -119,7 +119,6 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 						<artifactItem>
 	 * 							<groupId>org.fitnesse</groupId>
 	 * 							<artifactId>fitnesse</artifactId>
-	 * 							<version>20130530</version>
 	 * 							<type>jar</type>
 	 * 							<overWrite>false</overWrite>
 	 * 							<outputDirectory>${fitnesse.working}</outputDirectory>
@@ -128,7 +127,6 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 						<artifactItem>
 	 * 							<groupId>org.fitnesse</groupId>
 	 * 							<artifactId>fitnesse</artifactId>
-	 * 							<version>20130530</version>
 	 * 							<type>jar</type>
 	 * 							<overWrite>false</overWrite>
 	 * 							<outputDirectory>${fitnesse.working}/${fitnesse.root}/files</outputDirectory>
