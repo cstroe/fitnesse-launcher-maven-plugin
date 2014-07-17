@@ -14,7 +14,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,8 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
-import fitnesse.junit.TestHelper;
-import fitnesse.responders.run.formatters.PageInProgressFormatter;
+import fitnesse.reporting.PageInProgressFormatter;
 
 public class RunTestsMojoTest {
 

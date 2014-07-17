@@ -3,9 +3,10 @@ package uk.co.javahelp.maven.plugin.fitnesse.junit;
 import uk.co.javahelp.maven.plugin.fitnesse.main.FitNesseMain;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import fitnesse.Arguments;
-import fitnesse.responders.run.JavaFormatter;
-import fitnesse.responders.run.ResultsListener;
+import fitnesse.reporting.JavaFormatter;
+import fitnesse.testrunner.WikiTestPage;
 import fitnesse.testsystems.TestSummary;
+import fitnesse.testsystems.TestSystemListener;
 
 /**
  * @see fitnesse.junit.TestHelper
@@ -16,14 +17,14 @@ public class TestHelper {
 
 	private final String outputPath;
 
-	private final ResultsListener resultListener;
+	private final TestSystemListener<WikiTestPage> resultListener;
 
 	private boolean debug = true;
 
 	public TestHelper(
 			final String fitNesseRootPath,
 			final String outputPath,
-			final ResultsListener resultListener) {
+			final TestSystemListener<WikiTestPage> resultListener) {
 		this.fitNesseRootPath = fitNesseRootPath;
 		this.outputPath = outputPath;
 		this.resultListener = resultListener;
@@ -50,8 +51,7 @@ public class TestHelper {
 		arguments.setPort(String.valueOf(port));
 		arguments.setRootPath(this.fitNesseRootPath);
 		arguments.setCommand(launch.getCommand(this.debug));
-		FitNesseMain.dontExitAfterSingleCommand = true;
-		FitNesseMain.launchFitNesse(arguments);
+		new FitNesseMain().launchFitNesse(arguments);
 		return testFormatter.getTotalSummary();
 	}
 

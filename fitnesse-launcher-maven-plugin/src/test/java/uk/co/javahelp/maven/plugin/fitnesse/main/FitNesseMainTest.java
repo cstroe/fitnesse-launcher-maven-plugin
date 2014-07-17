@@ -15,7 +15,6 @@ import org.junit.Test;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
 import fitnesse.Arguments;
-import fitnesse.FitNesse;
 
 public class FitNesseMainTest {
 	
@@ -35,10 +34,11 @@ public class FitNesseMainTest {
 		Arguments arguments = new Arguments();
 		//arguments.setCommand("command");
 		arguments.setPort(PORT);
-		FitNesse fitnesse = FitNesseMain.launchFitNesse(arguments);
-		Assert.assertNotNull(fitnesse);
+		FitNesseMain main = new FitNesseMain();
+		Integer result = main.launchFitNesse(arguments);
+		Assert.assertNotNull(result);
 		try {
-			FitNesseMain.launchFitNesse(arguments);
+			main.launchFitNesse(arguments);
 			Assert.fail("Expected MojoExecutionException");
 		} catch (MojoExecutionException e) {
 			Assert.assertEquals("FitNesse could not be launched", e.getMessage());
