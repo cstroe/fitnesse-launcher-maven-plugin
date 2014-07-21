@@ -11,6 +11,13 @@
 
 = Example Project Source Downloads = 
 
+== Release 1.4.1 ==
+
+ * [http://search.maven.org/#artifactdetails%7Cuk.co.javahelp.fitnesse%7Cfitnesse-launcher-java-example%7C1.4.1%7Cjar fitnesse-launcher-java-example:1.4.1]
+ * [http://search.maven.org/#artifactdetails%7Cuk.co.javahelp.fitnesse%7Cfitnesse-launcher-spring-example%7C1.4.1%7Cjar fitnesse-launcher-spring-example:1.4.1]
+ * [http://search.maven.org/#artifactdetails%7Cuk.co.javahelp.fitnesse%7Cfitnesse-launcher-sql-example%7C1.4.1%7Cjar fitnesse-launcher-sql-example:1.4.1]
+ * [http://search.maven.org/#artifactdetails%7Cuk.co.javahelp.fitnesse%7Cfitnesse-launcher-webapp-example%7C1.4.1%7Cjar fitnesse-launcher-webapp-example:1.4.1]
+
 == Release 1.4.0 ==
 
  * [http://search.maven.org/#artifactdetails%7Cuk.co.javahelp.fitnesse%7Cfitnesse-launcher-java-example%7C1.4.0%7Cjar fitnesse-launcher-java-example:1.4.0]
