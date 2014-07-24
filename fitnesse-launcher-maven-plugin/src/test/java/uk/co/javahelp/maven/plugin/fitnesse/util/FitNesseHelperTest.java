@@ -14,7 +14,6 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
@@ -23,6 +22,7 @@ import org.eclipse.jetty.server.Server;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.co.javahelp.maven.plugin.fitnesse.TestArtifactFactory;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
 import fitnesse.Arguments;
 
@@ -77,8 +77,7 @@ public class FitNesseHelperTest {
 	@Test
 	public void testFormatAndAppendClasspathArtifact() {
         String jarPath = new File(getClass().getResource("/dummy.jar").getPath()).getPath();
-        Artifact artifact = new DefaultArtifact(
-            "org.fitnesse", "fitnesse", "20130530", "compile", "jar", null, artifactHandler);
+        Artifact artifact = TestArtifactFactory.fitNesseArtifact(this.artifactHandler);
         artifact.setFile(new File(jarPath));
         
 		StringBuilder sb = new StringBuilder();

@@ -119,7 +119,6 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 						<artifactItem>
 	 * 							<groupId>org.fitnesse</groupId>
 	 * 							<artifactId>fitnesse</artifactId>
-	 * 							<version>20130530</version>
 	 * 							<type>jar</type>
 	 * 							<overWrite>false</overWrite>
 	 * 							<outputDirectory>${fitnesse.working}</outputDirectory>
@@ -128,7 +127,6 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * 						<artifactItem>
 	 * 							<groupId>org.fitnesse</groupId>
 	 * 							<artifactId>fitnesse</artifactId>
-	 * 							<version>20130530</version>
 	 * 							<type>jar</type>
 	 * 							<overWrite>false</overWrite>
 	 * 							<outputDirectory>${fitnesse.working}/${fitnesse.root}/files</outputDirectory>
@@ -176,6 +174,7 @@ public class SetUpMojo extends AbstractSetupsMojo {
 	 * <plugin>
 	 *     <groupId>org.apache.maven.plugins</groupId>
 	 *     <artifactId>maven-antrun-plugin</artifactId>
+	 *     <version>1.7</version>
 	 *     <executions>
 	 *         <execution>
 	 *             <phase>pre-integration-test</phase>

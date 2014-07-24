@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>uk.co.javahelp.fitnesse</groupId>
 		<artifactId>fitnesse-launcher-parent</artifactId>
-		<version>1.5.0-SNAPSHOT</version>
+		<version>1.4.1</version>
 	</parent>
 	<artifactId>fitnesse-launcher-sql-example</artifactId>
 	<packaging>jar</packaging>
@@ -40,6 +40,7 @@
 	</properties>
 
 	<dependencies>
+	<!-- 
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
@@ -52,6 +53,7 @@
 			<version>${derby.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+	 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -62,6 +64,7 @@
 
 	<build>
 		<plugins>
+		<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -108,6 +111,7 @@
 					</execution>
 				</executions>
 			</plugin>
+		 -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>sql-maven-plugin</artifactId>
@@ -118,13 +122,16 @@
 						<artifactId>hsqldb</artifactId>
 						<version>${hsqldb.version}</version>
 					</dependency>
+					<!-- 
 					<dependency>
 						<groupId>org.apache.derby</groupId>
 						<artifactId>derbyclient</artifactId>
 						<version>${derby.version}</version>
 					</dependency>
+					 -->
 				</dependencies>
 				<executions>
+				<!-- 
 					<execution>
 						<id>derby</id>
 						<phase>pre-integration-test</phase>
@@ -141,6 +148,7 @@
 							</srcFiles>
 						</configuration>
 					</execution>
+				 -->
 					<execution>
 						<id>hsqldb</id>
 						<phase>pre-integration-test</phase>
@@ -163,11 +171,21 @@
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
-					<suite>SqlExample</suite>
+					<!-- Since version 1.4.0 -->
+					<launches>
+					    <!--  DBFit seems broken since FitNesse upgrade
+						<launch>
+							<suite>SqlExample</suite>
+						</launch>
+    					 -->
+						<launch>
+							<test>SqlExample.SlimTest</test>
+						</launch>
+					</launches>
 					<!-- Since version 1.3.0 -->
-    				<useProjectDependencies>
-    				    <scope>test</scope>
-    				</useProjectDependencies>
+					<useProjectDependencies>
+						<scope>test</scope>
+					</useProjectDependencies>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -192,45 +210,48 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<linkJavadoc>true</linkJavadoc>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.9</version>
+							<configuration>
+								<quiet>true</quiet>
+								<use>false</use>
+								<show>package</show>
+								<stylesheetfile>${project.parent.basedir}/src/site/javadoc/stylesheet.css</stylesheetfile>
+								<includeDependencySources>false</includeDependencySources>
+								<name>Example SQL Project JavaDocs</name>
+								<description>JavaDoc API documentation for FitNesse Launcher Example SQL Project</description>
+								<links>
+									<link>http://java.sun.com/javase/6/docs/api/</link>
+								</links>
+							</configuration>
+						</plugin>
+						<!--
+						<plugin>
+							<groupId>uk.co.javahelp.fitnesse</groupId>
+							<artifactId>fitnesse-launcher-maven-plugin</artifactId>
+      						<version>${project.version}</version>
+						</plugin>
+						-->
+					</reportPlugins>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-	
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<linkJavadoc>true</linkJavadoc>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<quiet>true</quiet>
-					<use>false</use>
-					<show>package</show>
-					<stylesheetfile>${project.parent.basedir}/src/site/javadoc/stylesheet.css</stylesheetfile>
-					<includeDependencySources>false</includeDependencySources>
-					<name>Example SQL Project JavaDocs</name>
-					<description>JavaDoc API documentation for FitNesse Launcher Example SQL Project</description>
-					<links>
-						<link>http://java.sun.com/javase/6/docs/api/</link>
-					</links>
-				</configuration>
-			</plugin>
-			<!--
-			<plugin>
-				<groupId>uk.co.javahelp.fitnesse</groupId>
-				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
-                <version>${project.version}</version>
-			</plugin>
-			-->
-		</plugins>
-	</reporting>
 
 	<profiles>
 		<profile>

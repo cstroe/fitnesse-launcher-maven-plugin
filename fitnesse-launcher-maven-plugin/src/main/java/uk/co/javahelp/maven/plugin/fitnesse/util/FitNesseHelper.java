@@ -60,7 +60,7 @@ public class FitNesseHelper {
         if(logDir != null && !logDir.trim().equals("")) {
             arguments.setLogDirectory(logDir);
         }
-        FitNesseMain.launchFitNesse(arguments);
+        new FitNesseMain().launchFitNesse(arguments);
     }
 
 	public void shutdownFitNesseServer(final String port) {
@@ -69,6 +69,7 @@ public class FitNesseHelper {
 			// Pause to give it a chance to shutdown
     		Thread.sleep(SHUTDOWN_WAIT_MS);
 		} catch (ConnectException e) {
+			// TODO: See ShutdownMojoTest.testServerNotRunning()
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
             this.log.info("FitNesse already not running.");
