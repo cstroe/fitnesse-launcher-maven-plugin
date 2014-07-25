@@ -124,6 +124,9 @@
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
 				<configuration>
+					<!-- Since version 1.5.0 -->
+					<maxErrorsToConsole>1</maxErrorsToConsole>
+					
 					<!-- Since version 1.4.0 -->
 			    	<launches>
     			    	<launch>

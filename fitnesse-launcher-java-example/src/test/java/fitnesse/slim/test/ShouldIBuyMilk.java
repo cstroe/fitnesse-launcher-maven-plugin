@@ -31,7 +31,7 @@ public class ShouldIBuyMilk {
 	public String goToStore() {
 		/*if (pints == 1 && dollars > 2 && creditCard) {
     		// For testing Project Issue #36
-			throw new IllegalStateException("TEST EXCEPTION",
+			throw new IllegalStateException("TEST EXCEPTION [ShouldIBuyMilk]",
 					new NullPointerException("NESTED"));
 		} else*/ if (pints == 0 && (dollars > 2 || creditCard)) {
 			return "yes";

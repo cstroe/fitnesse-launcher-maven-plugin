@@ -133,7 +133,7 @@ public class Address {
 	public void setPostcode(int postcode) {
 		this.postcode = postcode;
 		// For testing Project Issue #36
-		//throw new IllegalStateException("TEST EXCEPTION",
+		//throw new IllegalStateException("TEST EXCEPTION [Address]",
 				//new NullPointerException("NESTED"));
 	}
 
