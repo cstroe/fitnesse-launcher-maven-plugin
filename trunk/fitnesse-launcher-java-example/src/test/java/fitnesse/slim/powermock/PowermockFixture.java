@@ -35,7 +35,7 @@ public class PowermockFixture {
 	public String methodInit() {
 		methodResult = init();
 		// For testing Project Issue #36
-		//throw new IllegalStateException("TEST EXCEPTION",
+		//throw new IllegalStateException("TEST EXCEPTION [Powermock]",
 				//new NullPointerException("NESTED"));
 		return methodResult;
 	}

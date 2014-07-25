@@ -213,14 +213,21 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     public void execute() throws MojoExecutionException, MojoFailureException {
     	this.fitNesseHelper = new FitNesseHelper(getLog());
         exportProperties();
-        // Pre-1.4.0 config is senior, as this allows easy override from command line using -D
+        executeInternal(launches());
+    }
+	
+	/**
+	 * Pre-1.4.0 config is senior, as this allows easy override from command line using -D
+	 */
+	protected Launch[] launches() {
         if(this.suite == null && this.test == null) {
         	// if this.launches.length == 0, it won't throw exception, just nothing to run 
-            executeInternal(this.launches);
+            return this.launches;
         } else {
-            executeInternal(new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter, this.runTestsMatchingAllTags));
+            return new Launch[] { 
+                new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter, this.runTestsMatchingAllTags)};
         }
-    }
+	}
 
     private static final String LOG_LINE = "------------------------------------------------------------------------";
         

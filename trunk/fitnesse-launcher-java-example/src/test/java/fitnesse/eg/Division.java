@@ -17,7 +17,7 @@ public class Division extends ColumnFixture {
 		double quotient = numerator / denominator;
 		// For testing Project Issue #36
 		/*if (quotient > 20.0) {
-			throw new IllegalStateException("TEST EXCEPTION",
+			throw new IllegalStateException("TEST EXCEPTION [Division]",
 					new NullPointerException("NESTED"));
 		}*/
 		return quotient;
