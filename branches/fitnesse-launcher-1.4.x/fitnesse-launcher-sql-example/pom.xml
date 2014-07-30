@@ -40,7 +40,6 @@
 	</properties>
 
 	<dependencies>
-	<!-- 
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
@@ -53,7 +52,6 @@
 			<version>${derby.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-	 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -64,7 +62,6 @@
 
 	<build>
 		<plugins>
-		<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -111,7 +108,6 @@
 					</execution>
 				</executions>
 			</plugin>
-		 -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>sql-maven-plugin</artifactId>
@@ -122,16 +118,13 @@
 						<artifactId>hsqldb</artifactId>
 						<version>${hsqldb.version}</version>
 					</dependency>
-					<!-- 
 					<dependency>
 						<groupId>org.apache.derby</groupId>
 						<artifactId>derbyclient</artifactId>
 						<version>${derby.version}</version>
 					</dependency>
-					 -->
 				</dependencies>
 				<executions>
-				<!-- 
 					<execution>
 						<id>derby</id>
 						<phase>pre-integration-test</phase>
@@ -148,7 +141,6 @@
 							</srcFiles>
 						</configuration>
 					</execution>
-				 -->
 					<execution>
 						<id>hsqldb</id>
 						<phase>pre-integration-test</phase>
@@ -173,13 +165,8 @@
 				<configuration>
 					<!-- Since version 1.4.0 -->
 					<launches>
-					    <!--  DBFit seems broken since FitNesse upgrade
 						<launch>
-							<suite>SqlExample</suite>
-						</launch>
-    					 -->
-						<launch>
-							<test>SqlExample.SlimTest</test>
+							<test>SqlExample</test>
 						</launch>
 					</launches>
 					<!-- Since version 1.3.0 -->
