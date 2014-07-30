@@ -19,7 +19,6 @@ import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
-import fitnesse.Arguments;
 
 public class CreateSymLinkTest {
 
@@ -64,7 +63,7 @@ public class CreateSymLinkTest {
         
 	@Test
 	public void testCreateSymLinkOkSuite() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new OkHandler("/root", SYMLINK_URL_EXPECTED));
 	    server.start();
@@ -84,7 +83,7 @@ public class CreateSymLinkTest {
 		
 	@Test
 	public void testCreateSymLinkWhitespace() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new OkHandler("/root", whitespace(SYMLINK_URL_EXPECTED)));
 	    server.start();
@@ -104,7 +103,7 @@ public class CreateSymLinkTest {
 		
 	@Test
 	public void testCreateSymLinkOkTest() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new OkHandler("/root", SYMLINK_URL_EXPECTED));
 	    server.start();
@@ -124,7 +123,7 @@ public class CreateSymLinkTest {
 		
 	@Test
 	public void testCreateSymLinkDisconnect() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new DisconnectingHandler(server));
 	    server.start();

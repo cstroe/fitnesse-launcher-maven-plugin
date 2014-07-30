@@ -14,11 +14,11 @@ import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
-import fitnesse.Arguments;
+import fitnesse.ContextConfigurator;
 
 public class FitNesseMainTest {
 	
-	private static final String PORT = "9124"; // Using default port disturbs other tests for some reason
+	private static final int PORT = 9124; // Using default port disturbs other tests for some reason
 
 	@After
 	public void tearDown() {
@@ -31,14 +31,14 @@ public class FitNesseMainTest {
 	@Ignore
 	@Test
 	public void testLaunchFailure() throws Exception {
-		Arguments arguments = new Arguments();
-		//arguments.setCommand("command");
-		arguments.setPort(PORT);
+		final ContextConfigurator configurator = ContextConfigurator.systemDefaults();
+        //configurator.withCommand("command");
+        configurator.withPort(PORT);
 		FitNesseMain main = new FitNesseMain();
-		Integer result = main.launchFitNesse(arguments);
+		Integer result = main.launchFitNesse(configurator);
 		Assert.assertNotNull(result);
 		try {
-			main.launchFitNesse(arguments);
+			main.launchFitNesse(configurator);
 			Assert.fail("Expected MojoExecutionException");
 		} catch (MojoExecutionException e) {
 			Assert.assertEquals("FitNesse could not be launched", e.getMessage());

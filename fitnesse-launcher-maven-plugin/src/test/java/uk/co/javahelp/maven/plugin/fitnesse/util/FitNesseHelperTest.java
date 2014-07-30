@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.TestArtifactFactory;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.PrintStreamLogger;
-import fitnesse.Arguments;
 
 public class FitNesseHelperTest {
 
@@ -102,7 +101,7 @@ public class FitNesseHelperTest {
 	}
 		
 	public void assertLaunchFitNesseServer(String logDir) throws Exception {
-		String port = String.valueOf(Arguments.DEFAULT_COMMAND_PORT);
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		File working = new File(System.getProperty("java.io.tmpdir"), "fitnesse-launcher-test");
 		fitNesseHelper.launchFitNesseServer(port, working.getCanonicalPath(), FitNesseHelper.DEFAULT_ROOT, logDir);
 		URL local = new URL("http://localhost:" + port);
@@ -121,13 +120,13 @@ public class FitNesseHelperTest {
 		
 	@Test
 	public void testShutdownFitNesseServerOk() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new OkHandler("/", "responder=shutdown"));
 	    server.start();
 	    
 	    try {
-			fitNesseHelper.shutdownFitNesseServer(String.valueOf(port));
+			fitNesseHelper.shutdownFitNesseServer(port);
 		} finally {
     		server.stop();
 		}
@@ -135,20 +134,20 @@ public class FitNesseHelperTest {
 	
 	@Test
 	public void testShutdownFitNesseServerNotRunning() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
-		fitNesseHelper.shutdownFitNesseServer(String.valueOf(port));
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
+		fitNesseHelper.shutdownFitNesseServer(port);
 		assertEquals(String.format("[INFO] FitNesse already not running.%n"), logStream.toString());
 	}
 	
 	@Test
 	public void testShutdownFitNesseServerDisconnect() throws Exception {
-		int port = Arguments.DEFAULT_COMMAND_PORT;
+		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 		Server server = new Server(port);
 	    server.setHandler(new DisconnectingHandler(server));
 	    server.start();
 	    
 	    try {
-			fitNesseHelper.shutdownFitNesseServer(String.valueOf(port));
+			fitNesseHelper.shutdownFitNesseServer(port);
 			
 			assertTrue(logStream.toString().startsWith(String.format("[ERROR] %njava.io.IOException: Could not parse Response")));
 		} finally {

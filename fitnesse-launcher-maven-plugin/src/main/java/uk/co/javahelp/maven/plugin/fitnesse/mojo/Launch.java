@@ -92,9 +92,9 @@ public class Launch {
     	return this.pageType;
 	}
 
-	public static final String PAGE_TYPE_SUITE = fitnesse.junit.TestHelper.PAGE_TYPE_SUITE;
+	public static final String PAGE_TYPE_SUITE = fitnesse.junit.JUnitHelper.PAGE_TYPE_SUITE;
 
-	public static final String PAGE_TYPE_TEST = fitnesse.junit.TestHelper.PAGE_TYPE_TEST;
+	public static final String PAGE_TYPE_TEST = fitnesse.junit.JUnitHelper.PAGE_TYPE_TEST;
 
     private void calcPageNameAndType() {
         final boolean haveSuite = !Utils.isBlank(this.suite);

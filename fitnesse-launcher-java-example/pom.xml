@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>org.fitnesse</groupId>
 			<artifactId>fitnesse</artifactId>
-			<version>20131110</version>
+			<version>20140201</version>
 			<scope>test</scope>
 		</dependency>
 
