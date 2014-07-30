@@ -20,8 +20,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fitnesse.Arguments;
-
 public class ShutdownMojoTest {
 	
 	private ShutdownMojo mojo;
@@ -50,7 +48,7 @@ public class ShutdownMojoTest {
 	@Test
 	public void testServerRunning() throws Exception {
 		
-		this.server = new Server(Arguments.DEFAULT_COMMAND_PORT);
+		this.server = new Server(mojo.port);
 	    this.server.setHandler(new Handler());
 	    this.server.start();
 	    

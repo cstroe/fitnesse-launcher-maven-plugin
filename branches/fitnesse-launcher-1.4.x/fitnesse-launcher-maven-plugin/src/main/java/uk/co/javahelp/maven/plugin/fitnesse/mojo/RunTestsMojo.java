@@ -65,14 +65,13 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 	 * Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode.
 	 */
 	private void createSymLink(final Launch... launches) throws MojoExecutionException {
-		final String portString = this.port.toString();
 		try {
-            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
+            this.fitNesseHelper.launchFitNesseServer(this.port, this.workingDir, this.root, this.logDir);
 			this.fitNesseHelper.createSymLink(this.project.getBasedir(), this.testResourceDirectory, this.port, launches);
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception creating FitNesse SymLink", e);
 		} finally {
-			this.fitNesseHelper.shutdownFitNesseServer(portString);
+			this.fitNesseHelper.shutdownFitNesseServer(this.port);
 		}
 	}
 

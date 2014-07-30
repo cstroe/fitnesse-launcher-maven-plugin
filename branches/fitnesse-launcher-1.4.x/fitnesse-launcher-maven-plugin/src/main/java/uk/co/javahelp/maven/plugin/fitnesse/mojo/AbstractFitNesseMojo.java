@@ -85,7 +85,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * @parameter property="fitnesse.port" default-value="9123"
      */
-    protected Integer port;
+    protected int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 
     /**
      * @parameter property="fitnesse.test.resource.directory" default-value="src/test/fitnesse"
