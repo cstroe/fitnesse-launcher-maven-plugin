@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.fitnesse</groupId>
 			<artifactId>fitnesse</artifactId>
-			<version>20140201</version>
+			<version>20140418</version>
 		</dependency>
 
 		<dependency>
@@ -217,8 +217,8 @@
 								<excludePackageNames>uk.co.javahelp*</excludePackageNames>
 								<destDir>fitnesse-apidocs</destDir>
 								<name>FitNesse JavaDocs</name>
-								<description>JavaDoc API documentation for FitNesse 20140201 API</description>
-								<doctitle>FitNesse 20140201 API</doctitle>
+								<description>JavaDoc API documentation for FitNesse 20140418 API</description>
+								<doctitle>FitNesse 20140418 API</doctitle>
 								<links>
 									<link>http://java.sun.com/javase/6/docs/api/</link>
 								</links>
