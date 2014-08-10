@@ -1,5 +1,8 @@
 package uk.co.javahelp.maven.plugin.fitnesse.util;
 
+import static fitnesse.ConfigurationParameter.LOG_DIRECTORY;
+import static fitnesse.ConfigurationParameter.VERSIONS_CONTROLLER_DAYS;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -16,12 +19,15 @@ import org.apache.maven.plugin.logging.Log;
 
 import uk.co.javahelp.maven.plugin.fitnesse.main.FitNesseMain;
 import uk.co.javahelp.maven.plugin.fitnesse.mojo.Launch;
-import fitnesse.Arguments;
+import fitnesse.ContextConfigurator;
+import fitnesse.FitNesseContext;
 import fitnesse.Shutdown;
 
 public class FitNesseHelper {
 
-    public static final String DEFAULT_ROOT = "FitNesseRoot";
+    public static final int DEFAULT_COMMAND_PORT = 9123;
+    
+    public static final String DEFAULT_ROOT = ContextConfigurator.DEFAULT_ROOT;
     
     private static final String UTF8 = "UTF-8";
     
@@ -47,28 +53,38 @@ public class FitNesseHelper {
        	return wikiFormatClasspath;
     }
 
-	public void launchFitNesseServer(
-    		final String port, final String workingDir, final String root, final String logDir) throws Exception {
-        final Arguments arguments = new Arguments();
-        arguments.setCommand(null);
-        arguments.setInstallOnly(false);
-        arguments.setOmitUpdates(true);
-        arguments.setDaysTillVersionsExpire("0");
-        arguments.setPort(port);
-        arguments.setRootPath(workingDir);
-        arguments.setRootDirectory(root);
+	public static FitNesseContext initContext(
+    		final int port, final String workingDir, final String root, final String logDir) throws Exception {
+		final ContextConfigurator configurator = ContextConfigurator.empty();
+		/*
+	    final ContextConfigurator configurator = ContextConfigurator.systemDefaults()
+	      .updatedWith(System.getProperties())
+	      .updatedWith(ConfigurationParameter.loadProperties(configFile))
+	            */
+        //configurator.setCommand(null);
+        configurator.withParameter(VERSIONS_CONTROLLER_DAYS, "0");
+        configurator.withPort(port);
+        configurator.withRootPath(workingDir);
+        configurator.withRootDirectoryName(root);
         if(logDir != null && !logDir.trim().equals("")) {
-            arguments.setLogDirectory(logDir);
+            configurator.withParameter(LOG_DIRECTORY, logDir);
         }
-        FitNesseMain.launchFitNesse(arguments);
+	    return configurator.makeFitNesseContext();
     }
 
-	public void shutdownFitNesseServer(final String port) {
+	public void launchFitNesseServer(
+    		final int port, final String workingDir, final String root, final String logDir) throws Exception {
+        final FitNesseContext context = initContext(port, workingDir, root, logDir);
+        new FitNesseMain().launch(context);
+    }
+
+	public void shutdownFitNesseServer(final int port) {
         try {
-			Shutdown.main(new String[]{"-p", port});
+			Shutdown.main(new String[]{"-p", Integer.toString(port)});
 			// Pause to give it a chance to shutdown
     		Thread.sleep(SHUTDOWN_WAIT_MS);
 		} catch (ConnectException e) {
+			// TODO: See ShutdownMojoTest.testServerNotRunning()
 			// If we get this specific exception,
 			// we assume FitNesse is already not running
             this.log.info("FitNesse already not running.");

@@ -2,7 +2,7 @@
 
 !2 See .FitNesse.UserGuide.TwoMinuteExample
 
-|fitnesse.eg.Division|
+|eg.Division|
 |numerator|denominator|quotient?|
 |10       |2          |5        |
 |12.6     |3          |4.2      |

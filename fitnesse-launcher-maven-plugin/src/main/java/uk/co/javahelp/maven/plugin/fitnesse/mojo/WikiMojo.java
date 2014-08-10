@@ -35,10 +35,9 @@ public class WikiMojo extends AbstractFitNesseMojo {
 	@Override
     protected final void executeInternal(final Launch... launches)
 	        throws MojoExecutionException, MojoFailureException {
-    	final String portString = this.port.toString();
         try {
         	Runtime.getRuntime().addShutdownHook(new Interrupter(Thread.currentThread(), 0L));
-            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
+            this.fitNesseHelper.launchFitNesseServer(this.port, this.workingDir, this.root, this.logDir);
     		if(this.createSymLink) {
 	            this.fitNesseHelper.createSymLink(
 	            		this.project.getBasedir(), this.testResourceDirectory, this.port, launches);
@@ -53,7 +52,7 @@ public class WikiMojo extends AbstractFitNesseMojo {
         } catch (Exception e) {
             throw new MojoExecutionException("Exception launching FitNesse", e);
         } finally {
-        	this.fitNesseHelper.shutdownFitNesseServer(portString);
+        	this.fitNesseHelper.shutdownFitNesseServer(this.port);
            	getLog().info("FitNesse wiki server is shutdown.");
         }
     }

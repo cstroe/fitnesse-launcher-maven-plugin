@@ -1,7 +1,6 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
-import fitnesse.Arguments;
 
 /**
  * Goal that shuts down FitNesse.
@@ -12,9 +11,10 @@ import fitnesse.Arguments;
 public class ShutdownMojo extends org.apache.maven.plugin.AbstractMojo {
 	
     /**
+	 * @see fitnesse.ContextConfigurator
      * @parameter property="fitnesse.port" default-value="9123"
      */
-    private String port = Integer.toString(Arguments.DEFAULT_COMMAND_PORT);
+    int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 
 	@Override
     public final void execute() {

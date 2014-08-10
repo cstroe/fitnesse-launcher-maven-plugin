@@ -85,7 +85,7 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     /**
      * @parameter property="fitnesse.port" default-value="9123"
      */
-    protected Integer port;
+    protected int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
 
     /**
      * @parameter property="fitnesse.test.resource.directory" default-value="src/test/fitnesse"
@@ -213,21 +213,14 @@ public abstract class AbstractFitNesseMojo extends org.apache.maven.plugin.Abstr
     public void execute() throws MojoExecutionException, MojoFailureException {
     	this.fitNesseHelper = new FitNesseHelper(getLog());
         exportProperties();
-        executeInternal(launches());
-    }
-	
-	/**
-	 * Pre-1.4.0 config is senior, as this allows easy override from command line using -D
-	 */
-	protected Launch[] launches() {
+        // Pre-1.4.0 config is senior, as this allows easy override from command line using -D
         if(this.suite == null && this.test == null) {
         	// if this.launches.length == 0, it won't throw exception, just nothing to run 
-            return this.launches;
+            executeInternal(this.launches);
         } else {
-            return new Launch[] { 
-                new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter, this.runTestsMatchingAllTags)};
+            executeInternal(new Launch(this.suite, this.test, this.suiteFilter, this.excludeSuiteFilter, this.runTestsMatchingAllTags));
         }
-	}
+    }
 
     private static final String LOG_LINE = "------------------------------------------------------------------------";
         

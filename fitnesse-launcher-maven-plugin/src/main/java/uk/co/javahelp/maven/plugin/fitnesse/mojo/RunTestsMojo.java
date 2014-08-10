@@ -1,20 +1,27 @@
 package uk.co.javahelp.maven.plugin.fitnesse.mojo;
 
+import static org.codehaus.plexus.util.IOUtil.close;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.surefire.SurefireHelper;
 import org.apache.maven.plugin.surefire.SurefireReportParameters;
-import org.apache.maven.surefire.shade.org.apache.maven.shared.utils.ReaderFactory;
+import org.apache.maven.surefire.failsafe.model.FailsafeSummary;
+import org.apache.maven.surefire.failsafe.model.io.xpp3.FailsafeSummaryXpp3Writer;
 import org.apache.maven.surefire.suite.RunResult;
 
 import uk.co.javahelp.maven.plugin.fitnesse.junit.TestHelper;
-import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingResultsListener;
+import uk.co.javahelp.maven.plugin.fitnesse.responders.run.DelegatingTestSystemListener;
 import fitnesse.junit.JUnitXMLTestListener;
 import fitnesse.junit.PrintTestListener;
-import fitnesse.responders.run.ResultsListener;
+import fitnesse.testrunner.WikiTestPage;
 import fitnesse.testsystems.TestSummary;
+import fitnesse.testsystems.TestSystemListener;
 
 /**
  * Goal that launches FitNesse tests using fitnesse.junit.TestHelper.
@@ -48,26 +55,23 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
 			createSymLink(launches);
 		}
 
-		final RunResult result = runFitNesseTests(launches);
-		try {
-			result.writeSummary( this.summaryFile, false, ReaderFactory.UTF_8 );
-		} catch (final IOException e) {
-			throw new MojoExecutionException(e.getMessage(), e);
-		}
+		final TestSummary fitNesseSummary = runFitNesseTests(launches);
+		getLog().info(fitNesseSummary.toString());
+		final FailsafeSummary failsafeSummary = convertAndReportResults(fitNesseSummary);
+		writeSummary(failsafeSummary);
 	}
 
 	/**
 	 * Creating a SymLink is easiest when FitNesse is running in 'wiki server' mode.
 	 */
 	private void createSymLink(final Launch... launches) throws MojoExecutionException {
-		final String portString = this.port.toString();
 		try {
-            this.fitNesseHelper.launchFitNesseServer(portString, this.workingDir, this.root, this.logDir);
+            this.fitNesseHelper.launchFitNesseServer(this.port, this.workingDir, this.root, this.logDir);
 			this.fitNesseHelper.createSymLink(this.project.getBasedir(), this.testResourceDirectory, this.port, launches);
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception creating FitNesse SymLink", e);
 		} finally {
-			this.fitNesseHelper.shutdownFitNesseServer(portString);
+			this.fitNesseHelper.shutdownFitNesseServer(this.port);
 		}
 	}
 
@@ -75,19 +79,39 @@ public class RunTestsMojo extends AbstractFitNesseMojo implements SurefireReport
      * Strange side-effect behaviour:
      * If debug=false, FitNesse falls into wiki mode.
 	 */
-	private RunResult runFitNesseTests(final Launch... launches) throws MojoExecutionException {
-		final ResultsListener resultsListener = new DelegatingResultsListener(
+	private TestSummary runFitNesseTests(final Launch... launches) throws MojoExecutionException {
+		@SuppressWarnings("unchecked")
+		final TestSystemListener<WikiTestPage> resultsListener = new DelegatingTestSystemListener(
                 new PrintTestListener(), new JUnitXMLTestListener( this.resultsDir.getAbsolutePath()));
         final TestHelper helper = new TestHelper(this.workingDir, this.reportsDir.getAbsolutePath(), resultsListener);
 		helper.setDebugMode(true);
 
 		try {
 			final TestSummary summary = helper.run(this.port, launches);
-    		getLog().info(summary.toString());
-            final RunResult result = new RunResult(summary.right, summary.exceptions, summary.wrong, summary.ignores);
-			return result;
+			return summary;
 		} catch (Exception e) {
 			throw new MojoExecutionException("Exception running FitNesse tests", e);
+		}
+	}
+
+    private FailsafeSummary convertAndReportResults(final TestSummary summary) throws MojoFailureException {
+        final RunResult result = new RunResult(summary.right, summary.exceptions, summary.wrong, summary.ignores);
+		SurefireHelper.reportExecution(this, result, getLog());
+		final FailsafeSummary failsafeSummary = new FailsafeSummary();
+		failsafeSummary.setResult(result.getForkedProcessCode());
+		return failsafeSummary;
+	}
+
+    private void writeSummary(final FailsafeSummary summary) throws MojoExecutionException {
+		Writer writer = null;
+		try {
+			writer = new FileWriter(this.summaryFile);
+			FailsafeSummaryXpp3Writer xpp3Writer = new FailsafeSummaryXpp3Writer();
+			xpp3Writer.write(writer, summary);
+		} catch (IOException e) {
+            throw new MojoExecutionException("Exception writing Failsafe summary", e);
+		} finally {
+			close(writer);
 		}
 	}
 

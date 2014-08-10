@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.javahelp.fitnesse</groupId>
 	<artifactId>fitnesse-launcher-parent</artifactId>
-	<version>1.5.0-SNAPSHOT</version>
+	<version>1.4.2</version>
 	<packaging>pom</packaging>
 
 	<name>FitNesse Launcher Parent</name>
@@ -20,9 +20,9 @@
 	<inceptionYear>2012</inceptionYear>
 
 	<scm>
-		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk</url>
-		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk</connection>
-		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/trunk</developerConnection>
+		<url>http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-1.4.2</url>
+		<connection>scm:svn:http://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-1.4.2</connection>
+		<developerConnection>scm:svn:https://fitnesse-launcher-maven-plugin.googlecode.com/svn/tags/fitnesse-launcher-1.4.2</developerConnection>
 	</scm>
 
 	<licenses>
@@ -68,8 +68,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.version>3.2.2</maven.version>
-		<failsafe.version>2.17</failsafe.version>
+		<maven.version>3.1.1</maven.version>
+		<failsafe.version>2.12.4</failsafe.version>
 		<jacoco.version>0.6.0.201210061924</jacoco.version>
 		<!-- For use by Site filtering (can't handle 'dot' notation) -->
 		<projectVersion>${project.version}</projectVersion>
@@ -119,16 +119,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
-				<!-- http://jira.codehaus.org/browse/MPIR-137 -->
-				<configuration>
-					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-					<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9</version>
 				<configuration>
@@ -175,7 +165,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.4</version>
+				<version>3.2</version>
 				<configuration>
    					<relativizeDecorationLinks>false</relativizeDecorationLinks>
 				</configuration>
@@ -196,6 +186,7 @@
 			</plugin> 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>src</descriptorRef>
@@ -227,16 +218,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-				    <version>2.4</version>
-				</plugin>
-			    <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.7</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>${failsafe.version}</version>
 				</plugin>
@@ -263,11 +244,6 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin>
-			    <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.4</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
