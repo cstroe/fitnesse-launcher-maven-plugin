@@ -36,6 +36,8 @@ public class CreateSymLinkTest {
     
     private File baseDirWhitespace;
     
+    private Server server;
+    
 	@Before
 	public void setUp() {
 		logStream = new ByteArrayOutputStream();
@@ -52,9 +54,12 @@ public class CreateSymLinkTest {
 	}
 	
 	@After
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		FileUtils.deleteQuietly(baseDir);
 		FileUtils.deleteQuietly(baseDirWhitespace);
+		if(server != null) {
+    		server.stop();
+		}
 	}
 		
     private static String whitespace(String symlink) {
@@ -64,7 +69,7 @@ public class CreateSymLinkTest {
 	@Test
 	public void testCreateSymLinkOkSuite() throws Exception {
 		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
+		server = new Server(port);
 	    server.setHandler(new OkHandler("/root", SYMLINK_URL_EXPECTED));
 	    server.start();
 	    
@@ -84,7 +89,7 @@ public class CreateSymLinkTest {
 	@Test
 	public void testCreateSymLinkWhitespace() throws Exception {
 		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
+		server = new Server(port);
 	    server.setHandler(new OkHandler("/root", whitespace(SYMLINK_URL_EXPECTED)));
 	    server.start();
 	    
@@ -104,7 +109,7 @@ public class CreateSymLinkTest {
 	@Test
 	public void testCreateSymLinkOkTest() throws Exception {
 		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
+		server = new Server(port);
 	    server.setHandler(new OkHandler("/root", SYMLINK_URL_EXPECTED));
 	    server.start();
 	    
@@ -124,7 +129,7 @@ public class CreateSymLinkTest {
 	@Test
 	public void testCreateSymLinkDisconnect() throws Exception {
 		int port = FitNesseHelper.DEFAULT_COMMAND_PORT;
-		Server server = new Server(port);
+		server = new Server(port);
 	    server.setHandler(new DisconnectingHandler(server));
 	    server.start();
 	    

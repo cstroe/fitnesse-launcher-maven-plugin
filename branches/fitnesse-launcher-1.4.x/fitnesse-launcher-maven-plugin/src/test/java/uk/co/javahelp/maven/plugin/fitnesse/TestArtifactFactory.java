@@ -8,6 +8,6 @@ public class TestArtifactFactory {
 	
     public static Artifact fitNesseArtifact(ArtifactHandler artifactHandler) {
         return new DefaultArtifact(
-        		"org.fitnesse", "fitnesse", "20140201", "compile", "jar", null, artifactHandler);
+        		"org.fitnesse", "fitnesse", "20140418", "compile", "jar", null, artifactHandler);
     }
 }

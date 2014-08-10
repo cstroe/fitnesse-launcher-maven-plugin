@@ -10,7 +10,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,6 +23,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.co.javahelp.maven.plugin.fitnesse.util.FitNesseHelper;
@@ -136,6 +137,7 @@ public class WikiMojoTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testServiceThreadFinishesWithoutInterrupt() throws Exception {
 		new Thread() {
 			@Override
@@ -158,6 +160,7 @@ public class WikiMojoTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testFitNesseNotRunning() throws Exception {
 		fitNesse.stop();
 		doNothing().when(fitNesseHelper).launchFitNesseServer(anyInt(), anyString(), anyString(), anyString());
