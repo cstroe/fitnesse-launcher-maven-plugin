@@ -6,7 +6,7 @@
 	</bannerLeft>
 
 	<poweredBy>
-		<logo name="FitNesse" href="http://fitnesse.org/" img="images/FitNesseLogo.png" width="56"/>
+		<logo name="FitNesse" href="http://fitnesse.org/" img="http://fitnesse-launcher-maven-plugin.googlecode.com/svn/maven/site/fitnesse-launcher-maven-plugin/images/FitNesseLogo.png" width="56"/>
 		<logo name="Apache Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-feather.png" />
 	</poweredBy>
 
