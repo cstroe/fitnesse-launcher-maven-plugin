@@ -14,14 +14,6 @@
 	<description>Example configuration for using fitnesse-launcher-maven-plugin in a webapp project.</description>
 	<url>http://code.google.com/p/fitnesse-launcher-maven-plugin/wiki/WebappExample</url>
 
-	<licenses>
-		<license>
-			<name>Apache License version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
 	<properties>
 		<!-- For use with the `headless` profile -->
 		<display>:2</display>
@@ -51,13 +43,23 @@
 
 	<reporting>
 		<plugins>
-			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.7</version>
+				<reportSets>
+				    <reportSet>
+				        <reports>
+				            <report>summary</report>
+				        </reports>
+				    </reportSet>
+				</reportSets>
+			</plugin>
 			<plugin>
 				<groupId>uk.co.javahelp.fitnesse</groupId>
 				<artifactId>fitnesse-launcher-maven-plugin</artifactId>
                 <version>${project.version}</version>
 			</plugin>
-			-->
 		</plugins>
 	</reporting>
 
