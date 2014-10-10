@@ -70,12 +70,12 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 
 	@Override
 	public String getName(Locale locale) {
-		return getBundle( locale ).getString( "report.name" );
+		return getBundle( locale ).getString( "report.fitnesse.name" );
 	}
 
 	@Override
 	public String getDescription(Locale locale) {
-		return getBundle( locale ).getString( "report.description" );
+		return getBundle( locale ).getString( "report.fitnesse.description" );
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 			Sink sink = this.getSink();
             sinkBeginReport(sink, bundle);
             sink.sectionTitle1();
-        	sink.text( bundle.getString( "report.name" ) );
+        	sink.text( bundle.getString( "report.fitnesse.name" ) );
         	sink.sectionTitle1_();
 			for(String report : reports) {
                 //String html = html(report);
@@ -145,7 +145,7 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 			copyResources("css", "images", "javascript");
 		} catch (IOException e) {
 			getLog().error(e);
-			throw new MavenReportException("Exception generating " + getBundle( locale ).getString( "report.name" ), e);
+			throw new MavenReportException("Exception generating " + getBundle( locale ).getString( "report.fitnesse.name" ), e);
 		}
 	}
 	
@@ -199,7 +199,7 @@ public class FitNesseHtmlReport extends AbstractMavenReport {
 	
 	private void sinkBeginReport( Sink sink, ResourceBundle bundle ) {
         sink.head();
-        String title = bundle.getString( "report.name" );
+        String title = bundle.getString( "report.fitnesse.name" );
         sink.title();
         sink.text( title );
         sink.title_();
